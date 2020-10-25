@@ -1,0 +1,22 @@
+{
+  parserClass="simplelanguage.parser.SimpleParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Simple"
+  psiImplClassSuffix="Impl"
+  psiPackage="simplelanguage.psi"
+  psiImplPackage="simplelanguage.psi.impl"
+
+  elementTypeHolderClass="simplelanguage.psi.SimpleTypes"
+  elementTypeClass="simplelanguage.psi.SimpleElementType"
+  tokenTypeClass="simplelanguage.psi.SimpleTokenType"
+
+  psiImplUtilClass="simplelanguage.psi.impl.SimplePsiImplUtil"
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY
