@@ -4,7 +4,7 @@ package simplelanguage;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import simplelanguage.psi.SimpleTypes;
-import com.intellij.psi.TokenType;
+import com.intellij.psi.TokenType;import java.io.FileReader;
 
 %%
 
@@ -15,6 +15,14 @@ import com.intellij.psi.TokenType;
 %type IElementType
 %eof{  return;
 %eof}
+
+%{
+FileReader f = new FileReader();
+
+  private String getOffset() {
+      return "";
+  }
+%}
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
@@ -28,17 +36,17 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return SimpleTypes.COMMENT; }
+<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return SimpleTypes.COMENTARIO; }
 
-<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return SimpleTypes.KEY; }
+<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return SimpleTypes.LLAVE; }
 
-<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return SimpleTypes.SEPARATOR; }
+<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return SimpleTypes.SEPARADOR; }
 
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return SimpleTypes.VALUE; }
+<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return SimpleTypes.VALOR; }
 
 ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 

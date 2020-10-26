@@ -17,6 +17,6 @@
 
 simpleFile ::= item_*
 
-private item_ ::= (property|COMMENT|CRLF)
+private item_ ::= (property|COMENTARIO|FINDELINEA)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+property ::= (LLAVE? SEPARADOR VALOR?) | LLAVE

@@ -10,11 +10,11 @@ public interface SimpleTypes {
 
   IElementType PROPERTY = new SimpleElementType("PROPERTY");
 
-  IElementType COMMENT = new SimpleTokenType("COMMENT");
-  IElementType CRLF = new SimpleTokenType("CRLF");
-  IElementType KEY = new SimpleTokenType("KEY");
-  IElementType SEPARATOR = new SimpleTokenType("SEPARATOR");
-  IElementType VALUE = new SimpleTokenType("VALUE");
+  IElementType COMENTARIO = new SimpleTokenType("COMENTARIO");
+  IElementType FINDELINEA = new SimpleTokenType("FINDELINEA");
+  IElementType LLAVE = new SimpleTokenType("LLAVE");
+  IElementType SEPARADOR = new SimpleTokenType("SEPARADOR");
+  IElementType VALOR = new SimpleTokenType("VALOR");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

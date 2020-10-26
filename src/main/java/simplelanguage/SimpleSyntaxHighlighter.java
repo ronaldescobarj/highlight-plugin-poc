@@ -42,13 +42,13 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(SimpleTypes.SEPARATOR)) {
+        if (tokenType.equals(SimpleTypes.SEPARADOR)) {
             return SEPARATOR_KEYS;
-        } else if (tokenType.equals(SimpleTypes.KEY)) {
+        } else if (tokenType.equals(SimpleTypes.LLAVE)) {
             return KEY_KEYS;
-        } else if (tokenType.equals(SimpleTypes.VALUE)) {
+        } else if (tokenType.equals(SimpleTypes.VALOR)) {
             return VALUE_KEYS;
-        } else if (tokenType.equals(SimpleTypes.COMMENT)) {
+        } else if (tokenType.equals(SimpleTypes.COMENTARIO)) {
             return COMMENT_KEYS;
         } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;

@@ -492,7 +492,7 @@ class SimpleLexer implements FlexLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { yybegin(YYINITIAL); return SimpleTypes.LLAVE;
+            { yybegin(YYINITIAL); return SimpleTypes.KEY;
             } 
             // fall through
           case 8: break;
@@ -507,17 +507,17 @@ class SimpleLexer implements FlexLexer {
             // fall through
           case 10: break;
           case 4: 
-            { yybegin(YYINITIAL); return SimpleTypes.COMENTARIO;
+            { yybegin(YYINITIAL); return SimpleTypes.COMMENT;
             } 
             // fall through
           case 11: break;
           case 5: 
-            { yybegin(WAITING_VALUE); return SimpleTypes.SEPARADOR;
+            { yybegin(WAITING_VALUE); return SimpleTypes.SEPARATOR;
             } 
             // fall through
           case 12: break;
           case 6: 
-            { yybegin(YYINITIAL); return SimpleTypes.VALOR;
+            { yybegin(YYINITIAL); return SimpleTypes.VALUE;
             } 
             // fall through
           case 13: break;

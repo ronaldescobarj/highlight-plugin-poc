@@ -36,52 +36,52 @@ public class SimpleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // property|COMMENT|CRLF
+  // property|COMENTARIO|FINDELINEA
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
     r = property(b, l + 1);
-    if (!r) r = consumeToken(b, COMMENT);
-    if (!r) r = consumeToken(b, CRLF);
+    if (!r) r = consumeToken(b, COMENTARIO);
+    if (!r) r = consumeToken(b, FINDELINEA);
     return r;
   }
 
   /* ********************************************************** */
-  // (KEY? SEPARATOR VALUE?) | KEY
+  // (LLAVE? SEPARADOR VALOR?) | LLAVE
   public static boolean property(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "property")) return false;
-    if (!nextTokenIs(b, "<property>", KEY, SEPARATOR)) return false;
+    if (!nextTokenIs(b, "<property>", LLAVE, SEPARADOR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
     r = property_0(b, l + 1);
-    if (!r) r = consumeToken(b, KEY);
+    if (!r) r = consumeToken(b, LLAVE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // KEY? SEPARATOR VALUE?
+  // LLAVE? SEPARADOR VALOR?
   private static boolean property_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "property_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = property_0_0(b, l + 1);
-    r = r && consumeToken(b, SEPARATOR);
+    r = r && consumeToken(b, SEPARADOR);
     r = r && property_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // KEY?
+  // LLAVE?
   private static boolean property_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "property_0_0")) return false;
-    consumeToken(b, KEY);
+    consumeToken(b, LLAVE);
     return true;
   }
 
-  // VALUE?
+  // VALOR?
   private static boolean property_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "property_0_2")) return false;
-    consumeToken(b, VALUE);
+    consumeToken(b, VALOR);
     return true;
   }
 
