@@ -56,5 +56,4 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
             return EMPTY_KEYS;
         }
     }
-
 }
