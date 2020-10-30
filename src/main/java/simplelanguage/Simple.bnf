@@ -19,4 +19,5 @@ simpleFile ::= item_*
 
 private item_ ::= (property|COMENTARIO|FINDELINEA)
 
-property ::= (LLAVE? SEPARADOR VALOR?) | LLAVE
+//property ::= (LLAVE? SEPARADOR VALOR?) | LLAVE
+property ::= LLAVE | SEPARADOR | VALOR
