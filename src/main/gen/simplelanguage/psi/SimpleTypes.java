@@ -8,19 +8,20 @@ import simplelanguage.psi.impl.*;
 
 public interface SimpleTypes {
 
-  IElementType PROPERTY = new SimpleElementType("PROPERTY");
+  IElementType DIFFLINE = new SimpleElementType("DIFFLINE");
 
-  IElementType COMENTARIO = new SimpleTokenType("COMENTARIO");
-  IElementType FINDELINEA = new SimpleTokenType("FINDELINEA");
-  IElementType LLAVE = new SimpleTokenType("LLAVE");
-  IElementType SEPARADOR = new SimpleTokenType("SEPARADOR");
-  IElementType VALOR = new SimpleTokenType("VALOR");
+  IElementType COMMENT = new SimpleTokenType("COMMENT");
+  IElementType CRLF = new SimpleTokenType("CRLF");
+  IElementType INSERTED = new SimpleTokenType("INSERTED");
+  IElementType MOVED = new SimpleTokenType("MOVED");
+  IElementType NOTMODIFIED = new SimpleTokenType("NOTMODIFIED");
+  IElementType UPDATED = new SimpleTokenType("UPDATED");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == PROPERTY) {
-        return new SimplePropertyImpl(node);
+      if (type == DIFFLINE) {
+        return new SimpleDifflineImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

@@ -13,6 +13,6 @@ public class DiffHighlighter {
     }
 
     IElementType getLineHighlight(int line) {
-        return SimpleTypes.SEPARADOR;
+        return SimpleTypes.INSERTED;
     }
 }

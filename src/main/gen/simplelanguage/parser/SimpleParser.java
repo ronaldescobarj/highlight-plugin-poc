@@ -36,26 +36,27 @@ public class SimpleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // property|COMENTARIO|FINDELINEA
-  static boolean item_(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "item_")) return false;
+  // NOTMODIFIED | INSERTED | UPDATED | MOVED
+  public static boolean diffline(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "diffline")) return false;
     boolean r;
-    r = property(b, l + 1);
-    if (!r) r = consumeToken(b, COMENTARIO);
-    if (!r) r = consumeToken(b, FINDELINEA);
+    Marker m = enter_section_(b, l, _NONE_, DIFFLINE, "<diffline>");
+    r = consumeToken(b, NOTMODIFIED);
+    if (!r) r = consumeToken(b, INSERTED);
+    if (!r) r = consumeToken(b, UPDATED);
+    if (!r) r = consumeToken(b, MOVED);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // LLAVE | SEPARADOR | VALOR
-  public static boolean property(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property")) return false;
+  // diffline|COMMENT|CRLF
+  static boolean item_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
-    r = consumeToken(b, LLAVE);
-    if (!r) r = consumeToken(b, SEPARADOR);
-    if (!r) r = consumeToken(b, VALOR);
-    exit_section_(b, l, m, r, false, null);
+    r = diffline(b, l + 1);
+    if (!r) r = consumeToken(b, COMMENT);
+    if (!r) r = consumeToken(b, CRLF);
     return r;
   }
 

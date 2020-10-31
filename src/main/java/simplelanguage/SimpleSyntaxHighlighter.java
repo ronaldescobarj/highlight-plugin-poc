@@ -14,12 +14,14 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 
 public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
 
-    public static final TextAttributesKey SEPARATOR =
-            createTextAttributesKey("SIMPLE_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey KEY =
-            createTextAttributesKey("SIMPLE_KEY", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey VALUE =
-            createTextAttributesKey("SIMPLE_VALUE", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey NOTMODIFIED =
+            createTextAttributesKey("SIMPLE_NOTMODIFIED", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+    public static final TextAttributesKey INSERTED =
+            createTextAttributesKey("SIMPLE_INSERTED", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey UPDATED =
+            createTextAttributesKey("SIMPLE_UPDATED", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey MOVED =
+            createTextAttributesKey("SIMPLE_MOVED", DefaultLanguageHighlighterColors.FUNCTION_CALL);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("SIMPLE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
@@ -27,9 +29,10 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
 
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-    private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
-    private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY};
-    private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
+    private static final TextAttributesKey[] NOTMODIFIED_KEYS = new TextAttributesKey[]{NOTMODIFIED};
+    private static final TextAttributesKey[] INSERTED_KEYS = new TextAttributesKey[]{INSERTED};
+    private static final TextAttributesKey[] UPDATED_KEYS = new TextAttributesKey[]{UPDATED};
+    private static final TextAttributesKey[] MOVED_KEYS = new TextAttributesKey[]{MOVED};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
@@ -42,13 +45,15 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(SimpleTypes.SEPARADOR)) {
-            return SEPARATOR_KEYS;
-        } else if (tokenType.equals(SimpleTypes.LLAVE)) {
-            return KEY_KEYS;
-        } else if (tokenType.equals(SimpleTypes.VALOR)) {
-            return VALUE_KEYS;
-        } else if (tokenType.equals(SimpleTypes.COMENTARIO)) {
+        if (tokenType.equals(SimpleTypes.NOTMODIFIED)) {
+            return NOTMODIFIED_KEYS;
+        } else if (tokenType.equals(SimpleTypes.INSERTED)) {
+            return INSERTED_KEYS;
+        } else if (tokenType.equals(SimpleTypes.UPDATED)) {
+            return UPDATED_KEYS;
+        } else if (tokenType.equals(SimpleTypes.MOVED)) {
+            return MOVED_KEYS;
+        } else if (tokenType.equals(SimpleTypes.COMMENT)) {
             return COMMENT_KEYS;
         } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;

@@ -24,6 +24,7 @@ import com.intellij.psi.TokenType;import java.io.FileReader;import java.util.Arr
       emulatedCsv.add(5);
       emulatedCsv.add(10);
       emulatedCsv.add(15);
+      emulatedCsv.add(20);
 %init}
 
 %{
@@ -31,11 +32,13 @@ import com.intellij.psi.TokenType;import java.io.FileReader;import java.util.Arr
 
   private IElementType getCorrespondingToken() {
       if (yyline < emulatedCsv.get(1)) {
-          return SimpleTypes.LLAVE;
+          return SimpleTypes.NOTMODIFIED;
       } else if (yyline < emulatedCsv.get(2)) {
-          return SimpleTypes.SEPARADOR;
+          return SimpleTypes.INSERTED;
+      } else if (yyline < emulatedCsv.get(3)) {
+          return SimpleTypes.UPDATED;
       } else {
-          return SimpleTypes.VALOR;
+          return SimpleTypes.MOVED;
       }
     }
 %}
@@ -44,7 +47,7 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("5#"|"!")[^\r\n]*
+END_OF_LINE_COMMENT=("//"|"/*")[^\r\n]*
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
@@ -53,7 +56,7 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 %%
 <YYINITIAL> .                                               { yybegin(YYINITIAL); return getCorrespondingToken(); }
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return SimpleTypes.COMENTARIO; }
+<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return SimpleTypes.COMMENT; }
 
 /*
 <YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return SimpleTypes.LLAVE; }

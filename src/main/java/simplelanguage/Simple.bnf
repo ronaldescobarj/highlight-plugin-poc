@@ -17,7 +17,7 @@
 
 simpleFile ::= item_*
 
-private item_ ::= (property|COMENTARIO|FINDELINEA)
+private item_ ::= (diffline|COMMENT|CRLF)
 
 //property ::= (LLAVE? SEPARADOR VALOR?) | LLAVE
-property ::= LLAVE | SEPARADOR | VALOR
+diffline ::= NOTMODIFIED | INSERTED | UPDATED | MOVED

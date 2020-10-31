@@ -11,14 +11,14 @@ import static simplelanguage.psi.SimpleTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import simplelanguage.psi.*;
 
-public class SimplePropertyImpl extends ASTWrapperPsiElement implements SimpleProperty {
+public class SimpleDifflineImpl extends ASTWrapperPsiElement implements SimpleDiffline {
 
-  public SimplePropertyImpl(@NotNull ASTNode node) {
+  public SimpleDifflineImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull SimpleVisitor visitor) {
-    visitor.visitProperty(this);
+    visitor.visitDiffline(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

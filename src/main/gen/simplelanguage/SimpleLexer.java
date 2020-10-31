@@ -25,6 +25,7 @@ class SimpleLexer implements FlexLexer {
   /** lexical states */
   public static final int YYINITIAL = 0;
   public static final int WAITING_VALUE = 2;
+
   long yychar = 0;
   int yyline = 0;
 
@@ -57,8 +58,7 @@ class SimpleLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 256 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\3\1\2\2\1\1\2\22\0\1\3\1\6\1\0\1\5\21\0\1\4\117\0\1\1\142\0\2\1\26"+
-    "\0");
+    "\11\0\1\3\1\2\2\1\1\2\22\0\1\3\11\0\1\5\4\0\1\4\125\0\1\1\142\0\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -66,10 +66,10 @@ class SimpleLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\3\1\1\3\1\4";
+    "\2\0\1\1\1\2\2\1\1\3\1\4";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[9];
+    int [] result = new int[8];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -94,11 +94,10 @@ class SimpleLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\7\0\16\0\25\0\25\0\34\0\43\0\16"+
-    "\0\43";
+    "\0\0\0\6\0\14\0\22\0\22\0\30\0\14\0\36";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[9];
+    int [] result = new int[8];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -121,12 +120,11 @@ class SimpleLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\3\2\4\1\5\1\6\1\3\1\7\1\10\3\4"+
-    "\3\10\10\0\3\4\10\0\1\11\1\0\2\11\1\0"+
-    "\4\11";
+    "\1\3\2\4\1\5\1\6\1\3\1\7\3\4\2\7"+
+    "\7\0\3\4\6\0\4\10\1\0\3\10";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[42];
+    int [] result = new int[36];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -164,10 +162,10 @@ class SimpleLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\4\1\1\11\1\1";
+    "\2\0\1\11\3\1\1\11\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[9];
+    int [] result = new int[8];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -227,11 +225,13 @@ class SimpleLexer implements FlexLexer {
 
   private IElementType getCorrespondingToken() {
       if (yyline < emulatedCsv.get(1)) {
-          return SimpleTypes.LLAVE;
+          return SimpleTypes.NOTMODIFIED;
       } else if (yyline < emulatedCsv.get(2)) {
-          return SimpleTypes.SEPARADOR;
+          return SimpleTypes.INSERTED;
+      } else if (yyline < emulatedCsv.get(3)) {
+          return SimpleTypes.UPDATED;
       } else {
-          return SimpleTypes.VALOR;
+          return SimpleTypes.MOVED;
       }
     }
 
@@ -247,6 +247,7 @@ class SimpleLexer implements FlexLexer {
       emulatedCsv.add(5);
       emulatedCsv.add(10);
       emulatedCsv.add(15);
+      emulatedCsv.add(20);
     this.zzReader = in;
   }
 
@@ -568,7 +569,7 @@ class SimpleLexer implements FlexLexer {
             // fall through
           case 7: break;
           case 4: 
-            { yybegin(YYINITIAL); return SimpleTypes.COMENTARIO;
+            { yybegin(YYINITIAL); return SimpleTypes.COMMENT;
             } 
             // fall through
           case 8: break;

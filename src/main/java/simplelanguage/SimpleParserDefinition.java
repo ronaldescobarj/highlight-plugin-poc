@@ -19,7 +19,7 @@ import simplelanguage.psi.SimpleTypes;
 public class SimpleParserDefinition implements ParserDefinition {
 
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet COMMENTS = TokenSet.create(SimpleTypes.COMENTARIO);
+    public static final TokenSet COMMENTS = TokenSet.create(SimpleTypes.COMMENT);
 
     public static final IFileElementType FILE = new IFileElementType(SimpleLanguage.INSTANCE);
 
