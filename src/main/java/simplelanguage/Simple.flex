@@ -3,7 +3,7 @@ package simplelanguage;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import simplelanguage.psi.SimpleTypes;
+import difflogic.DiffHighlighter;import simplelanguage.psi.SimpleTypes;
 import com.intellij.psi.TokenType;import java.io.FileReader;import java.util.ArrayList;
 
 %%
@@ -19,28 +19,15 @@ import com.intellij.psi.TokenType;import java.io.FileReader;import java.util.Arr
 %eof}
 
 %init{
-      emulatedCsv = new ArrayList<>();
-      emulatedCsv.add(0);
-      emulatedCsv.add(5);
-      emulatedCsv.add(10);
-      emulatedCsv.add(15);
-      emulatedCsv.add(20);
+      diffHighlighter = new DiffHighlighter();
 %init}
 
 %{
-  ArrayList<Integer> emulatedCsv;
+  DiffHighlighter diffHighlighter;
 
-  private IElementType getCorrespondingToken() {
-      if (yyline < emulatedCsv.get(1)) {
-          return SimpleTypes.NOTMODIFIED;
-      } else if (yyline < emulatedCsv.get(2)) {
-          return SimpleTypes.INSERTED;
-      } else if (yyline < emulatedCsv.get(3)) {
-          return SimpleTypes.UPDATED;
-      } else {
-          return SimpleTypes.MOVED;
+    private IElementType getCorrespondingToken() {
+        return diffHighlighter.getLineHighlight(yyline);
       }
-    }
 %}
 
 CRLF=\R

@@ -5,7 +5,7 @@ package simplelanguage;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import simplelanguage.psi.SimpleTypes;
+import difflogic.DiffHighlighter;import simplelanguage.psi.SimpleTypes;
 import com.intellij.psi.TokenType;import java.io.FileReader;import java.util.ArrayList;
 
 
@@ -27,7 +27,7 @@ class SimpleLexer implements FlexLexer {
   public static final int WAITING_VALUE = 2;
 
   long yychar = 0;
-  int yyline = 0;
+  int yyline = 1;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -221,19 +221,11 @@ class SimpleLexer implements FlexLexer {
   private boolean zzEOFDone;
 
   /* user code: */
-  ArrayList<Integer> emulatedCsv;
+  DiffHighlighter diffHighlighter;
 
-  private IElementType getCorrespondingToken() {
-      if (yyline < emulatedCsv.get(1)) {
-          return SimpleTypes.NOTMODIFIED;
-      } else if (yyline < emulatedCsv.get(2)) {
-          return SimpleTypes.INSERTED;
-      } else if (yyline < emulatedCsv.get(3)) {
-          return SimpleTypes.UPDATED;
-      } else {
-          return SimpleTypes.MOVED;
+    private IElementType getCorrespondingToken() {
+        return diffHighlighter.getLineHighlight(yyline);
       }
-    }
 
 
   /**
@@ -242,12 +234,7 @@ class SimpleLexer implements FlexLexer {
    * @param   in  the java.io.Reader to read input from.
    */
   SimpleLexer(java.io.Reader in) {
-        emulatedCsv = new ArrayList<>();
-      emulatedCsv.add(0);
-      emulatedCsv.add(5);
-      emulatedCsv.add(10);
-      emulatedCsv.add(15);
-      emulatedCsv.add(20);
+        diffHighlighter = new DiffHighlighter();
     this.zzReader = in;
   }
 

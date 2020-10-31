@@ -21,7 +21,7 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey UPDATED =
             createTextAttributesKey("SIMPLE_UPDATED", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey MOVED =
-            createTextAttributesKey("SIMPLE_MOVED", DefaultLanguageHighlighterColors.FUNCTION_CALL);
+            createTextAttributesKey("SIMPLE_MOVED", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("SIMPLE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
