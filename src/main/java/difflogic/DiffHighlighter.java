@@ -23,7 +23,6 @@ public class DiffHighlighter {
 
         DiffMapper diffMapper = new DiffMapper(diffs);
         diffMap = diffMapper.createDiffMap();
-        System.out.println("xd");
     }
 
     public IElementType getLineHighlight(int line) {
