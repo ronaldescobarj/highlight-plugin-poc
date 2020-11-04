@@ -14,6 +14,7 @@
                   fieldName="INSTANCE" language="Simple" extensions="simple"/>
         <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>
+        <editorFactoryListener implementation="oneditoropentest.OnEditorOpen"/>
     </extensions>
 
     <actions>
