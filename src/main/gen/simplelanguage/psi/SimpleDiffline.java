@@ -7,4 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface SimpleDiffline extends PsiElement {
 
+  String getNotModified();
+
+  String getInserted();
+
+  String getUpdated();
+
+  String getMoved();
+
 }

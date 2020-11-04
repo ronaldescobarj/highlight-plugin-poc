@@ -26,4 +26,24 @@ public class SimpleDifflineImpl extends ASTWrapperPsiElement implements SimpleDi
     else super.accept(visitor);
   }
 
+  @Override
+  public String getNotModified() {
+    return SimplePsiImplUtil.getNotModified(this);
+  }
+
+  @Override
+  public String getInserted() {
+    return SimplePsiImplUtil.getInserted(this);
+  }
+
+  @Override
+  public String getUpdated() {
+    return SimplePsiImplUtil.getUpdated(this);
+  }
+
+  @Override
+  public String getMoved() {
+    return SimplePsiImplUtil.getMoved(this);
+  }
+
 }

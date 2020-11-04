@@ -28,7 +28,7 @@ class SimpleLexer implements FlexLexer {
 
   long yychar = 0;
   int yyline = 1;
-
+  
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
    * ZZ_LEXSTATE[l+1] is the state in the DFA for the lexical state l
