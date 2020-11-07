@@ -15,9 +15,13 @@
         <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>
         <editorFactoryListener implementation="oneditoropentest.OnEditorOpen"/>
-        <applicationInitializedListener implementation="gitremote.GitRemote"/>
-        <applicationService serviceImplementation="services.GitRemoteService"/>
+        <applicationInitializedListener implementation="onapplicationinitialized.OnApplicationInitialized"/>
+        <projectService serviceImplementation="services.GitRemoteService"/>
     </extensions>
+    <applicationListeners>
+        <listener class="onopenproject.OnOpenProject"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
 
     <actions>
         <!-- Add your actions here -->
