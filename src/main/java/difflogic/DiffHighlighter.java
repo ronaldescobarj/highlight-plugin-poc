@@ -1,6 +1,7 @@
 package difflogic;
 
 import com.intellij.psi.tree.IElementType;
+import models.DiffRow;
 import simplelanguage.psi.SimpleTypes;
 
 import java.nio.file.Path;

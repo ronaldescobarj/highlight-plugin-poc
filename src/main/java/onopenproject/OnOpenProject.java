@@ -14,7 +14,6 @@ public class OnOpenProject implements ProjectManagerListener {
         gitRemoteService.setProjectPath(projectPath);
         gitRemoteService.obtainRemoteUrlFromCmd();
         gitRemoteService.obtainRepoData();
-
     }
 
     @Override

@@ -1,8 +1,45 @@
-package difflogic;
+package models;
 
 public class DiffRow {
     String commit;
     String label;
+
+    public String getCommit() {
+        return commit;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getChange() {
+        return change;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public int getSrcStart() {
+        return srcStart;
+    }
+
+    public int getSrcEnd() {
+        return srcEnd;
+    }
+
+    public int getDstStart() {
+        return dstStart;
+    }
+
+    public int getDstEnd() {
+        return dstEnd;
+    }
+
+    public String getDstFile() {
+        return dstFile;
+    }
+
     String change;
     String nodeType;
     int srcStart;
