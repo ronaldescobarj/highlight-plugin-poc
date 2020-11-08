@@ -1,6 +1,10 @@
 package models;
 
 public class GitCommit {
+    public String getSha() {
+        return sha;
+    }
+
     String sha;
     String node_id;
     GitCommitData commit;
