@@ -32,9 +32,9 @@ public class PopupDialogAction extends AnAction {
         Editor editor = event.getData(CommonDataKeys.EDITOR);
         ApplicationManager.getApplication().runReadAction(() ->
                 EditorCoverLayerManager.getInstance(currentProject).registerEditorCoverLayer(editor));
-//        PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
-//        PsiElement psiElement = psiFile.findElementAt(80);
-        PsiElement psiElement = event.getData(LangDataKeys.PSI_ELEMENT);
+        PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
+        PsiElement psiElement = psiFile.findElementAt(80);
+//        PsiElement psiElement = event.getData(LangDataKeys.PSI_ELEMENT);
         VisualElementFactory factory = new VisualElementFactory();
         JLabel myElement = new VisualElementWrapper(psiElement, factory);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);

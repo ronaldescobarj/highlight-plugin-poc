@@ -17,10 +17,14 @@
         <editorFactoryListener implementation="oneditoropentest.OnEditorOpen"/>
         <applicationInitializedListener implementation="onapplicationinitialized.OnApplicationInitialized"/>
         <projectService serviceImplementation="services.GitRemoteService"/>
+        <editorFactoryDocumentListener implementation="oneditoropentest.OnEditorDocumentOpen"/>
+        <editorFactoryMouseListener implementation="oneditoropentest.OnEditorMouse"/>
+        <projectService serviceImplementation="services.EditorService"/>
     </extensions>
     <applicationListeners>
         <listener class="onopenproject.OnOpenProject"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
+<!--        <listener class="" topic="com.intellij.openapi.editor."-->
     </applicationListeners>
 
     <actions>
