@@ -14,11 +14,8 @@
                   fieldName="INSTANCE" language="Simple" extensions="simple"/>
         <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>
-        <editorFactoryListener implementation="oneditoropentest.OnEditorOpen"/>
-        <applicationInitializedListener implementation="onapplicationinitialized.OnApplicationInitialized"/>
-        <projectService serviceImplementation="services.GitRemoteService"/>
-        <editorFactoryDocumentListener implementation="oneditoropentest.OnEditorDocumentOpen"/>
-        <editorFactoryMouseListener implementation="oneditoropentest.OnEditorMouse"/>
+        <editorFactoryListener implementation="oneditoropen.OnEditorOpen"/>
+        <projectService serviceImplementation="services.GitService"/>
         <projectService serviceImplementation="services.EditorService"/>
     </extensions>
     <applicationListeners>
@@ -29,7 +26,7 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="testaction.PopupDialogAction" class="testaction.PopupDialogAction" text="My action"
+        <action id="popupaction.PopupDialogAction" class="popupaction.PopupDialogAction" text="My action"
                 description="My test action">
             <override-text place="MainMenu" text="Pop Dialog Action"/>
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>

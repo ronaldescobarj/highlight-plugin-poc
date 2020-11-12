@@ -2,18 +2,24 @@ package onopenproject;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
+import gitremote.GitRemote;
+import org.eclipse.jgit.api.Git;
 import org.jetbrains.annotations.NotNull;
-import services.GitRemoteService;
+import services.GitService;
 
 public class OnOpenProject implements ProjectManagerListener {
 
     @Override
     public void projectOpened(@NotNull Project project) {
         String projectPath = project.getBasePath();
-        GitRemoteService gitRemoteService = project.getService(GitRemoteService.class);
-        gitRemoteService.setProjectPath(projectPath);
-        gitRemoteService.obtainRemoteUrlFromCmd();
-        gitRemoteService.obtainRepoData();
+        GitService gitService = project.getService(GitService.class);
+        GitRemote gitRemote = new GitRemote();
+        String gitRemoteUrl = gitRemote.getRemoteUrlFromCmd(projectPath);
+        String repoOwner = gitRemote.getRepoOwnerFromRemoteUrl(gitRemoteUrl);
+        String repoName = gitRemote.getRepoNameFromRemoteUrl(gitRemoteUrl);
+        gitService.setRemoteUrl(gitRemoteUrl);
+        gitService.setRepoOwner(repoOwner);
+        gitService.setRepoName(repoName);
     }
 
     @Override

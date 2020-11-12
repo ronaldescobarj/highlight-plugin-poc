@@ -7,10 +7,8 @@ import models.DiffRow;
 import services.EditorService;
 import simplelanguage.psi.SimpleTypes;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class DiffHighlighter {
     HashMap<Integer, String> diffMap;
@@ -29,7 +27,7 @@ public class DiffHighlighter {
 //        diffMap = diffMapper.createDiffMap();
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
         EditorService editorService = project.getService(EditorService.class);
-        ArrayList<DiffRow> diffs = editorService.getDiffs();
+        ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();
         DiffMapper diffMapper = new DiffMapper(diffs);
         diffMap = diffMapper.createDiffMap();
         System.out.println("test");
