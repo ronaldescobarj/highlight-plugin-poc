@@ -18,6 +18,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.diff.Diff;
+import difflogic.DiffMapper;
 import gitremote.GitRemote;
 import models.DiffRow;
 import models.GitCommit;
@@ -33,9 +34,7 @@ import services.EditorService;
 import services.GitService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class OnEditorOpen implements EditorFactoryListener {
 
@@ -48,37 +47,54 @@ public class OnEditorOpen implements EditorFactoryListener {
         ArrayList<DiffRow> diffs = getDiff(changes);
         EditorService editorService = editor.getProject().getService(EditorService.class);
         editorService.setDiffsOfLastOpenedEditor(diffs);
-
 //        repoTest(editor.getProject().getBasePath());
     }
 
-    public void repoTest(String path) {
-        try{
-            Repository repository = GitHelper.openRepository(path);
+    public void repoTest(Editor editor) {
+        try {
+            Repository repository = GitHelper.openRepository(editor.getProject().getBasePath());
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
-            for (RevCommit commit : commits) {
+            List<RevCommit> commitsList = new ArrayList<>(commits);
+            List<RevCommit> slicedCommits = commitsList.subList(0, 5);
+            Collections.reverse(slicedCommits);
+            String fileName = getFileName(editor);
+            ArrayList<DiffRow> diffRows = null;
+            Map<Integer, Integer> amountOfTimes = new HashMap<>();
+            for (RevCommit commit : slicedCommits) {
+                DiffFormatter diffFormatter = createDiffFormatter(repository, fileName);
                 RevCommit[] parents = commit.getParents();
-                DiffFormatter df = new DiffFormatter(NullOutputStream.INSTANCE);
-                df.setRepository(repository);
-                df.setPathFilter(PathSuffixFilter.create("test.simple"));
-                df.setDetectRenames(true);
                 try {
-                    if (parents.length > 0) {
-                        List<DiffEntry> diffs = df.scan(parents[0], commit.getTree());
-                        System.out.println("funciono");
-                        for (DiffEntry diff : diffs) {
-                            String oldCode = GitHelper.getFileContent(diff.getOldId(), repository);
-                            String newCode = GitHelper.getFileContent(diff.getNewId(), repository);
-                            System.out.println("test");
+                    if (parents.length != 0) {
+                        List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
+                        DiffEntry diff = diffs.get(0);
+                        String previousCommitFileContent = GitHelper.getFileContent(diff.getOldId(), repository);
+                        String currentCommitFileContent = GitHelper.getFileContent(diff.getNewId(), repository);
+                        List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentCommitFileContent);
+                        diffRows = getDiff(changes);
+                        DiffMapper diffMapper = new DiffMapper(diffRows);
+                        Map<Integer, String> diffMap = diffMapper.createDiffMap();
+                        for (Map.Entry<Integer, String> diffsEntry : diffMap.entrySet()) {
+                            if (diffsEntry.getValue().equals("INS")) {
+                                amountOfTimes.put(diffsEntry.getKey(), 1);
+                            } else if (diffsEntry.getValue().equals("UPD")) {
+                                int times = amountOfTimes.get(diffsEntry.getKey());
+                                times++;
+                                amountOfTimes.put(diffsEntry.getKey(), times);
+                                if (times >= 5) {
+                                    diffMap.put(diffsEntry.getKey(), "UPD_MULTIPLE_TIMES");
+                                }
+                            }
                         }
+
                     }
-                } catch (Exception e) {
-                    System.out.println("error");
+                } catch(IOException e) {
+                    System.out.println("exception");
                 }
             }
-            System.out.println("entro");
-        } catch(Exception e) {
-            System.out.println("fallo");
+            EditorService editorService = editor.getProject().getService(EditorService.class);
+            editorService.setDiffsOfLastOpenedEditor(diffRows);
+        } catch (IOException e) {
+            System.out.println("exception");
         }
     }
 

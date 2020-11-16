@@ -3,6 +3,8 @@ package services;
 import models.DiffRow;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditorService {
     ArrayList<DiffRow> diffsOfLastOpenedEditor;

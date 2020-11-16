@@ -30,7 +30,6 @@ public class DiffHighlighter {
         ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();
         DiffMapper diffMapper = new DiffMapper(diffs);
         diffMap = diffMapper.createDiffMap();
-        System.out.println("test");
     }
 
     public IElementType getLineHighlight(int line) {
