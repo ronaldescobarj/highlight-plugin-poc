@@ -42,6 +42,11 @@ public class SimpleDifflineImpl extends ASTWrapperPsiElement implements SimpleDi
   }
 
   @Override
+  public String getUpdatedMulitipleTimes() {
+    return SimplePsiImplUtil.getUpdatedMulitipleTimes(this);
+  }
+
+  @Override
   public String getMoved() {
     return SimplePsiImplUtil.getMoved(this);
   }

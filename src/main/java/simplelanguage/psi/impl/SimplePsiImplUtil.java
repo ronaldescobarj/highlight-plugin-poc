@@ -32,6 +32,15 @@ public class SimplePsiImplUtil {
         }
     }
 
+    public static String getUpdatedMulitipleTimes(SimpleDiffline element) {
+        ASTNode updatedMultipleTimesNode = element.getNode().findChildByType(SimpleTypes.UPDATEDMULTIPLETIMES);
+        if (updatedMultipleTimesNode != null) {
+            return updatedMultipleTimesNode.getText();
+        } else {
+            return null;
+        }
+    }
+
     public static String getMoved(SimpleDiffline element) {
         ASTNode movedNode = element.getNode().findChildByType(SimpleTypes.MOVED);
         if (movedNode != null) {

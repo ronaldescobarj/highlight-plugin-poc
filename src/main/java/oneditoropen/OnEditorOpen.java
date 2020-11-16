@@ -41,13 +41,13 @@ public class OnEditorOpen implements EditorFactoryListener {
     @Override
     public void editorCreated(@NotNull EditorFactoryEvent event) {
         Editor editor = event.getEditor();
-        String currentFileContent = getCurrentFileContent(editor);
-        String previousCommitFileContent = getPreviousCommitFileContent(editor);
-        List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentFileContent);
-        ArrayList<DiffRow> diffs = getDiff(changes);
-        EditorService editorService = editor.getProject().getService(EditorService.class);
-        editorService.setDiffsOfLastOpenedEditor(diffs);
-//        repoTest(editor.getProject().getBasePath());
+//        String currentFileContent = getCurrentFileContent(editor);
+//        String previousCommitFileContent = getPreviousCommitFileContent(editor);
+//        List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentFileContent);
+//        ArrayList<DiffRow> diffs = getDiff(changes);
+//        EditorService editorService = editor.getProject().getService(EditorService.class);
+//        editorService.setDiffsOfLastOpenedEditor(diffs);
+        repoTest(editor);
     }
 
     public void repoTest(Editor editor) {
@@ -60,6 +60,7 @@ public class OnEditorOpen implements EditorFactoryListener {
             String fileName = getFileName(editor);
             ArrayList<DiffRow> diffRows = null;
             Map<Integer, Integer> amountOfTimes = new HashMap<>();
+            Map<Integer, String> diffMap = null;
             for (RevCommit commit : slicedCommits) {
                 DiffFormatter diffFormatter = createDiffFormatter(repository, fileName);
                 RevCommit[] parents = commit.getParents();
@@ -72,12 +73,12 @@ public class OnEditorOpen implements EditorFactoryListener {
                         List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentCommitFileContent);
                         diffRows = getDiff(changes);
                         DiffMapper diffMapper = new DiffMapper(diffRows);
-                        Map<Integer, String> diffMap = diffMapper.createDiffMap();
+                        diffMap = diffMapper.createDiffMap();
                         for (Map.Entry<Integer, String> diffsEntry : diffMap.entrySet()) {
                             if (diffsEntry.getValue().equals("INS")) {
                                 amountOfTimes.put(diffsEntry.getKey(), 1);
                             } else if (diffsEntry.getValue().equals("UPD")) {
-                                int times = amountOfTimes.get(diffsEntry.getKey());
+                                int times = amountOfTimes.get(diffsEntry.getKey()) != null ? amountOfTimes.get(diffsEntry.getKey()) : 0;
                                 times++;
                                 amountOfTimes.put(diffsEntry.getKey(), times);
                                 if (times >= 5) {
@@ -85,14 +86,14 @@ public class OnEditorOpen implements EditorFactoryListener {
                                 }
                             }
                         }
-
                     }
                 } catch(IOException e) {
                     System.out.println("exception");
                 }
             }
+
             EditorService editorService = editor.getProject().getService(EditorService.class);
-            editorService.setDiffsOfLastOpenedEditor(diffRows);
+            editorService.setDiffMap(diffMap);
         } catch (IOException e) {
             System.out.println("exception");
         }

@@ -16,6 +16,7 @@ public interface SimpleTypes {
   IElementType MOVED = new SimpleTokenType("MOVED");
   IElementType NOTMODIFIED = new SimpleTokenType("NOTMODIFIED");
   IElementType UPDATED = new SimpleTokenType("UPDATED");
+  IElementType UPDATEDMULTIPLETIMES = new SimpleTokenType("UPDATEDMULTIPLETIMES");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

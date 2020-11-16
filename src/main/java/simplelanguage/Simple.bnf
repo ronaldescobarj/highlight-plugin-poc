@@ -20,4 +20,4 @@ simpleFile ::= item_*
 private item_ ::= (diffline|COMMENT|CRLF)
 
 //property ::= (LLAVE? SEPARADOR VALOR?) | LLAVE
-diffline ::= NOTMODIFIED | INSERTED | UPDATED | MOVED {methods=[getNotModified getInserted getUpdated getMoved]}
+diffline ::= NOTMODIFIED | INSERTED | UPDATED | UPDATEDMULTIPLETIMES | MOVED {methods=[getNotModified getInserted getUpdated getUpdatedMulitipleTimes getMoved]}

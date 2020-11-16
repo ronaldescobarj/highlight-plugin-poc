@@ -13,6 +13,8 @@ public interface SimpleDiffline extends PsiElement {
 
   String getUpdated();
 
+  String getUpdatedMulitipleTimes();
+
   String getMoved();
 
 }

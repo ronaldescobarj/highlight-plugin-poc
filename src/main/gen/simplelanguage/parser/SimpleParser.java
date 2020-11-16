@@ -36,7 +36,7 @@ public class SimpleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // NOTMODIFIED | INSERTED | UPDATED | MOVED
+  // NOTMODIFIED | INSERTED | UPDATED | UPDATEDMULTIPLETIMES | MOVED
   public static boolean diffline(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "diffline")) return false;
     boolean r;
@@ -44,6 +44,7 @@ public class SimpleParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, NOTMODIFIED);
     if (!r) r = consumeToken(b, INSERTED);
     if (!r) r = consumeToken(b, UPDATED);
+    if (!r) r = consumeToken(b, UPDATEDMULTIPLETIMES);
     if (!r) r = consumeToken(b, MOVED);
     exit_section_(b, l, m, r, false, null);
     return r;

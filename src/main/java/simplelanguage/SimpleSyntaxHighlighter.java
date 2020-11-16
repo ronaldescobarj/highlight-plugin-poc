@@ -20,6 +20,8 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("SIMPLE_INSERTED", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey UPDATED =
             createTextAttributesKey("SIMPLE_UPDATED", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey UPDATEDMULTIPLETIMES =
+            createTextAttributesKey("SIMPLE_UPDATEDMULTIPLETIMES", DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_HIGHLIGHTED);
     public static final TextAttributesKey MOVED =
             createTextAttributesKey("SIMPLE_MOVED", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey COMMENT =
@@ -32,6 +34,7 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] NOTMODIFIED_KEYS = new TextAttributesKey[]{NOTMODIFIED};
     private static final TextAttributesKey[] INSERTED_KEYS = new TextAttributesKey[]{INSERTED};
     private static final TextAttributesKey[] UPDATED_KEYS = new TextAttributesKey[]{UPDATED};
+    private static final TextAttributesKey[] UPDATEDMULTIPLETIMES_KEYS = new TextAttributesKey[]{UPDATEDMULTIPLETIMES};
     private static final TextAttributesKey[] MOVED_KEYS = new TextAttributesKey[]{MOVED};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
@@ -51,6 +54,8 @@ public class SimpleSyntaxHighlighter extends SyntaxHighlighterBase {
             return INSERTED_KEYS;
         } else if (tokenType.equals(SimpleTypes.UPDATED)) {
             return UPDATED_KEYS;
+        } else if (tokenType.equals(SimpleTypes.UPDATEDMULTIPLETIMES)) {
+            return UPDATEDMULTIPLETIMES_KEYS;
         } else if (tokenType.equals(SimpleTypes.MOVED)) {
             return MOVED_KEYS;
         } else if (tokenType.equals(SimpleTypes.COMMENT)) {

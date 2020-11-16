@@ -9,9 +9,10 @@ import simplelanguage.psi.SimpleTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class DiffHighlighter {
-    HashMap<Integer, String> diffMap;
+    Map<Integer, String> diffMap;
 
     public DiffHighlighter() {
 //        IDiffGenerator diffGenerator = new DiffGeneratorCmd();
@@ -27,9 +28,10 @@ public class DiffHighlighter {
 //        diffMap = diffMapper.createDiffMap();
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
         EditorService editorService = project.getService(EditorService.class);
-        ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();
-        DiffMapper diffMapper = new DiffMapper(diffs);
-        diffMap = diffMapper.createDiffMap();
+//        ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();
+        this.diffMap = editorService.getDiffMap();
+//        DiffMapper diffMapper = new DiffMapper(diffs);
+//        diffMap = diffMapper.createDiffMap();
     }
 
     public IElementType getLineHighlight(int line) {
@@ -42,6 +44,8 @@ public class DiffHighlighter {
                     return SimpleTypes.INSERTED;
                 case "UPD":
                     return SimpleTypes.UPDATED;
+                case "UPD_MULTIPLE_TIMES":
+                    return SimpleTypes.UPDATEDMULTIPLETIMES;
                 case "MOV":
                     return SimpleTypes.MOVED;
                 default:
