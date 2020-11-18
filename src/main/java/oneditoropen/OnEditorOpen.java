@@ -17,16 +17,15 @@ import com.intellij.openapi.editor.event.EditorFactoryListener;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.diff.Diff;
 import difflogic.DiffMapper;
-import gitremote.GitRemote;
+import git.GitLocal;
+import git.GitRemote;
 import models.DiffRow;
 import models.GitCommit;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.treewalk.filter.PathSuffixFilter;
 import org.eclipse.jgit.util.io.NullOutputStream;
 import org.jetbrains.annotations.NotNull;
@@ -41,61 +40,53 @@ public class OnEditorOpen implements EditorFactoryListener {
     @Override
     public void editorCreated(@NotNull EditorFactoryEvent event) {
         Editor editor = event.getEditor();
-//        String currentFileContent = getCurrentFileContent(editor);
-//        String previousCommitFileContent = getPreviousCommitFileContent(editor);
-//        List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentFileContent);
-//        ArrayList<DiffRow> diffs = getDiff(changes);
-//        EditorService editorService = editor.getProject().getService(EditorService.class);
-//        editorService.setDiffsOfLastOpenedEditor(diffs);
-        repoTest(editor);
+        Map<Integer, String> diffMap = generateHighlightMapForEditor(editor);
+        EditorService editorService = editor.getProject().getService(EditorService.class);
+        editorService.setDiffMap(diffMap);
     }
 
-    public void repoTest(Editor editor) {
-        try {
-            Repository repository = GitHelper.openRepository(editor.getProject().getBasePath());
-            Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
-            List<RevCommit> commitsList = new ArrayList<>(commits);
-            List<RevCommit> slicedCommits = commitsList.subList(0, 5);
-            Collections.reverse(slicedCommits);
-            String fileName = getFileName(editor);
-            ArrayList<DiffRow> diffRows = null;
-            Map<Integer, Integer> amountOfTimes = new HashMap<>();
-            Map<Integer, String> diffMap = null;
-            for (RevCommit commit : slicedCommits) {
-                DiffFormatter diffFormatter = createDiffFormatter(repository, fileName);
-                RevCommit[] parents = commit.getParents();
-                try {
-                    if (parents.length != 0) {
-                        List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
-                        DiffEntry diff = diffs.get(0);
-                        String previousCommitFileContent = GitHelper.getFileContent(diff.getOldId(), repository);
-                        String currentCommitFileContent = GitHelper.getFileContent(diff.getNewId(), repository);
-                        List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentCommitFileContent);
-                        diffRows = getDiff(changes);
-                        DiffMapper diffMapper = new DiffMapper(diffRows);
-                        diffMap = diffMapper.createDiffMap();
-                        for (Map.Entry<Integer, String> diffsEntry : diffMap.entrySet()) {
-                            if (diffsEntry.getValue().equals("INS")) {
-                                amountOfTimes.put(diffsEntry.getKey(), 1);
-                            } else if (diffsEntry.getValue().equals("UPD")) {
-                                int times = amountOfTimes.get(diffsEntry.getKey()) != null ? amountOfTimes.get(diffsEntry.getKey()) : 0;
-                                times++;
-                                amountOfTimes.put(diffsEntry.getKey(), times);
-                                if (times >= 5) {
-                                    diffMap.put(diffsEntry.getKey(), "UPD_MULTIPLE_TIMES");
-                                }
-                            }
-                        }
-                    }
-                } catch(IOException e) {
-                    System.out.println("exception");
-                }
+    public Map<Integer, String> generateHighlightMapForEditor(Editor editor) {
+        String projectPath = editor.getProject().getBasePath();
+        GitLocal gitLocal = new GitLocal(projectPath);
+        gitLocal.openRepository();
+        List<RevCommit> commits = gitLocal.getSelectedLatestCommits(5);
+        String fileName = getFileName(editor);
+        Map<Integer, Integer> amountOfTimes = new HashMap<>();
+        Map<Integer, String> diffMap = null;
+        for (RevCommit commit : commits) {
+            ArrayList<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
+            diffMap = new DiffMapper(diffRows).createDiffMap();
+            for (Map.Entry<Integer, String> diffsEntry : diffMap.entrySet()) {
+                handleDiffEntry(amountOfTimes, diffMap, diffsEntry);
             }
+        }
+        gitLocal.closeRepository();
+        return diffMap;
+    }
 
-            EditorService editorService = editor.getProject().getService(EditorService.class);
-            editorService.setDiffMap(diffMap);
-        } catch (IOException e) {
-            System.out.println("exception");
+    private ArrayList<DiffRow> generateDiffWithPreviousCommit(RevCommit commit, String fileName, GitLocal gitLocal) {
+        DiffEntry diff = gitLocal.getFileDiffWithPreviousCommit(commit, fileName);
+        String previousCommitFileContent = gitLocal.getPreviousCommitFileContent(diff);
+        String currentCommitFileContent = gitLocal.getCurrentCommitFileContent(diff);
+        List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentCommitFileContent);
+        ArrayList<DiffRow> diffRows = getDiff(changes);
+        return diffRows;
+    }
+
+    private void handleDiffEntry(Map<Integer, Integer> amountOfTimes, Map<Integer, String> diffMap, Map.Entry<Integer, String> diffsEntry) {
+        if (diffsEntry.getValue().equals("INS")) {
+            amountOfTimes.put(diffsEntry.getKey(), 1);
+        } else if (diffsEntry.getValue().equals("UPD")) {
+            handleUpdateEntry(amountOfTimes, diffMap, diffsEntry);
+        }
+    }
+
+    private void handleUpdateEntry(Map<Integer, Integer> amountOfTimes, Map<Integer, String> diffMap, Map.Entry<Integer, String> diffsEntry) {
+        int times = amountOfTimes.get(diffsEntry.getKey()) != null ? amountOfTimes.get(diffsEntry.getKey()) : 0;
+        times++;
+        amountOfTimes.put(diffsEntry.getKey(), times);
+        if (times >= 5) {
+            diffMap.put(diffsEntry.getKey(), "UPD_MULTIPLE_TIMES");
         }
     }
 
@@ -122,42 +113,13 @@ public class OnEditorOpen implements EditorFactoryListener {
         return document.getText();
     }
 
-//    private String getPreviousCommitFileContent(Editor editor) {
-//        String relativePath = getRelativePath(editor);
-//        String githubApiUrl = getGithubApiUrl(editor);
-//        GitRemote gitRemote = new GitRemote();
-//        GitCommit[] commits = gitRemote.getCommits(githubApiUrl);
-//        String previousCommitSha = commits[1].getSha();
-//        return gitRemote.getPreviousCommitFileContent(githubApiUrl, previousCommitSha, relativePath);
-//    }
-
     private String getPreviousCommitFileContent(Editor editor) {
-        String fileName = getFileName(editor);
-        try {
-            Repository repository = GitHelper.openRepository(editor.getProject().getBasePath());
-            Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
-            RevCommit commit = commits.iterator().next();
-            DiffFormatter diffFormatter = createDiffFormatter(repository, fileName);
-            return getPreviousCommitContent(diffFormatter, commit, repository);
-        } catch(Exception e) {
-            System.out.println("fallo");
-            return "";
-        }
-    }
-
-    private String getPreviousCommitContent(DiffFormatter diffFormatter, RevCommit commit, Repository repository) {
-        RevCommit[] parents = commit.getParents();
-        try {
-            if (parents.length != 0) {
-                List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
-                DiffEntry diff = diffs.get(0);
-                return GitHelper.getFileContent(diff.getOldId(), repository);
-            }
-            return "";
-        } catch(IOException e) {
-            System.out.println("fallo2");
-            return "";
-        }
+        String relativePath = getRelativePath(editor);
+        String githubApiUrl = getGithubApiUrl(editor);
+        GitRemote gitRemote = new GitRemote();
+        GitCommit[] commits = gitRemote.getCommits(githubApiUrl);
+        String previousCommitSha = commits[1].getSha();
+        return gitRemote.getPreviousCommitFileContent(githubApiUrl, previousCommitSha, relativePath);
     }
 
     private DiffFormatter createDiffFormatter(Repository repository, String fileName) {

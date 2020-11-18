@@ -1,4 +1,4 @@
-package gitremote;
+package git;
 
 import com.google.gson.Gson;
 import models.GitCommit;
@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.Base64;
 
 public class GitRemote {

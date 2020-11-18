@@ -1,16 +1,10 @@
 package onopenproject;
 
-import at.aau.softwaredynamics.runner.util.GitHelper;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
-import gitremote.GitRemote;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
+import git.GitRemote;
 import org.jetbrains.annotations.NotNull;
 import services.GitService;
-
-import java.util.Collection;
 
 public class OnOpenProject implements ProjectManagerListener {
 
