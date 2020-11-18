@@ -3,18 +3,18 @@ package services;
 import models.DiffRow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditorService {
-    ArrayList<DiffRow> diffsOfLastOpenedEditor;
+    List<DiffRow> diffsOfLastOpenedEditor;
     Map<Integer, String> diffMap;
 
     public void setDiffsOfLastOpenedEditor(ArrayList<DiffRow> diffs) {
         this.diffsOfLastOpenedEditor = diffs;
     }
 
-    public ArrayList<DiffRow> getDiffsOfLastOpenedEditor() {
+    public List<DiffRow> getDiffsOfLastOpenedEditor() {
         return diffsOfLastOpenedEditor;
     }
 

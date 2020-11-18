@@ -7,7 +7,6 @@ import at.aau.softwaredynamics.gen.NodeType;
 import at.aau.softwaredynamics.gen.OptimizedJdtTreeGenerator;
 import at.aau.softwaredynamics.matchers.JavaMatchers;
 import at.aau.softwaredynamics.runner.util.ClassifierFactory;
-import at.aau.softwaredynamics.runner.util.GitHelper;
 import com.github.gumtreediff.gen.TreeGenerator;
 import com.github.gumtreediff.matchers.Matcher;
 import com.intellij.openapi.editor.Document;
@@ -32,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import services.EditorService;
 import services.GitService;
 
-import java.io.IOException;
 import java.util.*;
 
 public class OnEditorOpen implements EditorFactoryListener {
@@ -54,7 +52,7 @@ public class OnEditorOpen implements EditorFactoryListener {
         Map<Integer, Integer> amountOfTimes = new HashMap<>();
         Map<Integer, String> diffMap = null;
         for (RevCommit commit : commits) {
-            ArrayList<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
+            List<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
             diffMap = new DiffMapper(diffRows).createDiffMap();
             for (Map.Entry<Integer, String> diffsEntry : diffMap.entrySet()) {
                 handleDiffEntry(amountOfTimes, diffMap, diffsEntry);
@@ -64,12 +62,12 @@ public class OnEditorOpen implements EditorFactoryListener {
         return diffMap;
     }
 
-    private ArrayList<DiffRow> generateDiffWithPreviousCommit(RevCommit commit, String fileName, GitLocal gitLocal) {
+    private List<DiffRow> generateDiffWithPreviousCommit(RevCommit commit, String fileName, GitLocal gitLocal) {
         DiffEntry diff = gitLocal.getFileDiffWithPreviousCommit(commit, fileName);
         String previousCommitFileContent = gitLocal.getPreviousCommitFileContent(diff);
         String currentCommitFileContent = gitLocal.getCurrentCommitFileContent(diff);
         List<SourceCodeChange> changes = getChangesBetweenVersions(previousCommitFileContent, currentCommitFileContent);
-        ArrayList<DiffRow> diffRows = getDiff(changes);
+        List<DiffRow> diffRows = getDiff(changes);
         return diffRows;
     }
 
@@ -90,8 +88,8 @@ public class OnEditorOpen implements EditorFactoryListener {
         }
     }
 
-    private ArrayList<DiffRow> getDiff(List<SourceCodeChange> changes) {
-        ArrayList<DiffRow> diffs = new ArrayList<>();
+    private List<DiffRow> getDiff(List<SourceCodeChange> changes) {
+        List<DiffRow> diffs = new ArrayList<>();
         for (SourceCodeChange change : changes) {
             diffs.add(createDiffRow(change));
         }

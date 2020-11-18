@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiffGeneratorCmd implements IDiffGenerator {
     public boolean generateDiff() {
@@ -17,9 +18,8 @@ public class DiffGeneratorCmd implements IDiffGenerator {
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
-            ArrayList<String> strs = new ArrayList<>();
+            List<String> strs = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
                 strs.add(line);
             }
         } catch(IOException e) {

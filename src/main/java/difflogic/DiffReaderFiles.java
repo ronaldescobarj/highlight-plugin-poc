@@ -7,12 +7,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiffReaderFiles {
-    public ArrayList<DiffRow> getDiffList(Path filePath) {
+    public List<DiffRow> getDiffList(Path filePath) {
         String line = "";
         String cvsSplitBy = ";";
-        ArrayList<DiffRow> diffs = new ArrayList<>();
+        List<DiffRow> diffs = new ArrayList<>();
         String filePathString = filePath.toString();
         boolean firstTime = true;
         try (BufferedReader br = new BufferedReader(new FileReader(filePathString))) {
