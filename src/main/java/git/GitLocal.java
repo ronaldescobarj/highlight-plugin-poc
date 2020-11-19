@@ -2,6 +2,7 @@ package git;
 
 import at.aau.softwaredynamics.runner.util.GitHelper;
 import com.intellij.openapi.editor.Editor;
+import editor.EditorUtils;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.Repository;
@@ -83,14 +84,14 @@ public class GitLocal {
         return diffFormatter;
     }
 
-    private String getPreviousCommitFileContent(String fileName) {
+    public String getPreviousCommitFileContent(Editor editor) {
+        String fileName = new EditorUtils().getFileName(editor);
         try {
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
             RevCommit commit = commits.iterator().next();
             DiffFormatter diffFormatter = createDiffFormatter(fileName);
             return getPreviousCommitContent(diffFormatter, commit);
         } catch(Exception e) {
-            System.out.println("fallo");
             return "";
         }
     }
@@ -105,7 +106,6 @@ public class GitLocal {
             }
             return "";
         } catch (IOException e) {
-            System.out.println("fallo2");
             return "";
         }
     }

@@ -1,8 +1,11 @@
 package git;
 
 import com.google.gson.Gson;
+import com.intellij.openapi.editor.Editor;
+import editor.EditorUtils;
 import models.GitCommit;
 import models.GitFile;
+import services.GitService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -85,6 +88,22 @@ public class GitRemote {
         } catch(InterruptedException | IOException exception) {
             return null;
         }
+    }
+
+    public String getPreviousCommitFileContent(Editor editor) {
+        EditorUtils editorUtils = new EditorUtils();
+        String relativePath = editorUtils.getRelativePath(editor);
+        String githubApiUrl = getGithubApiUrl(editor);
+        GitCommit[] commits = getCommits(githubApiUrl);
+        String previousCommitSha = commits[1].getSha();
+        return getPreviousCommitFileContent(githubApiUrl, previousCommitSha, relativePath);
+    }
+
+    private String getGithubApiUrl(Editor editor) {
+        GitService gitService = editor.getProject().getService(GitService.class);
+        String repoOwner = gitService.getRepoOwner();
+        String repoName = gitService.getRepoName();
+        return "https://api.github.com/repos/" + repoOwner + "/" + repoName;
     }
 
 }

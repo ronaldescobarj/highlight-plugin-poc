@@ -23,6 +23,5 @@ public class OnOpenProject implements ProjectManagerListener {
 
     @Override
     public void projectClosed(@NotNull Project project) {
-        System.out.println("cierra proyecto");
     }
 }

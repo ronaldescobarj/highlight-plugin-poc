@@ -1,0 +1,62 @@
+package compare;
+
+import at.aau.softwaredynamics.classifier.AbstractJavaChangeClassifier;
+import at.aau.softwaredynamics.classifier.NonClassifyingClassifier;
+import at.aau.softwaredynamics.classifier.entities.SourceCodeChange;
+import at.aau.softwaredynamics.gen.NodeType;
+import at.aau.softwaredynamics.gen.OptimizedJdtTreeGenerator;
+import at.aau.softwaredynamics.matchers.JavaMatchers;
+import at.aau.softwaredynamics.runner.util.ClassifierFactory;
+import com.github.gumtreediff.gen.TreeGenerator;
+import com.github.gumtreediff.matchers.Matcher;
+import models.DiffRow;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompareUtils {
+
+    public List<DiffRow> getDiffChanges(String previousVersion, String currentVersion) {
+        List<SourceCodeChange> changes = getChangesBetweenVersions(previousVersion, currentVersion);
+        return getDiff(changes);
+    }
+
+    private List<SourceCodeChange> getChangesBetweenVersions(String previousVersion, String latestVersion) {
+        AbstractJavaChangeClassifier classifier = createClassifier();
+        try {
+            classifier.classify(previousVersion, latestVersion);
+            return classifier.getCodeChanges();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private AbstractJavaChangeClassifier createClassifier() {
+        Class<? extends AbstractJavaChangeClassifier> classifierType = NonClassifyingClassifier.class;
+        Class<? extends Matcher> matcher = JavaMatchers.IterativeJavaMatcher_V2.class;
+        TreeGenerator generator = new OptimizedJdtTreeGenerator();
+        ClassifierFactory classifierFactory = new ClassifierFactory(classifierType, matcher, generator);
+        AbstractJavaChangeClassifier classifier = classifierFactory.createClassifier();
+        return classifier;
+    }
+
+    private List<DiffRow> getDiff(List<SourceCodeChange> changes) {
+        List<DiffRow> diffs = new ArrayList<>();
+        for (SourceCodeChange change : changes) {
+            diffs.add(createDiffRow(change));
+        }
+        return diffs;
+    }
+
+    private DiffRow createDiffRow(SourceCodeChange change) {
+        return new DiffRow("NO_COMMIT",
+                change.getNode().getLabel(),
+                change.getAction().getName(),
+                String.valueOf(NodeType.getEnum(change.getNodeType())),
+                change.getSrcInfo().getStartLineNumber(),
+                change.getSrcInfo().getEndLineNumber(),
+                change.getDstInfo().getStartLineNumber(),
+                change.getDstInfo().getEndLineNumber(),
+                "dst");
+    }
+}
