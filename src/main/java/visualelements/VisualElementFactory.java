@@ -1,5 +1,7 @@
 package visualelements;
 
+import com.intellij.ui.Colors;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.paint.PaintUtil;
 import com.intellij.util.ui.UIUtil;
 
@@ -23,5 +25,15 @@ public class VisualElementFactory {
         graphics.drawImage(imageIcon.getImage(), 0, 0, null);
         ImageIcon imageIcon1 = new ImageIcon(image);
         return new JLabel(imageIcon1);
+    }
+
+    public JLabel createLabel()
+    {
+        JLabel jl = new JLabel(" UPD ");
+        jl.setSize(30, 20);
+        jl.setOpaque(true);
+        jl.setBackground(JBColor.RED);
+        jl.setForeground(JBColor.WHITE);
+        return jl;
     }
 }

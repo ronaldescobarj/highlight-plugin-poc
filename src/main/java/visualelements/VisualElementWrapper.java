@@ -16,11 +16,14 @@ public class VisualElementWrapper extends VisualElement {
 
         for (VisualElementFactory factory : factories)
         {
-            JLabel artifactComponent = factory.createArtifactLabel();
-            int iconWidth = artifactComponent.getIcon().getIconWidth();
-            width += iconWidth;
-            int iconHeight = artifactComponent.getIcon().getIconHeight();
-            height = Math.max(height, iconHeight);
+//            JLabel artifactComponent = factory.createArtifactLabel();
+            JLabel artifactComponent = factory.createLabel();
+//            int iconWidth = artifactComponent.getIcon().getIconWidth();
+//            width += iconWidth;
+            width = artifactComponent.getWidth();
+//            int iconHeight = artifactComponent.getIcon().getIconHeight();
+//            height = Math.max(height, iconHeight);
+            height = artifactComponent.getHeight();
             this.add(artifactComponent);
         }
 
