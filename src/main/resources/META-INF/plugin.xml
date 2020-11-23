@@ -15,6 +15,9 @@
         <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>
         <editorFactoryListener implementation="oneditoropen.OnEditorOpen"/>
+        <editorFactoryDocumentListener implementation="oneditoropen.OnDocument" />
+        <fileEditorProvider implementation="oneditoropen.OnFileEditor" />
+        <editorFactoryMouseListener implementation="oneditoropen.OnEditorMouse" />
         <projectService serviceImplementation="services.GitService"/>
         <projectService serviceImplementation="services.EditorService"/>
     </extensions>

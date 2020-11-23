@@ -28,8 +28,8 @@ public class DiffHighlighter {
 //        diffMap = diffMapper.createDiffMap();
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
         EditorService editorService = project.getService(EditorService.class);
-//        ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();
-        this.diffMap = editorService.getDiffMap();
+//        ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();z
+        diffMap = editorService.getDiffMap();
 //        DiffMapper diffMapper = new DiffMapper(diffs);
 //        diffMap = diffMapper.createDiffMap();
     }
