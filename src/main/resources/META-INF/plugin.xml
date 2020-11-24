@@ -14,10 +14,10 @@
                   fieldName="INSTANCE" language="Simple" extensions="simple"/>
         <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>
-        <editorFactoryListener implementation="oneditoropen.OnEditorOpen"/>
-        <editorFactoryDocumentListener implementation="oneditoropen.OnDocument" />
-        <fileEditorProvider implementation="oneditoropen.OnFileEditor" />
-        <editorFactoryMouseListener implementation="oneditoropen.OnEditorMouse" />
+        <editorFactoryListener implementation="editorevents.OnEditorOpen"/>
+<!--        <editorFactoryDocumentListener implementation="editorevents.OnDocument" />-->
+<!--        this extension point has events for document changes-->
+        <editorFactoryMouseListener implementation="editorevents.OnEditorMouse" />
         <projectService serviceImplementation="services.GitService"/>
         <projectService serviceImplementation="services.EditorService"/>
     </extensions>

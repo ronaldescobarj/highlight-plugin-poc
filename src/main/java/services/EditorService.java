@@ -9,8 +9,7 @@ import java.util.Map;
 
 public class EditorService {
     List<DiffRow> diffsOfLastOpenedEditor;
-    Map<Integer, String> diffMap;
-    boolean isGenerated = false;
+    Map<Integer, String> diffMap = null;
     Editor lastOpenedEditor;
 
     public void setLastOpenedEditor(Editor editor) {
@@ -19,14 +18,6 @@ public class EditorService {
 
     public Editor getLastOpenedEditor() {
         return lastOpenedEditor;
-    }
-
-    public void setIsGenerated(boolean isGenerated) {
-        this.isGenerated = isGenerated;
-    }
-
-    public boolean getIsGenerated() {
-        return isGenerated;
     }
 
     public void setDiffsOfLastOpenedEditor(ArrayList<DiffRow> diffs) {

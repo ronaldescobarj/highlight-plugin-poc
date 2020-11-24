@@ -1,10 +1,8 @@
 package visualelements;
 
-import com.intellij.ui.Colors;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.paint.PaintUtil;
 import com.intellij.util.ui.UIUtil;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -27,7 +25,7 @@ public class VisualElementFactory {
         return new JLabel(imageIcon1);
     }
 
-    public JLabel createLabel()
+    public JLabel createUPDLabel()
     {
         JLabel jl = new JLabel(" UPD ");
         jl.setSize(30, 20);

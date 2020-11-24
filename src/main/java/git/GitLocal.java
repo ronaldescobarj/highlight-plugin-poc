@@ -41,9 +41,9 @@ public class GitLocal {
         try {
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
             List<RevCommit> commitsList = new ArrayList<>(commits);
-            List<RevCommit> slicedCommits = commitsList.subList(0, numberOfCommits);
-            Collections.reverse(slicedCommits);
-            return slicedCommits;
+            List<RevCommit> selectedCommits = commitsList.subList(0, numberOfCommits);
+            Collections.reverse(selectedCommits);
+            return selectedCommits;
         } catch (IOException e) {
             return null;
         }

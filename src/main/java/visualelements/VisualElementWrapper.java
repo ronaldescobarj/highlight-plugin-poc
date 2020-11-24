@@ -17,7 +17,7 @@ public class VisualElementWrapper extends VisualElement {
         for (VisualElementFactory factory : factories)
         {
 //            JLabel artifactComponent = factory.createArtifactLabel();
-            JLabel artifactComponent = factory.createLabel();
+            JLabel artifactComponent = factory.createUPDLabel();
 //            int iconWidth = artifactComponent.getIcon().getIconWidth();
 //            width += iconWidth;
             width = artifactComponent.getWidth();
