@@ -14,7 +14,7 @@ public class DiffMapGenerator {
         String projectPath = editor.getProject().getBasePath();
         GitLocal gitLocal = new GitLocal(projectPath);
         gitLocal.openRepository();
-        String fileName = new EditorUtils().getFileName(editor);
+        String fileName = EditorUtils.getFileName(editor);
         DiffModifications diffModifications = new DiffModifications();
         Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
         Map<Integer, String> diffMap = getLatestDiffMap(editor, gitLocal);
@@ -24,10 +24,9 @@ public class DiffMapGenerator {
     }
 
     private Map<Integer, String> getLatestDiffMap(Editor editor, GitLocal gitLocal) {
-        String currentFileContent = new EditorUtils().getCurrentFileContent(editor);
+        String currentFileContent = EditorUtils.getCurrentFileContent(editor);
         String previousFileContent = gitLocal.getPreviousCommitFileContent(editor);
-        CompareUtils compareUtils = new CompareUtils();
-        List<DiffRow> diffRows = compareUtils.getDiffChanges(previousFileContent, currentFileContent);
+        List<DiffRow> diffRows = CompareUtils.getDiffChanges(previousFileContent, currentFileContent);
         return new DiffMapper(diffRows).createDiffMap();
     }
 

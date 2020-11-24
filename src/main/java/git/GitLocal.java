@@ -85,7 +85,7 @@ public class GitLocal {
     }
 
     public String getPreviousCommitFileContent(Editor editor) {
-        String fileName = new EditorUtils().getFileName(editor);
+        String fileName = EditorUtils.getFileName(editor);
         try {
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
             RevCommit commit = commits.iterator().next();

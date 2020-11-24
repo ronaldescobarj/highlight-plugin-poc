@@ -16,12 +16,12 @@ import java.util.List;
 
 public class CompareUtils {
 
-    public List<DiffRow> getDiffChanges(String previousVersion, String currentVersion) {
+    public static List<DiffRow> getDiffChanges(String previousVersion, String currentVersion) {
         List<SourceCodeChange> changes = getChangesBetweenVersions(previousVersion, currentVersion);
         return getDiff(changes);
     }
 
-    private List<SourceCodeChange> getChangesBetweenVersions(String previousVersion, String latestVersion) {
+    private static List<SourceCodeChange> getChangesBetweenVersions(String previousVersion, String latestVersion) {
         AbstractJavaChangeClassifier classifier = createClassifier();
         try {
             classifier.classify(previousVersion, latestVersion);
@@ -31,16 +31,7 @@ public class CompareUtils {
         }
     }
 
-    private AbstractJavaChangeClassifier createClassifier() {
-        Class<? extends AbstractJavaChangeClassifier> classifierType = NonClassifyingClassifier.class;
-        Class<? extends Matcher> matcher = JavaMatchers.IterativeJavaMatcher_V2.class;
-        TreeGenerator generator = new OptimizedJdtTreeGenerator();
-        ClassifierFactory classifierFactory = new ClassifierFactory(classifierType, matcher, generator);
-        AbstractJavaChangeClassifier classifier = classifierFactory.createClassifier();
-        return classifier;
-    }
-
-    private List<DiffRow> getDiff(List<SourceCodeChange> changes) {
+    private static List<DiffRow> getDiff(List<SourceCodeChange> changes) {
         List<DiffRow> diffs = new ArrayList<>();
         for (SourceCodeChange change : changes) {
             diffs.add(createDiffRow(change));
@@ -48,7 +39,15 @@ public class CompareUtils {
         return diffs;
     }
 
-    private DiffRow createDiffRow(SourceCodeChange change) {
+    private static AbstractJavaChangeClassifier createClassifier() {
+        Class<? extends AbstractJavaChangeClassifier> classifierType = NonClassifyingClassifier.class;
+        Class<? extends Matcher> matcher = JavaMatchers.IterativeJavaMatcher_V2.class;
+        TreeGenerator generator = new OptimizedJdtTreeGenerator();
+        ClassifierFactory classifierFactory = new ClassifierFactory(classifierType, matcher, generator);
+        return classifierFactory.createClassifier();
+    }
+
+    private static DiffRow createDiffRow(SourceCodeChange change) {
         return new DiffRow("NO_COMMIT",
                 change.getNode().getLabel(),
                 change.getAction().getName(),

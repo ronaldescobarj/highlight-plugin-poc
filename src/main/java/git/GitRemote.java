@@ -91,8 +91,7 @@ public class GitRemote {
     }
 
     public String getPreviousCommitFileContent(Editor editor) {
-        EditorUtils editorUtils = new EditorUtils();
-        String relativePath = editorUtils.getRelativePath(editor);
+        String relativePath = EditorUtils.getRelativePath(editor);
         String githubApiUrl = getGithubApiUrl(editor);
         GitCommit[] commits = getCommits(githubApiUrl);
         String previousCommitSha = commits[1].getSha();

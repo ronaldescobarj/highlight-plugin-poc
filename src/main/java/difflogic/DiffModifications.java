@@ -38,8 +38,7 @@ public class DiffModifications {
         DiffEntry diff = gitLocal.getFileDiffWithPreviousCommit(commit, fileName);
         String previousCommitFileContent = gitLocal.getPreviousCommitFileContent(diff);
         String currentCommitFileContent = gitLocal.getCurrentCommitFileContent(diff);
-        CompareUtils compareUtils = new CompareUtils();
-        return compareUtils.getDiffChanges(previousCommitFileContent, currentCommitFileContent);
+        return CompareUtils.getDiffChanges(previousCommitFileContent, currentCommitFileContent);
     }
 
     private void handleDiffEntry(Map<Integer, Integer> amountOfTimes, Map<Integer, String> diffMap, Map.Entry<Integer, String> diffsEntry) {
