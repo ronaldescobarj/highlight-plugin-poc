@@ -35,8 +35,7 @@ public class VisualElementsUtils {
         int offset = document.getLineStartOffset(line - 1);
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
-        VisualElementFactory factory = new VisualElementFactory();
-        JLabel myElement = new VisualElementWrapper(psiElement, factory);
+        JLabel myElement = VisualComponentFactory.createVisualElement("UPD", psiElement);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
         EditorCoverLayerManager.getInstance(project).add(layerItem);
     }

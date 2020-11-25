@@ -1,18 +1,17 @@
 package visualelements;
 
-import com.intellij.ui.JBColor;
+import com.intellij.psi.PsiElement;
 import com.intellij.ui.paint.PaintUtil;
 import com.intellij.util.ui.UIUtil;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class VisualElementFactory {
-
-    public VisualElementFactory() { }
-
-    public JLabel createArtifactLabel()
-    {
+public class GearVisualElement extends VisualElement {
+    public GearVisualElement(PsiElement psiElement) {
+        super(psiElement);
+        this.setLayout(new FlowLayout());
         ImageIcon imageIcon = new ImageIcon(getClass().getResource("/images/mygear.png"));
         GraphicsConfiguration defaultConfiguration =
                 GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -22,16 +21,10 @@ public class VisualElementFactory {
         graphics.fillRect(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
         graphics.drawImage(imageIcon.getImage(), 0, 0, null);
         ImageIcon imageIcon1 = new ImageIcon(image);
-        return new JLabel(imageIcon1);
-    }
-
-    public JLabel createUPDLabel()
-    {
-        JLabel jl = new JLabel(" UPD ");
-        jl.setSize(30, 20);
-        jl.setOpaque(true);
-        jl.setBackground(JBColor.RED);
-        jl.setForeground(JBColor.WHITE);
-        return jl;
+        JLabel iconImage = new JLabel(imageIcon1);
+        int width = iconImage.getIcon().getIconWidth();
+        int height = iconImage.getIcon().getIconHeight();
+        this.add(iconImage);
+        setSize(width, height);
     }
 }
