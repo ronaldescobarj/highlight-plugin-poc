@@ -23,19 +23,19 @@ public class VisualElementsUtils {
 
     public void addVisualElements(Editor editor, Map<Integer, String> diffMap) {
         for (Map.Entry<Integer, String> diff : diffMap.entrySet()) {
-            if (diff.getValue().equals("UPD")) {
-                addVisualElement(editor, diff.getKey());
+            if (!diff.getValue().equals("NOTMODIFIED") && !diff.getValue().equals("UPD_MULTIPLE_TIMES")) {
+                addVisualElement(editor, diff.getKey(), diff.getValue());
             }
         }
     }
 
-    private void addVisualElement(Editor editor, int line) {
+    private void addVisualElement(Editor editor, int line, String type) {
         Document document = editor.getDocument();
         Project project = editor.getProject();
         int offset = document.getLineStartOffset(line - 1);
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
-        JLabel myElement = VisualComponentFactory.createVisualElement("UPD", psiElement);
+        JLabel myElement = VisualElementFactory.createVisualElement(type, psiElement);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
         EditorCoverLayerManager.getInstance(project).add(layerItem);
     }

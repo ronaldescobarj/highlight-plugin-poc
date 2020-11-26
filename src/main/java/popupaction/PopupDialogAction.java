@@ -17,7 +17,7 @@ import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerItem
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerManager;
 import org.jetbrains.annotations.NotNull;
 import simplelanguage.psi.SimpleDiffline;
-import visualelements.VisualComponentFactory;
+import visualelements.VisualElementFactory;
 
 import javax.swing.*;
 
@@ -46,7 +46,7 @@ public class PopupDialogAction extends AnAction {
         PsiElement psiElement1 = PsiTreeUtil.getParentOfType(psiElement);
         PsiElement psiElement2 = PsiTreeUtil.getParentOfType(psiElement, SimpleDiffline.class);
 //        PsiElement psiElement = event.getData(LangDataKeys.PSI_ELEMENT);
-        JLabel myElement = VisualComponentFactory.createVisualElement("GEAR", psiElement);
+        JLabel myElement = VisualElementFactory.createVisualElement("GEAR", psiElement);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
         Boolean result = EditorCoverLayerManager.getInstance(currentProject).add(layerItem);
 //        EditorCoverLayerManager.getInstance(currentProject).setEditorCoverLayersVisible(true);

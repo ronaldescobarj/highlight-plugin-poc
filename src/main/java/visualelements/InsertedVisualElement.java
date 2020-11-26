@@ -6,15 +6,15 @@ import com.intellij.ui.JBColor;
 import javax.swing.*;
 import java.awt.*;
 
-public class UpdatedVisualElement extends VisualElement {
-    public UpdatedVisualElement(PsiElement psiElement) {
+public class InsertedVisualElement extends VisualElement {
+    public InsertedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        JLabel jl = new JLabel(" UPD ");
+        JLabel jl = new JLabel(" INS ");
         jl.setSize(30, 20);
         jl.setOpaque(true);
-        jl.setBackground(JBColor.GREEN);
-        jl.setForeground(JBColor.BLACK);
+        jl.setBackground(JBColor.BLUE);
+        jl.setForeground(JBColor.WHITE);
         int width = jl.getWidth();
         int height = jl.getHeight();
         this.add(jl);
