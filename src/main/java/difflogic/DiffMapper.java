@@ -18,15 +18,15 @@ public class DiffMapper {
     public Map<Integer, String> createDiffMap() {
         Map<Integer, String> diffMap = new HashMap<>();
         for (DiffRow diffRow: diffRows) {
-            if (!diffRow.getChange().equals("DEL")) {
-                addToMap(diffMap, diffRow);
-            }
+            addToMap(diffMap, diffRow);
         }
         return diffMap;
     }
 
     private void addToMap(Map<Integer, String> diffMap, DiffRow diffRow) {
-        List<Integer> interval = generateIntervalArray(diffRow.getDstStart(), diffRow.getDstEnd());
+        int startLine = diffRow.getChange().equals("DEL") ? diffRow.getSrcStart() : diffRow.getDstStart();
+        int endLine = diffRow.getChange().equals("DEL") ? diffRow.getSrcEnd() : diffRow.getDstEnd();
+        List<Integer> interval = generateIntervalArray(startLine, endLine);
         insertByInterval(diffMap, interval, diffRow.getChange());
     }
 

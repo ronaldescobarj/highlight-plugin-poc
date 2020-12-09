@@ -13,6 +13,8 @@ public class VisualElementFactory {
                 return new InsertedVisualElement(psiElement);
             case "MOV":
                 return new MovedVisualElement(psiElement);
+            case "DEL":
+                return new DeletedVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:
