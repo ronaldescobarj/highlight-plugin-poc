@@ -60,14 +60,6 @@ public class GitLocal {
         }
     }
 
-    public String getPreviousCommitFileContent(DiffEntry diffEntry) {
-        try {
-            return GitHelper.getFileContent(diffEntry.getOldId(), repository);
-        } catch(IOException exception) {
-            return "";
-        }
-    }
-
     public String getCurrentCommitFileContent(DiffEntry diffEntry) {
         try {
             return GitHelper.getFileContent(diffEntry.getNewId(), repository);
@@ -93,6 +85,39 @@ public class GitLocal {
             return getPreviousCommitContent(diffFormatter, commit);
         } catch(Exception e) {
             return "";
+        }
+    }
+
+    public DiffEntry getDiffEntry(Editor editor) {
+        String fileName = EditorUtils.getFileName(editor);
+        try {
+            Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
+            RevCommit commit = commits.iterator().next();
+            DiffFormatter diffFormatter = createDiffFormatter(fileName);
+            return getDiffEntry(diffFormatter, commit);
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
+    public String getPreviousCommitFileContent(DiffEntry diffEntry) {
+        try {
+            return GitHelper.getFileContent(diffEntry.getOldId(), repository);
+        } catch (IOException exception) {
+            return "";
+        }
+    }
+
+    private DiffEntry getDiffEntry(DiffFormatter diffFormatter, RevCommit commit) {
+        RevCommit[] parents = commit.getParents();
+        try {
+            if (parents.length != 0) {
+                List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
+                return diffs.get(0);
+            }
+            return null;
+        } catch (IOException e) {
+            return null;
         }
     }
 

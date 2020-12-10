@@ -5,6 +5,7 @@ import compare.CompareUtils;
 import editor.EditorUtils;
 import git.GitLocal;
 import models.DiffRow;
+import org.eclipse.jgit.diff.DiffEntry;
 
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,9 @@ public class DiffMapGenerator {
     }
 
     private Map<Integer, String> getLatestDiffMap(Editor editor, GitLocal gitLocal) {
-        String currentFileContent = EditorUtils.getCurrentFileContent(editor);
-        String previousFileContent = gitLocal.getPreviousCommitFileContent(editor);
+        DiffEntry diffEntry = gitLocal.getDiffEntry(editor);
+        String currentFileContent = gitLocal.getCurrentCommitFileContent(diffEntry);
+        String previousFileContent = gitLocal.getPreviousCommitFileContent(diffEntry);
         List<DiffRow> diffRows = CompareUtils.getDiffChanges(previousFileContent, currentFileContent);
         return new DiffMapper(diffRows).createDiffMap();
     }
