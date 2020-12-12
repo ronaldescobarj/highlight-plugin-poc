@@ -1,6 +1,8 @@
 package difflogic;
 
 import models.DiffRow;
+import models.ModificationData;
+import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,30 +12,30 @@ import java.util.Map;
 public class DiffMapper {
 
     List<DiffRow> diffRows;
+    RevCommit commit;
+
+    public DiffMapper(List<DiffRow> diffRows, RevCommit commit) {
+        this.diffRows = diffRows;
+        this.commit = commit;
+    }
 
     public DiffMapper(List<DiffRow> diffRows) {
         this.diffRows = diffRows;
     }
 
-    public Map<Integer, String> createDiffMap() {
-        Map<Integer, String> diffMap = new HashMap<>();
+    public Map<Integer, ModificationData> createDiffMap() {
+        Map<Integer, ModificationData> diffMap = new HashMap<>();
         for (DiffRow diffRow: diffRows) {
             addToMap(diffMap, diffRow);
         }
         return diffMap;
     }
 
-    private void addToMap(Map<Integer, String> diffMap, DiffRow diffRow) {
+    private void addToMap(Map<Integer, ModificationData> diffMap, DiffRow diffRow) {
         int startLine = diffRow.getChange().equals("DEL") ? diffRow.getSrcStart() : diffRow.getDstStart();
         int endLine = diffRow.getChange().equals("DEL") ? diffRow.getSrcEnd() : diffRow.getDstEnd();
         List<Integer> interval = generateIntervalArray(startLine, endLine);
         insertByInterval(diffMap, interval, diffRow.getChange());
-    }
-
-    private void insertByInterval(Map<Integer, String> diffMap, List<Integer> interval, String action) {
-        for (Integer line: interval) {
-            diffMap.put(line, action);
-        }
     }
 
     private List<Integer> generateIntervalArray(int start, int end) {
@@ -42,5 +44,12 @@ public class DiffMapper {
             interval.add(i);
         }
         return interval;
+    }
+
+    private void insertByInterval(Map<Integer, ModificationData> diffMap, List<Integer> interval, String action) {
+        for (Integer line: interval) {
+            ModificationData modification = new ModificationData(action, commit.getAuthorIdent());
+            diffMap.put(line, modification);
+        }
     }
 }

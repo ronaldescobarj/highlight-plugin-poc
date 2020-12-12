@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.tree.IElementType;
 import models.DiffRow;
+import models.ModificationData;
 import services.EditorService;
 import simplelanguage.psi.SimpleTypes;
 
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DiffHighlighter {
-    Map<Integer, String> diffMap;
+    Map<Integer, ModificationData> diffMap;
 
     public DiffHighlighter() {
 //        IDiffGenerator diffGenerator = new DiffGeneratorCmd();
@@ -35,7 +36,8 @@ public class DiffHighlighter {
     }
 
     public IElementType getLineHighlight(int line) {
-        String action = diffMap.get(line);
+        ModificationData modification = diffMap.get(line);
+        String action = modification != null ? modification.getModification() : null;
         if (action == null) {
             return SimpleTypes.NOTMODIFIED;
         } else {

@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 import com.intellij.openapi.editor.event.EditorMouseListener;
 import com.intellij.openapi.project.Project;
+import models.ModificationData;
 import org.jetbrains.annotations.NotNull;
 import services.EditorService;
 import visualelements.VisualElementsUtils;
@@ -16,7 +17,7 @@ public class OnEditorMouse implements EditorMouseListener {
         Editor editor = event.getEditor();
         Project project = editor.getProject();
         EditorService editorService = project.getService(EditorService.class);
-        Map<Integer, String> diffMap = editorService.getDiffMap();
+        Map<Integer, ModificationData> diffMap = editorService.getDiffMap();
         if (diffMap != null) {
             new VisualElementsUtils().addVisualElements(editor, diffMap);
         }

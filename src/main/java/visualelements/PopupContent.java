@@ -6,10 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PopupContent extends JLabel {
-    public PopupContent() {
+    public PopupContent(String content) {
         this.setLayout(new FlowLayout());
-        JLabel jl = new JLabel("Test");
-        jl.setSize(40, 40);
+        JLabel jl = new JLabel(content);
+        jl.setSize(100, 40);
         jl.setOpaque(true);
         jl.setBackground(JBColor.LIGHT_GRAY);
         jl.setForeground(JBColor.BLACK);
