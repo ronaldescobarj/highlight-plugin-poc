@@ -2,12 +2,12 @@ package difflogic;
 
 import models.DiffRow;
 import models.ModificationData;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 public class DiffMapper {
 
@@ -47,8 +47,11 @@ public class DiffMapper {
     }
 
     private void insertByInterval(Map<Integer, ModificationData> diffMap, List<Integer> interval, String action) {
+        PersonIdent author = commit.getAuthorIdent();
+        Date date = author.getWhen();
+        LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
         for (Integer line: interval) {
-            ModificationData modification = new ModificationData(action, commit.getAuthorIdent());
+            ModificationData modification = new ModificationData(action, author, commitDate);
             diffMap.put(line, modification);
         }
     }

@@ -10,6 +10,7 @@ import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

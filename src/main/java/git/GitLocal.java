@@ -53,7 +53,6 @@ public class GitLocal {
         try {
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
             List<RevCommit> commitsList = new ArrayList<>(commits);
-            Collections.reverse(commitsList);
             return commitsList.get(0);
         } catch (IOException exception) {
             return null;
