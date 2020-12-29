@@ -1,7 +1,6 @@
 package visualelements;
 
 import models.ModificationData;
-import org.eclipse.jgit.lib.PersonIdent;
 
 public class PopupUtils {
     public static String createContent(ModificationData modificationData) {

@@ -33,6 +33,10 @@ public class GitLocal {
         }
     }
 
+    public Repository getRepository() {
+        return repository;
+    }
+
     public void closeRepository() {
         repository.close();
     }
@@ -61,7 +65,7 @@ public class GitLocal {
 
     public DiffEntry getFileDiffWithPreviousCommit(RevCommit commit, String fileName) {
         DiffFormatter diffFormatter = createDiffFormatter(fileName);
-        RevCommit[] parents = commit.getParents().length > 0 ? commit.getParents() :new RevCommit[]{ null };
+        RevCommit[] parents = commit.getParents().length > 0 ? commit.getParents() : new RevCommit[]{ null };
         try {
             List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
             return diffs.get(0);
