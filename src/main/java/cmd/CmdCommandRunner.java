@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CmdCommandRunner {
     public static void runCommand(String command, String directory) throws IOException {
-        String comando = "C:\\refactoringMiner\\bin\\RefactoringMiner -c ";
         final ProcessBuilder pBuilder = new ProcessBuilder("cmd.exe", "/c", command);
         pBuilder.directory(new File(directory));
         try {
