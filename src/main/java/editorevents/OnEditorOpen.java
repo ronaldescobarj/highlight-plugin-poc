@@ -17,7 +17,6 @@ public class OnEditorOpen implements EditorFactoryListener {
     @Override
     public void editorCreated(@NotNull EditorFactoryEvent event) {
         Editor editor = event.getEditor();
-
         new VisualElementsUtils().registerEditorToCoverLayerManager(editor);
         Map<Integer, ModificationData> diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);
         EditorService editorService = editor.getProject().getService(EditorService.class);
