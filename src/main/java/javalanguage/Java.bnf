@@ -1,0 +1,20 @@
+{
+  parserClass="javalanguage.parser.JavaParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Java"
+  psiImplClassSuffix="Impl"
+  psiPackage="javalanguage.psi"
+  psiImplPackage="javalanguage.psi.impl"
+
+  elementTypeHolderClass="javalanguage.psi.JavaTypes"
+  elementTypeClass="javalanguage.psi.JavaElementType"
+  tokenTypeClass="javalanguage.psi.JavaTokenType"
+}
+
+javaFile ::= item_*
+
+private item_ ::= (myline|COMMENT|CRLF)
+
+myline ::= FIRSTTYPE | SECONDTYPE
