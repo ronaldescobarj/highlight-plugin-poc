@@ -19,11 +19,13 @@ import git.GitLocal;
 import gr.uom.java.xmi.UMLModel;
 import gr.uom.java.xmi.UMLModelASTReader;
 import gr.uom.java.xmi.diff.UMLModelDiff;
+import models.refactoringminer.RefactoringMinerOutput;
 import org.eclipse.jgit.lib.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.refactoringminer.api.*;
 import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
 import org.refactoringminer.util.GitServiceImpl;
+import refactoringminer.RefactoringMinerCmd;
 import simplelanguage.psi.SimpleDiffline;
 import visualelements.VisualElementFactory;
 
@@ -56,19 +58,9 @@ public class PopupDialogAction extends AnAction {
         //intentar directo con repo
 
         String projectPath = event.getProject().getBasePath();
-        GitLocal gitLocal = new GitLocal(projectPath);
-        gitLocal.openRepository();
-        Repository repo = gitLocal.getRepository();
         GitHistoryRefactoringMiner miner = new GitHistoryRefactoringMinerImpl();
-        miner.detectAtCommit(repo, "97a6ff7d66e35d4d5844c95b81470409ecd6421a", new RefactoringHandler() {
-            @Override
-            public void handle(String commitId, List<Refactoring> refactorings) {
-                System.out.println("Refactorings at " + commitId);
-                for (Refactoring ref : refactorings) {
-                    System.out.println(ref.toString());
-                }
-            }
-        });
+        RefactoringMinerCmd refactoringMinerCmd = new RefactoringMinerCmd();
+        RefactoringMinerOutput output = refactoringMinerCmd.runRefactoringMiner(projectPath, "b478b9647754dbde43bbe3c6984e1deaa2f65dd7");
         Project currentProject = event.getProject();
         StringBuilder dlgMsg = new StringBuilder(event.getPresentation().getText() + " Selected!");
         String dlgTitle = event.getPresentation().getDescription();

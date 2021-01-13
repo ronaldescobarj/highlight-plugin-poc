@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CmdCommandRunner {
-    public static void runCommand(String command, String directory) throws IOException {
+    public static String runCommand(String command, String directory) throws IOException {
         final ProcessBuilder pBuilder = new ProcessBuilder("cmd.exe", "/c", command);
         pBuilder.directory(new File(directory));
         try {
@@ -16,10 +16,11 @@ public class CmdCommandRunner {
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
-            List<String> strs = new ArrayList<>();
+            StringBuilder output = new StringBuilder();
             while ((line = reader.readLine()) != null) {
-                strs.add(line);
+                output.append(line).append("\n");
             }
+            return output.toString();
         } catch(IOException e) {
             e.printStackTrace();
             throw e;
