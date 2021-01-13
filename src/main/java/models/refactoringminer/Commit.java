@@ -5,4 +5,8 @@ public class Commit {
     String sha1;
     String url;
     Refactoring[] refactorings;
+
+    public Refactoring[] getRefactorings() {
+        return refactorings;
+    }
 }

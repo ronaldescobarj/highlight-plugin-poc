@@ -6,7 +6,6 @@ import com.intellij.openapi.editor.event.EditorFactoryListener;
 import difflogic.DiffMapGenerator;
 import models.ModificationData;
 import org.jetbrains.annotations.NotNull;
-import org.refactoringminer.api.GitHistoryRefactoringMiner;
 import services.EditorService;
 import visualelements.VisualElementsUtils;
 
