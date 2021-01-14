@@ -9,4 +9,24 @@ public class Location {
     String codeElementType;
     String description;
     String codeElement;
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public int getStartLine() {
+        return startLine;
+    }
+
+    public int getEndLine() {
+        return endLine;
+    }
+
+    public String getCodeElementType() {
+        return codeElementType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

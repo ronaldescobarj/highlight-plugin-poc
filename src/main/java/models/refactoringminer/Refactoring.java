@@ -5,4 +5,16 @@ public class Refactoring {
     String description;
     Location[] leftSideLocations;
     Location[] rightSideLocations;
+
+    public String getType() {
+        return type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Location[] getRightSideLocations() {
+        return rightSideLocations;
+    }
 }

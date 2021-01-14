@@ -57,9 +57,11 @@ public class PopupDialogAction extends AnAction {
         //intentar directo con repo
 
         String projectPath = event.getProject().getBasePath();
-        GitHistoryRefactoringMiner miner = new GitHistoryRefactoringMinerImpl();
+        GitLocal gitLocal = new GitLocal(projectPath);
+        gitLocal.openRepository();
+        String commitSha = gitLocal.getLatestCommit().getName();
         RefactoringMinerCmd refactoringMinerCmd = new RefactoringMinerCmd();
-        RefactoringMinerOutput output = refactoringMinerCmd.runRefactoringMiner(projectPath, "b478b9647754dbde43bbe3c6984e1deaa2f65dd7");
+        RefactoringMinerOutput output = refactoringMinerCmd.runRefactoringMiner(projectPath, commitSha);
         Project currentProject = event.getProject();
         StringBuilder dlgMsg = new StringBuilder(event.getPresentation().getText() + " Selected!");
         String dlgTitle = event.getPresentation().getDescription();
