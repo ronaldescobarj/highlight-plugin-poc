@@ -17,4 +17,6 @@ javaFile ::= item_*
 
 private item_ ::= (myline|COMMENT|CRLF)
 
-myline ::= FIRSTTYPE | SECONDTYPE
+//property ::= (LLAVE? SEPARADOR VALOR?) | LLAVE
+//myline ::= NOTMODIFIED | INSERTED | UPDATED | UPDATEDMULTIPLETIMES | MOVED {methods=[getNotModified getInserted getUpdated getUpdatedMulitipleTimes getMoved]}
+myline ::= NOTMODIFIED | INSERTED | UPDATED | UPDATEDMULTIPLETIMES | MOVED

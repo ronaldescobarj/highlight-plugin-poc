@@ -13,10 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 public class JavaSyntaxHighlighter extends SyntaxHighlighterBase {
-    public static final TextAttributesKey FIRSTTYPE =
-            createTextAttributesKey("JAVA_FIRSTTYPE", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey SECONDTYPE =
-            createTextAttributesKey("JAVA_SECONDTYPE", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey NOTMODIFIED =
+            createTextAttributesKey("JAVA_NOTMODIFIED", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+    public static final TextAttributesKey INSERTED =
+            createTextAttributesKey("JAVA_INSERTED", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey UPDATED =
+            createTextAttributesKey("JAVA_UPDATED", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey UPDATEDMULTIPLETIMES =
+            createTextAttributesKey("JAVA_UPDATEDMULTIPLETIMES", DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_HIGHLIGHTED);
+    public static final TextAttributesKey MOVED =
+            createTextAttributesKey("JAVA_MOVED", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("JAVA_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
@@ -24,8 +30,11 @@ public class JavaSyntaxHighlighter extends SyntaxHighlighterBase {
 
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-    private static final TextAttributesKey[] FIRSTTYPE_KEYS = new TextAttributesKey[]{FIRSTTYPE};
-    private static final TextAttributesKey[] SECONDTYPE_KEYS = new TextAttributesKey[]{SECONDTYPE};
+    private static final TextAttributesKey[] NOTMODIFIED_KEYS = new TextAttributesKey[]{NOTMODIFIED};
+    private static final TextAttributesKey[] INSERTED_KEYS = new TextAttributesKey[]{INSERTED};
+    private static final TextAttributesKey[] UPDATED_KEYS = new TextAttributesKey[]{UPDATED};
+    private static final TextAttributesKey[] UPDATEDMULTIPLETIMES_KEYS = new TextAttributesKey[]{UPDATEDMULTIPLETIMES};
+    private static final TextAttributesKey[] MOVED_KEYS = new TextAttributesKey[]{MOVED};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
@@ -38,10 +47,16 @@ public class JavaSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(JavaTypes.FIRSTTYPE)) {
-            return FIRSTTYPE_KEYS;
-        } else if (tokenType.equals(JavaTypes.SECONDTYPE)) {
-            return SECONDTYPE_KEYS;
+        if (tokenType.equals(JavaTypes.NOTMODIFIED)) {
+            return NOTMODIFIED_KEYS;
+        } else if (tokenType.equals(JavaTypes.INSERTED)) {
+            return INSERTED_KEYS;
+        } else if (tokenType.equals(JavaTypes.UPDATED)) {
+            return UPDATED_KEYS;
+        } else if (tokenType.equals(JavaTypes.UPDATEDMULTIPLETIMES)) {
+            return UPDATEDMULTIPLETIMES_KEYS;
+        } else if (tokenType.equals(JavaTypes.MOVED)) {
+            return MOVED_KEYS;
         } else if (tokenType.equals(JavaTypes.COMMENT)) {
             return COMMENT_KEYS;
         } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {

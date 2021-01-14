@@ -3,6 +3,7 @@ package javalanguage;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
+import difflogic.DiffHighlighter;
 import javalanguage.psi.JavaTypes;
 import com.intellij.psi.TokenType;
 import java.io.FileReader;
@@ -20,15 +21,15 @@ import java.util.ArrayList;
 %eof{  return;
 %eof}
 
-%{
+%init{
+      diffHighlighter = new DiffHighlighter();
+%init}
 
-    private IElementType getCorrespondingToken() {
-        if (yyline % 2 == 0) {
-            return JavaTypes.FIRSTTYPE;
-        } else {
-            return JavaTypes.SECONDTYPE;
-        }
-      }
+%{
+  DiffHighlighter diffHighlighter;
+  private IElementType getCorrespondingToken() {
+      return diffHighlighter.getLineHighlight(yyline);
+  }
 %}
 
 CRLF=\R

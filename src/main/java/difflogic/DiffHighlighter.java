@@ -3,10 +3,10 @@ package difflogic;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.tree.IElementType;
+import javalanguage.psi.JavaTypes;
 import models.DiffRow;
 import models.ModificationData;
 import services.EditorService;
-import simplelanguage.psi.SimpleTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,19 +39,19 @@ public class DiffHighlighter {
         ModificationData modification = diffMap.get(line);
         String action = modification != null ? modification.getModification() : null;
         if (action == null) {
-            return SimpleTypes.NOTMODIFIED;
+            return JavaTypes.NOTMODIFIED;
         } else {
             switch (action) {
                 case "INS":
-                    return SimpleTypes.INSERTED;
+                    return JavaTypes.INSERTED;
                 case "UPD":
-                    return SimpleTypes.UPDATED;
+                    return JavaTypes.UPDATED;
                 case "UPD_MULTIPLE_TIMES":
-                    return SimpleTypes.UPDATEDMULTIPLETIMES;
+                    return JavaTypes.UPDATEDMULTIPLETIMES;
                 case "MOV":
-                    return SimpleTypes.MOVED;
+                    return JavaTypes.MOVED;
                 default:
-                    return SimpleTypes.NOTMODIFIED;
+                    return JavaTypes.NOTMODIFIED;
             }
         }
     }

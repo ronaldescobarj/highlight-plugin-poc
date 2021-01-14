@@ -1,13 +1,13 @@
 // This is a generated file. Not intended for manual editing.
-package simplelanguage.psi;
+package javalanguage.psi;
 
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 
-public class SimpleVisitor extends PsiElementVisitor {
+public class JavaVisitor extends PsiElementVisitor {
 
-  public void visitDiffline(@NotNull SimpleDiffline o) {
+  public void visitMyline(@NotNull JavaMyline o) {
     visitPsiElement(o);
   }
 

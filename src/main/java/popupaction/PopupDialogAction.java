@@ -26,7 +26,6 @@ import org.refactoringminer.api.*;
 import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
 import org.refactoringminer.util.GitServiceImpl;
 import refactoringminer.RefactoringMinerCmd;
-import simplelanguage.psi.SimpleDiffline;
 import visualelements.VisualElementFactory;
 
 import javax.swing.*;

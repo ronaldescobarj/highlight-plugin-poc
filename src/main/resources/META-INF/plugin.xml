@@ -10,10 +10,15 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="Simple File" implementationClass="simplelanguage.SimpleFileType"
-                  fieldName="INSTANCE" language="Simple" extensions="simple"/>
-        <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>
-        <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>
+<!--        <fileType name="Simple File" implementationClass="simplelanguage.SimpleFileType"-->
+<!--                  fieldName="INSTANCE" language="Simple" extensions="simple"/>-->
+        <fileType name="Java File" implementationClass="javalanguage.JavaFileType"
+                  fieldName="INSTANCE" language="Java" extensions="java"/>
+<!--        <lang.parserDefinition language="Simple" implementationClass="simplelanguage.SimpleParserDefinition"/>-->
+        <lang.parserDefinition language="Java" implementationClass="javalanguage.JavaParserDefinition"/>
+<!--        <lang.syntaxHighlighterFactory language="Simple" implementationClass="simplelanguage.SimpleSyntaxHighlighterFactory"/>-->
+        <lang.syntaxHighlighterFactory language="Java"
+                                       implementationClass="javalanguage.JavaSyntaxHighlighterFactory"/>
         <editorFactoryListener implementation="editorevents.OnEditorOpen"/>
 <!--        <editorFactoryDocumentListener implementation="editorevents.OnDocument" />-->
 <!--        this extension point has events for document changes-->
