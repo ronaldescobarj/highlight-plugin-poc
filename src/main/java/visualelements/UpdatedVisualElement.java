@@ -10,14 +10,10 @@ public class UpdatedVisualElement extends VisualElement {
     public UpdatedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        JLabel jl = new JLabel(" UPD ");
-        jl.setSize(30, 20);
-        jl.setOpaque(true);
-        jl.setBackground(JBColor.GREEN);
-        jl.setForeground(JBColor.BLACK);
-        int width = jl.getWidth();
-        int height = jl.getHeight();
-        this.add(jl);
-        setSize(width, height);
+        this.setText(" UPD ");
+        this.setSize(30, 20);
+        this.setOpaque(true);
+        this.setBackground(JBColor.GREEN);
+        this.setForeground(JBColor.BLACK);
     }
 }

@@ -10,14 +10,10 @@ public class MovedVisualElement extends VisualElement {
     public MovedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        JLabel jl = new JLabel(" MOV ");
-        jl.setSize(30, 20);
-        jl.setOpaque(true);
-        jl.setBackground(JBColor.DARK_GRAY);
-        jl.setForeground(JBColor.WHITE);
-        int width = jl.getWidth();
-        int height = jl.getHeight();
-        this.add(jl);
-        setSize(width, height);
+        this.setText(" MOV ");
+        this.setSize(30, 20);
+        this.setOpaque(true);
+        this.setBackground(JBColor.DARK_GRAY);
+        this.setForeground(JBColor.WHITE);
     }
 }

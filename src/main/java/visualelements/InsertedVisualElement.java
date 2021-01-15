@@ -10,14 +10,10 @@ public class InsertedVisualElement extends VisualElement {
     public InsertedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        JLabel jl = new JLabel(" INS ");
-        jl.setSize(30, 20);
-        jl.setOpaque(true);
-        jl.setBackground(JBColor.BLUE);
-        jl.setForeground(JBColor.WHITE);
-        int width = jl.getWidth();
-        int height = jl.getHeight();
-        this.add(jl);
-        setSize(width, height);
+        this.setText(" INS ");
+        this.setSize(30, 20);
+        this.setOpaque(true);
+        this.setBackground(JBColor.BLUE);
+        this.setForeground(JBColor.WHITE);
     }
 }
