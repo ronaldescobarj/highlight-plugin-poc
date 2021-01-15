@@ -28,11 +28,13 @@ import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
 import org.refactoringminer.util.GitServiceImpl;
 import refactoringminer.RefactoringMinerCmd;
 import visualelements.VisualElementFactory;
+import visualelements.VisualElementWrapper;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,13 +58,19 @@ public class PopupDialogAction extends AnAction {
 //            System.out.println("error");
 //        }
         //intentar directo con repo
+
         Project project = event.getProject();
         Editor editor = event.getData(CommonDataKeys.EDITOR);
         Document document = editor.getDocument();
-        int offset = document.getLineStartOffset(5);
+        int offset = document.getLineStartOffset(14);
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
-
+        List<String> elementTypes = new ArrayList<>();
+        elementTypes.add("INS");
+        elementTypes.add("UPD");
+        JLabel myElement = new VisualElementWrapper(psiElement, elementTypes);
+        EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
+        EditorCoverLayerManager.getInstance(project).add(layerItem);
 
         String projectPath = event.getProject().getBasePath();
         GitLocal gitLocal = new GitLocal(projectPath);

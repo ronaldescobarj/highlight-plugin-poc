@@ -11,7 +11,7 @@ public class UpdatedVisualElement extends VisualElement {
         super(psiElement);
         this.setLayout(new FlowLayout());
         this.setText(" UPD ");
-        this.setSize(30, 20);
+        this.setSize(35, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);
         this.setForeground(JBColor.BLACK);
