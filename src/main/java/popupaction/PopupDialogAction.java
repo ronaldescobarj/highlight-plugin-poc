@@ -59,19 +59,6 @@ public class PopupDialogAction extends AnAction {
 //        }
         //intentar directo con repo
 
-        Project project = event.getProject();
-        Editor editor = event.getData(CommonDataKeys.EDITOR);
-        Document document = editor.getDocument();
-        int offset = document.getLineStartOffset(14);
-        PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
-        PsiElement psiElement = psiFile.findElementAt(offset);
-        List<String> elementTypes = new ArrayList<>();
-        elementTypes.add("INS");
-        elementTypes.add("UPD");
-        JLabel myElement = new VisualElementWrapper(psiElement, elementTypes);
-        EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
-        EditorCoverLayerManager.getInstance(project).add(layerItem);
-
         String projectPath = event.getProject().getBasePath();
         GitLocal gitLocal = new GitLocal(projectPath);
         gitLocal.openRepository();

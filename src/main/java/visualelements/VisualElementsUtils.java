@@ -20,6 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VisualElementsUtils {
 
@@ -31,36 +32,21 @@ public class VisualElementsUtils {
 
     public void addVisualElements(Editor editor, Map<Integer, List<Data>> diffMap) {
         for (Map.Entry<Integer, List<Data>> diff : diffMap.entrySet()) {
-            for (Data data: diff.getValue()) {
-                if (!(data instanceof UpdatedMultipleTimes)) {
-                    addVisualElement(editor, diff.getKey(), data);
-                }
-            }
+            addVisualElementsToLine(editor, diff.getKey(), diff.getValue());
         }
     }
 
-    private void addVisualElement(Editor editor, int line, Data actionData) {
+    private void addVisualElementsToLine(Editor editor, int line, List<Data> actions) {
         Document document = editor.getDocument();
         Project project = editor.getProject();
         int offset = document.getLineStartOffset(line - 1);
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
-        JLabel myElement = VisualElementFactory.createVisualElement(actionData.getType(), psiElement);
-        JBPopup popup = createPopup(actionData);
-        VisualElementMouseEventsHandler handler = new VisualElementMouseEventsHandler(popup, editor);
-        myElement.addMouseListener(handler);
+//        JLabel myElement = VisualElementFactory.createVisualElement(actionData.getType(), psiElement);
+        JLabel myElement = new VisualElementWrapper(psiElement, actions, editor);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
         EditorCoverLayerManager.getInstance(project).add(layerItem);
     }
 
-    @NotNull
-    private JBPopup createPopup(Data modificationData) {
-        JBPopupFactory jbPopupFactory = JBPopupFactory.getInstance();
-        String content = PopupUtils.createContent(modificationData);
-        JComponent visualElement = new PopupContent(content);
-        ComponentPopupBuilder popupBuilder = jbPopupFactory.createComponentPopupBuilder(visualElement ,null);
-        JBPopup popup = popupBuilder.createPopup();
-        popup.setSize(new Dimension(200, 50));
-        return popup;
-    }
+
 }
