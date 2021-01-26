@@ -14,7 +14,6 @@ public class RefactoringGenerator {
         RevCommit latestCommit = gitLocal.getLatestCommit();
         RefactoringMinerCmd refactoringMinerCmd = new RefactoringMinerCmd();
         RefactoringMinerOutput output = refactoringMinerCmd.runRefactoringMiner(projectPath, latestCommit.getName());
-
         return output;
     }
 }

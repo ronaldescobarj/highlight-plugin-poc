@@ -1,10 +1,10 @@
 package difflogic;
 
 import at.aau.softwaredynamics.classifier.entities.SourceCodeChange;
+import com.intellij.workspaceModel.storage.bridgeEntities.ModifiableArchivePackagingElementEntity;
 import compare.CompareUtils;
 import git.GitLocal;
-import models.DiffRow;
-import models.ModificationData;
+import models.*;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -15,24 +15,27 @@ import java.util.Map;
 public class DiffModifications {
     public Map<Integer, Integer> buildNumberOfModifications(String fileName, GitLocal gitLocal) {
         Map<Integer, Integer> amountOfTimes = new HashMap<>();
-        Map<Integer, ModificationData> diffMap;
+        Map<Integer, List<Data>> diffMap;
         List<RevCommit> commits = gitLocal.getSelectedLatestCommits(5);
         for (RevCommit commit : commits) {
             List<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
             diffMap = new DiffMapper(diffRows, commit).createDiffMap();
-            for (Map.Entry<Integer, ModificationData> diffsEntry : diffMap.entrySet()) {
-                handleDiffEntry(amountOfTimes, diffMap, diffsEntry);
+            for (Map.Entry<Integer, List<Data>> diffsEntry : diffMap.entrySet()) {
+                handleDiffEntry(amountOfTimes, diffsEntry);
             }
         }
         return amountOfTimes;
     }
 
-    public void applyAmountOfTimesToDiffMap(Map<Integer, ModificationData> diffMap, Map<Integer, Integer> amountOfTimes) {
+    public void applyAmountOfTimesToDiffMap(Map<Integer, List<Data>> diffMap, Map<Integer, Integer> amountOfTimes) {
         for (Map.Entry<Integer, Integer> line: amountOfTimes.entrySet()) {
             if (line.getValue() >= 5) {
-                ModificationData modification = diffMap.get(line.getKey());
-                modification.setModification("UPD_MULTIPLE_TIMES");
-                diffMap.put(line.getKey(), modification);
+                List<Data> modifications = diffMap.get(line.getKey());
+                Data modification = modifications.stream().filter(mod -> mod.getType().equals("UPD")).findFirst().get();
+                int index = modifications.indexOf(modification);
+                modification = DataFactory.createData("UPD_MULTIPLE_TIMES", null, null);
+                modifications.set(index, modification);
+                diffMap.put(line.getKey(), modifications);
             }
         }
     }
@@ -44,15 +47,19 @@ public class DiffModifications {
         return CompareUtils.getDiffChanges(previousCommitFileContent, currentCommitFileContent);
     }
 
-    private void handleDiffEntry(Map<Integer, Integer> amountOfTimes, Map<Integer, ModificationData> diffMap, Map.Entry<Integer, ModificationData> diffsEntry) {
-        if (diffsEntry.getValue().getModification().equals("INS")) {
+    private void handleDiffEntry(Map<Integer, Integer> amountOfTimes, Map.Entry<Integer, List<Data>> diffsEntry) {
+        Data modification = ModificationDataUtils.getModificationDataFromLineActions(diffsEntry.getValue());
+        if (modification == null) {
+            return;
+        }
+        if (modification instanceof Inserted) {
             amountOfTimes.put(diffsEntry.getKey(), 1);
-        } else if (diffsEntry.getValue().getModification().equals("UPD")) {
-            handleUpdateEntry(amountOfTimes, diffMap, diffsEntry);
+        } else if (modification instanceof Updated) {
+            handleUpdateEntry(amountOfTimes, diffsEntry);
         }
     }
 
-    private void handleUpdateEntry(Map<Integer, Integer> amountOfTimes, Map<Integer, ModificationData> diffMap, Map.Entry<Integer, ModificationData> diffsEntry) {
+    private void handleUpdateEntry(Map<Integer, Integer> amountOfTimes, Map.Entry<Integer, List<Data>> diffsEntry) {
         int times = amountOfTimes.get(diffsEntry.getKey()) != null ? amountOfTimes.get(diffsEntry.getKey()) : 0;
         times++;
         amountOfTimes.put(diffsEntry.getKey(), times);

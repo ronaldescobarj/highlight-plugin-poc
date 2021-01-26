@@ -1,7 +1,6 @@
 package difflogic;
 
-import models.DiffRow;
-import models.ModificationData;
+import models.*;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -23,19 +22,19 @@ public class DiffMapper {
         this.diffRows = diffRows;
     }
 
-    public Map<Integer, ModificationData> createDiffMap() {
-        Map<Integer, ModificationData> diffMap = new HashMap<>();
+    public Map<Integer, List<Data>> createDiffMap() {
+        Map<Integer, List<Data>> diffMap = new HashMap<>();
         for (DiffRow diffRow: diffRows) {
             addToMap(diffMap, diffRow);
         }
         return diffMap;
     }
 
-    private void addToMap(Map<Integer, ModificationData> diffMap, DiffRow diffRow) {
+    private void addToMap(Map<Integer, List<Data>> diffMap, DiffRow diffRow) {
         int startLine = diffRow.getChange().equals("DEL") ? diffRow.getSrcStart() : diffRow.getDstStart();
         int endLine = diffRow.getChange().equals("DEL") ? diffRow.getSrcEnd() : diffRow.getDstEnd();
         List<Integer> interval = generateIntervalArray(startLine, endLine);
-        insertByInterval(diffMap, interval, diffRow.getChange());
+        insertByInterval(diffMap, interval, diffRow);
     }
 
     private List<Integer> generateIntervalArray(int start, int end) {
@@ -46,13 +45,15 @@ public class DiffMapper {
         return interval;
     }
 
-    private void insertByInterval(Map<Integer, ModificationData> diffMap, List<Integer> interval, String action) {
+    private void insertByInterval(Map<Integer, List<Data>> diffMap, List<Integer> interval, DiffRow diffRow) {
         PersonIdent author = commit.getAuthorIdent();
         Date date = author.getWhen();
         LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
         for (Integer line: interval) {
-            ModificationData modification = new ModificationData(action, author, commitDate);
-            diffMap.put(line, modification);
+            ModificationData modification = DataFactory.createModificationData(diffRow.getChange(), author, commitDate);
+            modification.setAdditionalData(diffRow);
+            List<Data> modifications = Arrays.asList(modification);
+            diffMap.put(line, modifications);
         }
     }
 }

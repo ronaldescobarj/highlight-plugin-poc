@@ -4,7 +4,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorFactoryEvent;
 import com.intellij.openapi.editor.event.EditorFactoryListener;
 import difflogic.DiffMapGenerator;
-import models.ModificationData;
+import models.Data;
 import org.jetbrains.annotations.NotNull;
 import services.EditorService;
 import visualelements.VisualElementsUtils;
@@ -17,7 +17,7 @@ public class OnEditorOpen implements EditorFactoryListener {
     public void editorCreated(@NotNull EditorFactoryEvent event) {
         Editor editor = event.getEditor();
         new VisualElementsUtils().registerEditorToCoverLayerManager(editor);
-        Map<Integer, ModificationData> diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);
+        Map<Integer, List<Data>> diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);
         EditorService editorService = editor.getProject().getService(EditorService.class);
         editorService.setDiffMap(diffMap);
         editorService.setLastOpenedEditor(editor);

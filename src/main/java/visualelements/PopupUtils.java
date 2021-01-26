@@ -1,12 +1,10 @@
 package visualelements;
 
-import models.ModificationData;
+import models.Data;
 
 public class PopupUtils {
-    public static String createContent(ModificationData modificationData) {
-        return "<html>" + modificationData.getAuthorName() + "<br>" +
-                modificationData.getAuthorEmail() + "<br>" +
-                modificationData.getDateTimeString() + "<br>" +
+    public static String createContent(Data data) {
+        return "<html>" + data.renderData() +
                 "</html>";
     }
 }

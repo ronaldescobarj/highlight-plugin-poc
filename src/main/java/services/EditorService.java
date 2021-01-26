@@ -1,8 +1,8 @@
 package services;
 
 import com.intellij.openapi.editor.Editor;
+import models.Data;
 import models.DiffRow;
-import models.ModificationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class EditorService {
     List<DiffRow> diffsOfLastOpenedEditor;
-    Map<Integer, ModificationData> diffMap = null;
+    Map<Integer, List<Data>> diffMap = null;
     Editor lastOpenedEditor;
 
     public void setLastOpenedEditor(Editor editor) {
@@ -29,11 +29,11 @@ public class EditorService {
         return diffsOfLastOpenedEditor;
     }
 
-    public void setDiffMap(Map<Integer, ModificationData> diffMap) {
+    public void setDiffMap(Map<Integer, List<Data>> diffMap) {
         this.diffMap = diffMap;
     }
 
-    public Map<Integer, ModificationData> getDiffMap() {
+    public Map<Integer, List<Data>> getDiffMap() {
         return diffMap;
     }
 

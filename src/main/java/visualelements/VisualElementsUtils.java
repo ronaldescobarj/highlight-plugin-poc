@@ -12,13 +12,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerItem;
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerManager;
-import models.ModificationData;
+import models.Data;
+import models.UpdatedMultipleTimes;
 import org.jetbrains.annotations.NotNull;
 import visualelements.events.VisualElementMouseEventsHandler;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
+import java.util.List;
 
 public class VisualElementsUtils {
 
@@ -28,22 +29,24 @@ public class VisualElementsUtils {
                 EditorCoverLayerManager.getInstance(project).registerEditorCoverLayer(editor));
     }
 
-    public void addVisualElements(Editor editor, Map<Integer, ModificationData> diffMap) {
-        for (Map.Entry<Integer, ModificationData> diff : diffMap.entrySet()) {
-            if (!diff.getValue().getModification().equals("NOTMODIFIED") && !diff.getValue().getModification().equals("UPD_MULTIPLE_TIMES")) {
-                addVisualElement(editor, diff.getKey(), diff.getValue());
+    public void addVisualElements(Editor editor, Map<Integer, List<Data>> diffMap) {
+        for (Map.Entry<Integer, List<Data>> diff : diffMap.entrySet()) {
+            for (Data data: diff.getValue()) {
+                if (!(data instanceof UpdatedMultipleTimes)) {
+                    addVisualElement(editor, diff.getKey(), data);
+                }
             }
         }
     }
 
-    private void addVisualElement(Editor editor, int line, ModificationData modificationData) {
+    private void addVisualElement(Editor editor, int line, Data actionData) {
         Document document = editor.getDocument();
         Project project = editor.getProject();
         int offset = document.getLineStartOffset(line - 1);
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
-        JLabel myElement = VisualElementFactory.createVisualElement(modificationData.getModification(), psiElement);
-        JBPopup popup = createPopup(modificationData);
+        JLabel myElement = VisualElementFactory.createVisualElement(actionData.getType(), psiElement);
+        JBPopup popup = createPopup(actionData);
         VisualElementMouseEventsHandler handler = new VisualElementMouseEventsHandler(popup, editor);
         myElement.addMouseListener(handler);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
@@ -51,7 +54,7 @@ public class VisualElementsUtils {
     }
 
     @NotNull
-    private JBPopup createPopup(ModificationData modificationData) {
+    private JBPopup createPopup(Data modificationData) {
         JBPopupFactory jbPopupFactory = JBPopupFactory.getInstance();
         String content = PopupUtils.createContent(modificationData);
         JComponent visualElement = new PopupContent(content);
