@@ -13,11 +13,13 @@ import com.intellij.psi.PsiFile;
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerItem;
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerManager;
 import models.Data;
+import models.ExtractedMethod;
 import models.UpdatedMultipleTimes;
 import org.jetbrains.annotations.NotNull;
 import visualelements.events.VisualElementMouseEventsHandler;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +45,10 @@ public class VisualElementsUtils {
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
 //        JLabel myElement = VisualElementFactory.createVisualElement(actionData.getType(), psiElement);
-        JLabel myElement = new VisualElementWrapper(psiElement, actions, editor);
+        List<Data> myActions = new ArrayList<>(actions);
+        Data newAction = new ExtractedMethod();
+        myActions.add(newAction);
+        JLabel myElement = new VisualElementWrapper(psiElement, myActions, editor);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
         EditorCoverLayerManager.getInstance(project).add(layerItem);
     }

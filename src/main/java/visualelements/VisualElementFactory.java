@@ -15,6 +15,8 @@ public class VisualElementFactory {
                 return new MovedVisualElement(psiElement);
             case "DEL":
                 return new DeletedVisualElement(psiElement);
+            case "EXTRACTED_METHOD":
+                return new ExtractedMethodVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:
