@@ -1,5 +1,6 @@
 package difflogic;
 
+import actions.ActionsUtils;
 import models.*;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -52,8 +53,7 @@ public class DiffMapper {
         for (Integer line: interval) {
             ModificationData modification = DataFactory.createModificationData(diffRow.getChange(), author, commitDate);
             modification.setAdditionalData(diffRow);
-            List<Data> modifications = Arrays.asList(modification);
-            diffMap.put(line, modifications);
+            ActionsUtils.addActionToLine(diffMap, line, modification);
         }
     }
 }

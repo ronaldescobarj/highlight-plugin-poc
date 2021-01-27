@@ -1,13 +1,17 @@
 package refactoringminer;
 
+import models.Data;
 import models.refactoringminer.Commit;
 import models.refactoringminer.Location;
 import models.refactoringminer.Refactoring;
 import models.refactoringminer.RefactoringMinerOutput;
 
-public class RefactoringParser {
-    public void parseRefactorings(RefactoringMinerOutput refactorings) {
-        for (Refactoring refactoring : refactorings.getRefactorings()) {
+import java.util.List;
+import java.util.Map;
+
+public class RefactoringMinerUtils {
+    public static void addRefactoringsToMap(RefactoringMinerOutput refactoringMinerOutput, Map<Integer, List<Data>> actionsMap) {
+        for (Refactoring refactoring : refactoringMinerOutput.getRefactorings()) {
             if (refactoring.getType().equals("Extract Method")) {
                 for (Location location: refactoring.getRightSideLocations()) {
                     if (location.getCodeElementType().equals("METHOD_INVOCATION")) {
