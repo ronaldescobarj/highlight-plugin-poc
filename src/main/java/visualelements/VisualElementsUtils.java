@@ -45,10 +45,7 @@ public class VisualElementsUtils {
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
 //        JLabel myElement = VisualElementFactory.createVisualElement(actionData.getType(), psiElement);
-        List<Data> myActions = new ArrayList<>(actions);
-        Data newAction = new ExtractedMethod();
-        myActions.add(newAction);
-        JLabel myElement = new VisualElementWrapper(psiElement, myActions, editor);
+        JLabel myElement = new VisualElementWrapper(psiElement, actions, editor);
         EditorCoverLayerItem layerItem = new EditorCoverLayerItem(psiElement, myElement);
         EditorCoverLayerManager.getInstance(project).add(layerItem);
     }

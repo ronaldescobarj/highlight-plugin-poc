@@ -1,6 +1,7 @@
 package actions;
 
 import models.Data;
+import models.ModificationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,11 @@ public class ActionsUtils {
         if (lineActions == null) {
             lineActions = new ArrayList<>();
         }
-        lineActions.add(action);
+        if (!lineActions
+                .stream()
+                .anyMatch(lineAction -> lineAction instanceof ModificationData && lineAction.getType().equals(action.getType()))) {
+            lineActions.add(action);
+        }
         actionsMap.put(line, lineActions);
     }
 }

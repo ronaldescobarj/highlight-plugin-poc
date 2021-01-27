@@ -6,8 +6,12 @@ import editor.EditorUtils;
 import git.GitLocal;
 import models.Data;
 import models.DiffRow;
+import models.refactoringminer.RefactoringMinerOutput;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
+import refactoringminer.RefactoringGenerator;
+import refactoringminer.RefactoringMinerUtils;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +23,11 @@ public class DiffMapGenerator {
         String fileName = EditorUtils.getFileName(editor);
         DiffModifications diffModifications = new DiffModifications();
         Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
+        RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
+        RefactoringMinerOutput refactoringMinerOutput = refactoringGenerator.generateRefactorings(editor.getProject());
         Map<Integer, List<Data>> diffMap = getLatestDiffMap(editor, gitLocal);
         diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
+        RefactoringMinerUtils.addRefactoringsToMap(refactoringMinerOutput, diffMap);
         gitLocal.closeRepository();
         return diffMap;
     }

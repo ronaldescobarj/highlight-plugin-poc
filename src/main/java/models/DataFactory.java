@@ -22,6 +22,8 @@ public class DataFactory {
                 return new UpdatedMultipleTimes(author, commitDate);
             case "EXTRACTED_METHOD":
                 return new ExtractedMethod();
+            case "EXTRACTED_METHOD_CALL":
+                return new ExtractedMethodCall();
             default:
                 return null;
         }
