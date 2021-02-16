@@ -16,14 +16,16 @@ public class RefactoringMinerUtils {
         for (Refactoring refactoring : refactoringMinerOutput.getRefactorings()) {
             if (refactoring.getType().equals("Extract Method")) {
                 for (Location location: refactoring.getRightSideLocations()) {
-                    if (location.getFilePath().equals(filePath) && location.getCodeElementType().equals("METHOD_INVOCATION")) {
-                        //addLabel("call to extracted method")
-                        Data action = DataFactory.createData("EXTRACTED_METHOD_CALL", null, null);
-                        ActionsUtils.addActionToLine(actionsMap, location.getStartLine(), action);
-                    } else if (location.getCodeElementType().equals("METHOD_DECLARATION") && location.getDescription().equals("extracted method declaration")) {
-                        //addLabel("extracted method")
-                        Data action = DataFactory.createData("EXTRACTED_METHOD", null, null);
-                        ActionsUtils.addActionToLine(actionsMap, location.getStartLine(), action);
+                    if (location.getFilePath().equals(filePath)) {
+                        if (location.getCodeElementType().equals("METHOD_INVOCATION")) {
+                            //addLabel("call to extracted method")
+                            Data action = DataFactory.createData("EXTRACTED_METHOD_CALL", null, null);
+                            ActionsUtils.addActionToLine(actionsMap, location.getStartLine(), action);
+                        } else if (location.getCodeElementType().equals("METHOD_DECLARATION") && location.getDescription().equals("extracted method declaration")) {
+                            //addLabel("extracted method")
+                            Data action = DataFactory.createData("EXTRACTED_METHOD", null, null);
+                            ActionsUtils.addActionToLine(actionsMap, location.getStartLine(), action);
+                        }
                     }
                 }
             }
