@@ -23,8 +23,4 @@ public class RefactoringMinerCmd {
         return output;
     }
 
-//    private String getFolderNameFromPath(String projectPath) {
-//        String[] pathParts = projectPath.split("/");
-//        return pathParts[pathParts.length - 1];
-//    }
 }

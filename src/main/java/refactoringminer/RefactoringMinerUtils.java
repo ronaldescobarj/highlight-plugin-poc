@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 public class RefactoringMinerUtils {
-    public static void addRefactoringsToMap(RefactoringMinerOutput refactoringMinerOutput, Map<Integer, List<Data>> actionsMap) {
+    public static void addRefactoringsToMap(RefactoringMinerOutput refactoringMinerOutput, Map<Integer, List<Data>> actionsMap, String filePath) {
         for (Refactoring refactoring : refactoringMinerOutput.getRefactorings()) {
             if (refactoring.getType().equals("Extract Method")) {
                 for (Location location: refactoring.getRightSideLocations()) {
-                    if (location.getCodeElementType().equals("METHOD_INVOCATION")) {
+                    if (location.getFilePath().equals(filePath) && location.getCodeElementType().equals("METHOD_INVOCATION")) {
                         //addLabel("call to extracted method")
                         Data action = DataFactory.createData("EXTRACTED_METHOD_CALL", null, null);
                         ActionsUtils.addActionToLine(actionsMap, location.getStartLine(), action);

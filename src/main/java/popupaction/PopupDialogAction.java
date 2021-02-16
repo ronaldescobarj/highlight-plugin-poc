@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.refactoringminer.api.*;
 import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
 import org.refactoringminer.util.GitServiceImpl;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PopupDialogAction extends AnAction {
@@ -59,10 +61,12 @@ public class PopupDialogAction extends AnAction {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        List<Refactoring> myRefactorings = new ArrayList<>();
         try {
             miner.detectAll(repo, "master", new RefactoringHandler() {
                 @Override
                 public void handle(String commitId, List<Refactoring> refactorings) {
+                    myRefactorings.addAll(refactorings);
                     System.out.println("Refactorings at " + commitId);
                     for (Refactoring ref : refactorings) {
                         System.out.println(ref.toString());

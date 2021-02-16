@@ -19,7 +19,7 @@ public class EditorUtils {
         String filePath = virtualFile.getPath();
         Project project = editor.getProject();
         String projectPath = project.getBasePath();
-        return filePath.replaceAll(projectPath, "");
+        return filePath.replaceAll(projectPath + "/", "");
     }
 
     public static String getCurrentFileContent(Editor editor) {
