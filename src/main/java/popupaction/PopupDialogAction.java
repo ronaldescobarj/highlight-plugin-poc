@@ -3,40 +3,16 @@ package popupaction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerItem;
-import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerManager;
 import git.GitLocal;
-import gr.uom.java.xmi.UMLModel;
-import gr.uom.java.xmi.UMLModelASTReader;
-import gr.uom.java.xmi.diff.UMLModelDiff;
-import models.refactoringminer.RefactoringMinerOutput;
 import org.eclipse.jgit.lib.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.refactoringminer.api.*;
 import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
 import org.refactoringminer.util.GitServiceImpl;
-import refactoringminer.RefactoringMinerCmd;
-import visualelements.VisualElementFactory;
-import visualelements.VisualElementWrapper;
-
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PopupDialogAction extends AnAction {
 
@@ -58,13 +34,46 @@ public class PopupDialogAction extends AnAction {
 //            System.out.println("error");
 //        }
         //intentar directo con repo
+        GitService gitService = new GitServiceImpl();
+        GitHistoryRefactoringMiner miner = new GitHistoryRefactoringMinerImpl();
+//        String projectPath = event.getProject().getBasePath();
+//        GitLocal gitLocal = new GitLocal(projectPath);
+//        gitLocal.openRepository();
+//        String commitSha = gitLocal.getLatestCommit().getName();
+//        Repository repo = gitLocal.getRepository();
+//        miner.detectAtCommit(repo, commitSha, new RefactoringHandler() {
+//            @Override
+//            public void handle(String commitId, List<Refactoring> refactorings) {
+//                System.out.println("Refactorings at " + commitId);
+//                for (Refactoring ref : refactorings) {
+//                    System.out.println(ref.toString());
+//                }
+//            }
+//        });
 
-        String projectPath = event.getProject().getBasePath();
-        GitLocal gitLocal = new GitLocal(projectPath);
-        gitLocal.openRepository();
-        String commitSha = gitLocal.getLatestCommit().getName();
-        RefactoringMinerCmd refactoringMinerCmd = new RefactoringMinerCmd();
-        RefactoringMinerOutput output = refactoringMinerCmd.runRefactoringMiner(projectPath, commitSha);
+        Repository repo = null;
+        try {
+            repo = gitService.cloneIfNotExists(
+                    "tmp/refactoring-toy-example",
+                    "https://github.com/danilofes/refactoring-toy-example.git");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            miner.detectAll(repo, "master", new RefactoringHandler() {
+                @Override
+                public void handle(String commitId, List<Refactoring> refactorings) {
+                    System.out.println("Refactorings at " + commitId);
+                    for (Refactoring ref : refactorings) {
+                        System.out.println(ref.toString());
+                    }
+                }
+            });
+            System.out.println("test");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Project currentProject = event.getProject();
         StringBuilder dlgMsg = new StringBuilder(event.getPresentation().getText() + " Selected!");
         String dlgTitle = event.getPresentation().getDescription();

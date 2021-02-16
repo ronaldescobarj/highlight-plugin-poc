@@ -10,15 +10,29 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+configurations {
+    externalLibs
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-//    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation files('libs/DiffGenerator.jar')
+    compile group: 'com.github.tsantalis', name: 'refactoring-miner', version: '2.0.3'
+//    compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.10.0.202012080955-r'
+//    implementation files('libs/DiffGenerator.jar')
+//    implementation files('libs/DG.jar')
+    implementation files('libs/dgNoDependencies.jar')
+    implementation files('libs/dgClassifier.jar')
+    implementation files('libs/dgMatchers.jar')
+    implementation files('libs/dgDiff.jar')
+    implementation files('libs/gt1.jar')
+    implementation files('libs/gt2.jar')
     implementation files('libs/EditorCoverLayer.jar')
-    implementation files('libs/RefactoringMiner-2.0.2.jar')
-//    runtimeOnly fileTree('libs') { include '*.jar' }
+//    implementation files('libs/refactoring-miner-2.0.3.jar')
+//    compile files('libs/refactoring-miner-2.0.3.jar')
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
 }
 
