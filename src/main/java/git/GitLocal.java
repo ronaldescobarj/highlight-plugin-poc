@@ -68,6 +68,9 @@ public class GitLocal {
         RevCommit[] parents = commit.getParents().length > 0 ? commit.getParents() : new RevCommit[]{ null };
         try {
             List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
+            if (diffs.size() == 0) {
+                return null;
+            }
             return diffs.get(0);
         } catch (IOException exception) {
             return null;

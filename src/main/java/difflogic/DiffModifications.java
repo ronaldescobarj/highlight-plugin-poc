@@ -8,6 +8,7 @@ import models.*;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,9 @@ public class DiffModifications {
 
     private List<DiffRow> generateDiffWithPreviousCommit(RevCommit commit, String fileName, GitLocal gitLocal) {
         DiffEntry diff = gitLocal.getFileDiffWithPreviousCommit(commit, fileName);
+        if (diff == null) {
+            return new ArrayList<>();
+        }
         String previousCommitFileContent = gitLocal.getPreviousCommitFileContent(diff);
         String currentCommitFileContent = gitLocal.getCurrentCommitFileContent(diff);
         return CompareUtils.getDiffChanges(previousCommitFileContent, currentCommitFileContent);
