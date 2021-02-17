@@ -9,9 +9,12 @@ import models.DiffRow;
 import models.refactoringminer.RefactoringMinerOutput;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.refactoringminer.api.Refactoring;
 import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,9 @@ public class DiffMapGenerator {
         Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
         RefactoringMinerOutput refactoringMinerOutput = refactoringGenerator.generateRefactorings(editor.getProject());
+
+        List<Refactoring> myRefactorings = refactoringGenerator.getRefactorings(projectPath);
+
         Map<Integer, List<Data>> diffMap = getLatestDiffMap(editor, gitLocal);
         diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
         RefactoringMinerUtils.addRefactoringsToMap(refactoringMinerOutput, diffMap, filePath);
@@ -35,6 +41,9 @@ public class DiffMapGenerator {
 
     private Map<Integer, List<Data>> getLatestDiffMap(Editor editor, GitLocal gitLocal) {
         DiffEntry diffEntry = gitLocal.getDiffEntry(editor);
+        if (diffEntry == null) {
+            return new HashMap<Integer, List<Data>>();
+        }
         String currentFileContent = gitLocal.getCurrentCommitFileContent(diffEntry);
         String previousFileContent = gitLocal.getPreviousCommitFileContent(diffEntry);
         RevCommit latestCommit = gitLocal.getLatestCommit();

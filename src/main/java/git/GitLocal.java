@@ -130,6 +130,9 @@ public class GitLocal {
         try {
             if (parents.length != 0) {
                 List<DiffEntry> diffs = diffFormatter.scan(parents[0], commit.getTree());
+                if (diffs.size() == 0) {
+                    return null;
+                }
                 return diffs.get(0);
             }
             return null;
