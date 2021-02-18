@@ -31,7 +31,6 @@ public class RefactoringGenerator {
         gitLocal.openRepository();
         String commitSha = gitLocal.getLatestCommit().getName();
         Repository repo = gitLocal.getRepository();
-        GitService gitService = new GitServiceImpl();
         GitHistoryRefactoringMiner miner = new GitHistoryRefactoringMinerImpl();
         List<Refactoring> myRefactorings = new ArrayList<>();
         miner.detectAtCommit(repo, commitSha, new RefactoringHandler() {
@@ -40,7 +39,6 @@ public class RefactoringGenerator {
                 myRefactorings.addAll(refactorings);
             }
         });
-        System.out.println("test");
         return myRefactorings;
     }
 }

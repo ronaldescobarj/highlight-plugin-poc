@@ -28,13 +28,12 @@ public class DiffMapGenerator {
         DiffModifications diffModifications = new DiffModifications();
         Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
-        RefactoringMinerOutput refactoringMinerOutput = refactoringGenerator.generateRefactorings(editor.getProject());
-
+//        RefactoringMinerOutput refactoringMinerOutput = refactoringGenerator.generateRefactorings(editor.getProject());
         List<Refactoring> myRefactorings = refactoringGenerator.getRefactorings(projectPath);
-
         Map<Integer, List<Data>> diffMap = getLatestDiffMap(editor, gitLocal);
         diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
-        RefactoringMinerUtils.addRefactoringsToMap(refactoringMinerOutput, diffMap, filePath);
+//        RefactoringMinerUtils.addRefactoringsToMap(refactoringMinerOutput, diffMap, filePath);
+        RefactoringMinerUtils.addRefactoringsToMap(myRefactorings, diffMap, filePath);
         gitLocal.closeRepository();
         return diffMap;
     }
