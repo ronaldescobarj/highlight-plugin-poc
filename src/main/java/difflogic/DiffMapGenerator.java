@@ -6,15 +6,12 @@ import editor.EditorUtils;
 import git.GitLocal;
 import models.Data;
 import models.DiffRow;
-import models.refactoringminer.RefactoringMinerOutput;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.refactoringminer.api.Refactoring;
 import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
-
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

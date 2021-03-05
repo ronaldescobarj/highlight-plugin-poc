@@ -7,14 +7,15 @@ import models.Data;
 import models.DataFactory;
 import models.refactoringminer.Commit;
 import models.refactoringminer.Location;
-import models.refactoringminer.Refactoring;
+//import models.refactoringminer.Refactoring;
 import models.refactoringminer.RefactoringMinerOutput;
+import org.refactoringminer.api.Refactoring;
 
 import java.util.List;
 import java.util.Map;
 
 public class RefactoringMinerUtils {
-    public static void addRefactoringsToMap(RefactoringMinerOutput refactoringMinerOutput, Map<Integer, List<Data>> actionsMap, String filePath) {
+    /*public static void addRefactoringsToMap(RefactoringMinerOutput refactoringMinerOutput, Map<Integer, List<Data>> actionsMap, String filePath) {
         for (Refactoring refactoring : refactoringMinerOutput.getRefactorings()) {
             if (refactoring.getType().equals("Extract Method")) {
                 for (Location location : refactoring.getRightSideLocations()) {
@@ -32,10 +33,10 @@ public class RefactoringMinerUtils {
                 }
             }
         }
-    }
+    }*/
 
-    public static void addRefactoringsToMap(List<org.refactoringminer.api.Refactoring> refactorings, Map<Integer, List<Data>> actionsMap, String filePath) {
-        for (org.refactoringminer.api.Refactoring refactoring: refactorings) {
+    public static void addRefactoringsToMap(List<Refactoring> refactorings, Map<Integer, List<Data>> actionsMap, String filePath) {
+        for (Refactoring refactoring: refactorings) {
             if (refactoring instanceof ExtractOperationRefactoring) {
                 ExtractOperationRefactoring extractOperationRefactoring = (ExtractOperationRefactoring) refactoring;
                 if (extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath().equals(filePath)) {
