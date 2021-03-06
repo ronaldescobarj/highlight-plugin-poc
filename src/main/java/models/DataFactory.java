@@ -56,6 +56,8 @@ public class DataFactory {
                 return new RenameMethod(attributes);
             case "RENAME_VARIABLE":
                 return new RenameVariable(attributes);
+            case "RENAME_CLASS":
+                return new RenameClass(attributes);
             case "CHANGE_ATTRIBUTE_TYPE":
                 return new ChangeAttributeType(attributes);
             case "CHANGE_RETURN_TYPE":

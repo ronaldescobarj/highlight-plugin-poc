@@ -28,6 +28,8 @@ public class VisualElementFactory {
                 return new RenameMethodVisualElement(psiElement);
             case "RENAME_VARIABLE":
                 return new RenameVariableVisualElement(psiElement);
+            case "RENAME_CLASS":
+                return new RenameClassVisualElement(psiElement);
             case "CHANGE_ATTRIBUTE_TYPE":
                 return new ChangeAttributeTypeVisualElement(psiElement);
             case "CHANGE_RETURN_TYPE":

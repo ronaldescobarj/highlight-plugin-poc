@@ -44,6 +44,8 @@ public class RefactoringMinerUtils {
                 handleRenameVariable(actionsMap, filePath, (RenameVariableRefactoring) refactoring);
             } else if (refactoring instanceof RenameOperationRefactoring) {
                 handleRenameOperation(actionsMap, filePath, (RenameOperationRefactoring) refactoring);
+            } else if (refactoring instanceof RenameClassRefactoring) {
+                handleRenameClass(actionsMap, filePath, (RenameClassRefactoring) refactoring);
             } else if (refactoring instanceof ChangeAttributeTypeRefactoring) {
                 handleChangeAttributeType(actionsMap, filePath, (ChangeAttributeTypeRefactoring) refactoring);
             } else if (refactoring instanceof ChangeReturnTypeRefactoring) {
@@ -85,6 +87,14 @@ public class RefactoringMinerUtils {
         if (renameOperationRefactoring.getRenamedOperation().getLocationInfo().getFilePath().equals(filePath)) {
             Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName());
             ActionsUtils.addActionToLine(actionsMap, renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartLine(), action);
+        }
+    }
+
+    private static void handleRenameClass(Map<Integer, List<Data>> actionsMap, String filePath, RenameClassRefactoring renameClassRefactoring) {
+        if (renameClassRefactoring.getRenamedClass().getLocationInfo().getFilePath().equals(filePath)) {
+            String[] classParts = renameClassRefactoring.getOriginalClassName().split("\\.");
+            Data action = DataFactory.createRefactoringData("RENAME_CLASS", classParts[classParts.length - 1]);
+            ActionsUtils.addActionToLine(actionsMap, renameClassRefactoring.getRenamedClass().getLocationInfo().getStartLine(), action);
         }
     }
 
