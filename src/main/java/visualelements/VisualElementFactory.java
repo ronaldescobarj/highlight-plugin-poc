@@ -5,7 +5,7 @@ import visualelements.actions.DeletedVisualElement;
 import visualelements.actions.InsertedVisualElement;
 import visualelements.actions.MovedVisualElement;
 import visualelements.actions.UpdatedVisualElement;
-import visualelements.refactorings.ExtractedMethodVisualElement;
+import visualelements.refactorings.*;
 
 import javax.swing.*;
 
@@ -22,6 +22,20 @@ public class VisualElementFactory {
                 return new DeletedVisualElement(psiElement);
             case "EXTRACTED_METHOD":
                 return new ExtractedMethodVisualElement(psiElement);
+            case "RENAME_PARAMETER":
+                return new RenameParameterVisualElement(psiElement);
+            case "RENAME_METHOD":
+                return new RenameMethodVisualElement(psiElement);
+            case "RENAME_VARIABLE":
+                return new RenameVariableVisualElement(psiElement);
+            case "CHANGE_ATTRIBUTE_TYPE":
+                return new ChangeAttributeTypeVisualElement(psiElement);
+            case "CHANGE_RETURN_TYPE":
+                return new ChangeReturnTypeVisualElement(psiElement);
+            case "CHANGE_PARAMETER_TYPE":
+                return new ChangeParameterTypeVisualElement(psiElement);
+            case "CHANGE_VARIABLE_TYPE":
+                return new ChangeVariableTypeVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:
