@@ -4,25 +4,16 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerItem;
 import de.unitrier.st.insituprofiling.core.editorcoverlayer.EditorCoverLayerManager;
 import models.Data;
-import models.ExtractedMethod;
-import models.UpdatedMultipleTimes;
-import org.jetbrains.annotations.NotNull;
-import visualelements.events.VisualElementMouseEventsHandler;
+
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VisualElementsUtils {
 

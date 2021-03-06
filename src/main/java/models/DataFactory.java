@@ -1,10 +1,8 @@
 package models;
 
-import com.intellij.psi.PsiElement;
+import models.refactorings.*;
 import org.eclipse.jgit.lib.PersonIdent;
-import visualelements.*;
 
-import javax.swing.*;
 import java.time.LocalDateTime;
 
 public class DataFactory {
@@ -41,6 +39,31 @@ public class DataFactory {
                 return new Deleted(author, commitDate);
             case "UPD_MULTIPLE_TIMES":
                 return new UpdatedMultipleTimes(author, commitDate);
+            default:
+                return null;
+        }
+    }
+
+    public static RefactoringData createRefactoringData(String type, String... attributes) {
+        switch (type) {
+            case "EXTRACTED_METHOD":
+                return new ExtractedMethod();
+            case "EXTRACTED_METHOD_CALL":
+                return new ExtractedMethodCall();
+            case "RENAME_PARAMETER":
+                return new RenameParameter(attributes);
+            case "RENAME_METHOD":
+                return new RenameMethod(attributes);
+            case "RENAME_VARIABLE":
+                return new RenameVariable(attributes);
+            case "CHANGE_ATTRIBUTE_TYPE":
+                return new ChangeAttributeType(attributes);
+            case "CHANGE_RETURN_TYPE":
+                return new ChangeReturnType(attributes);
+            case "CHANGE_PARAMETER_TYPE":
+                return new ChangeParameterType(attributes);
+            case "CHANGE_VARIABLE_TYPE":
+                return new ChangeVariableType(attributes);
             default:
                 return null;
         }

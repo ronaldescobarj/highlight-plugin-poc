@@ -1,4 +1,4 @@
-package models;
+package models.refactorings;
 
 public class ExtractedMethodCall extends RefactoringData {
     public ExtractedMethodCall() {
