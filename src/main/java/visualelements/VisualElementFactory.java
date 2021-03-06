@@ -36,6 +36,12 @@ public class VisualElementFactory {
                 return new ChangeParameterTypeVisualElement(psiElement);
             case "CHANGE_VARIABLE_TYPE":
                 return new ChangeVariableTypeVisualElement(psiElement);
+            case "REMOVE_PARAMETER":
+                return new RemoveParameterVisualElement(psiElement);
+            case "ADD_PARAMETER":
+                return new AddParameterVisualElement(psiElement);
+            case "REORDER_PARAMETER":
+                return new ReorderParameterVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:

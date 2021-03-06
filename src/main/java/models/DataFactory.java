@@ -64,6 +64,12 @@ public class DataFactory {
                 return new ChangeParameterType(attributes);
             case "CHANGE_VARIABLE_TYPE":
                 return new ChangeVariableType(attributes);
+            case "REMOVE_PARAMETER":
+                return new RemoveParameter(attributes);
+            case "ADD_PARAMETER":
+                return new AddParameter(attributes);
+            case "REORDER_PARAMETER":
+                return new ReorderParameter(attributes);
             default:
                 return null;
         }

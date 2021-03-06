@@ -13,6 +13,7 @@ import org.refactoringminer.api.Refactoring;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RefactoringMinerUtils {
     /*public static void addRefactoringsToMap(RefactoringMinerOutput refactoringMinerOutput, Map<Integer, List<Data>> actionsMap, String filePath) {
@@ -36,7 +37,7 @@ public class RefactoringMinerUtils {
     }*/
 
     public static void addRefactoringsToMap(List<Refactoring> refactorings, Map<Integer, List<Data>> actionsMap, String filePath) {
-        for (Refactoring refactoring: refactorings) {
+        for (Refactoring refactoring : refactorings) {
             if (refactoring instanceof ExtractOperationRefactoring) {
                 handleExtractOperation(actionsMap, filePath, (ExtractOperationRefactoring) refactoring);
             } else if (refactoring instanceof RenameVariableRefactoring) {
@@ -49,6 +50,12 @@ public class RefactoringMinerUtils {
                 handleChangeReturnType(actionsMap, filePath, (ChangeReturnTypeRefactoring) refactoring);
             } else if (refactoring instanceof ChangeVariableTypeRefactoring) {
                 handleChangeVariableType(actionsMap, filePath, (ChangeVariableTypeRefactoring) refactoring);
+            } else if (refactoring instanceof RemoveParameterRefactoring) {
+                handleRemoveParameter(actionsMap, filePath, (RemoveParameterRefactoring) refactoring);
+            } else if (refactoring instanceof AddParameterRefactoring) {
+                handleAddParameter(actionsMap, filePath, (AddParameterRefactoring) refactoring);
+            } else if (refactoring instanceof ReorderParameterRefactoring) {
+                handleReorderParameter(actionsMap, filePath, (ReorderParameterRefactoring) refactoring);
             }
         }
     }
@@ -58,7 +65,7 @@ public class RefactoringMinerUtils {
             Data action = DataFactory.createData("EXTRACTED_METHOD", null, null);
             ActionsUtils.addActionToLine(actionsMap, extractOperationRefactoring.getExtractedOperation().getLocationInfo().getStartLine(), action);
         }
-        for (OperationInvocation call: extractOperationRefactoring.getExtractedOperationInvocations()) {
+        for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             if (call.getLocationInfo().getFilePath().equals(filePath)) {
                 Data action = DataFactory.createData("EXTRACTED_METHOD_CALL", null, null);
                 ActionsUtils.addActionToLine(actionsMap, call.getLocationInfo().getStartLine(), action);
@@ -100,6 +107,28 @@ public class RefactoringMinerUtils {
             final String refactoringType = changeVariableTypeRefactoring.getChangedTypeVariable().isParameter() ? "CHANGE_PARAMETER_TYPE" : "CHANGE_VARIABLE_TYPE";
             Data action = DataFactory.createRefactoringData(refactoringType, changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType());
             ActionsUtils.addActionToLine(actionsMap, changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getStartLine(), action);
+        }
+    }
+
+    private static void handleRemoveParameter(Map<Integer, List<Data>> actionsMap, String filePath, RemoveParameterRefactoring removeParameterRefactoring) {
+        if (removeParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
+            Data action = DataFactory.createRefactoringData("REMOVE_PARAMETER", removeParameterRefactoring.getParameter().getType().getClassType(), removeParameterRefactoring.getParameter().getName());
+            ActionsUtils.addActionToLine(actionsMap, removeParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
+        }
+    }
+
+    private static void handleAddParameter(Map<Integer, List<Data>> actionsMap, String filePath, AddParameterRefactoring addParameterRefactoring) {
+        if (addParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
+            Data action = DataFactory.createRefactoringData("ADD_PARAMETER", addParameterRefactoring.getParameter().getType().getClassType(), addParameterRefactoring.getParameter().getName());
+            ActionsUtils.addActionToLine(actionsMap, addParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
+        }
+    }
+
+    private static void handleReorderParameter(Map<Integer, List<Data>> actionsMap, String filePath, ReorderParameterRefactoring reorderParameterRefactoring) {
+        if (reorderParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
+            List<String> oldParametersOrder = reorderParameterRefactoring.getParametersBefore().stream().map(parameter -> parameter.getType().getClassType() + " " + parameter.getVariableName()).collect(Collectors.toList());
+            Data action = DataFactory.createRefactoringData("REORDER_PARAMETER", oldParametersOrder.toArray(new String[oldParametersOrder.size()]));
+            ActionsUtils.addActionToLine(actionsMap, reorderParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
         }
     }
 }

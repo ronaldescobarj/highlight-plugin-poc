@@ -9,7 +9,7 @@ public class PopupContent extends JLabel {
     public PopupContent(String content) {
         this.setLayout(new FlowLayout());
         JLabel jl = new JLabel(content);
-        jl.setSize(100, 40);
+        jl.setSize(150, 40);
         jl.setOpaque(true);
         jl.setBackground(JBColor.LIGHT_GRAY);
         jl.setForeground(JBColor.BLACK);
