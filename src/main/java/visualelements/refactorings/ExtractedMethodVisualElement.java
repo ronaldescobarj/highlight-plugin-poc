@@ -1,7 +1,8 @@
-package visualelements;
+package visualelements.refactorings;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.ui.JBColor;
+import visualelements.VisualElement;
 
 import javax.swing.*;
 import java.awt.*;

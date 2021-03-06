@@ -1,6 +1,11 @@
 package visualelements;
 
 import com.intellij.psi.PsiElement;
+import visualelements.actions.DeletedVisualElement;
+import visualelements.actions.InsertedVisualElement;
+import visualelements.actions.MovedVisualElement;
+import visualelements.actions.UpdatedVisualElement;
+import visualelements.refactorings.ExtractedMethodVisualElement;
 
 import javax.swing.*;
 
