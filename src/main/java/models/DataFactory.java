@@ -72,6 +72,10 @@ public class DataFactory {
                 return new AddParameter(attributes);
             case "REORDER_PARAMETER":
                 return new ReorderParameter(attributes);
+            case "EXTRACT_INTERFACE":
+                return new ExtractInterface(attributes);
+            case "EXTRACT_SUPERCLASS":
+                return new ExtractSuperclass(attributes);
             default:
                 return null;
         }

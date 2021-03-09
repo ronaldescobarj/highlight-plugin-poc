@@ -44,6 +44,10 @@ public class VisualElementFactory {
                 return new AddParameterVisualElement(psiElement);
             case "REORDER_PARAMETER":
                 return new ReorderParameterVisualElement(psiElement);
+            case "EXTRACT_INTERFACE":
+                return new ExtractInterfaceVisualElement(psiElement);
+            case "EXTRACT_SUPERCLASS":
+                return new ExtractSuperclassVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:

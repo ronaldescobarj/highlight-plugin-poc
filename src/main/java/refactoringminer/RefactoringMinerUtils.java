@@ -1,6 +1,8 @@
 package refactoringminer;
 
 import actions.ActionsUtils;
+import gr.uom.java.xmi.LocationInfo;
+import gr.uom.java.xmi.UMLClass;
 import gr.uom.java.xmi.decomposition.OperationInvocation;
 import gr.uom.java.xmi.diff.*;
 import models.Data;
@@ -11,6 +13,7 @@ import models.refactoringminer.Location;
 import models.refactoringminer.RefactoringMinerOutput;
 import org.refactoringminer.api.Refactoring;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,6 +61,8 @@ public class RefactoringMinerUtils {
                 handleAddParameter(actionsMap, filePath, (AddParameterRefactoring) refactoring);
             } else if (refactoring instanceof ReorderParameterRefactoring) {
                 handleReorderParameter(actionsMap, filePath, (ReorderParameterRefactoring) refactoring);
+            } else if (refactoring instanceof ExtractSuperclassRefactoring) {
+                handleExtractSuperclass(actionsMap, filePath, (ExtractSuperclassRefactoring) refactoring);
             }
         }
     }
@@ -141,4 +146,20 @@ public class RefactoringMinerUtils {
             ActionsUtils.addActionToLine(actionsMap, reorderParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
         }
     }
+
+    private static void handleExtractSuperclass(Map<Integer, List<Data>> actionsMap, String filePath, ExtractSuperclassRefactoring extractSuperclassRefactoring) {
+        final String refactoringType = extractSuperclassRefactoring.getExtractedClass().isInterface() ? "EXTRACT_INTERFACE" : "EXTRACT_SUPERCLASS";
+        List<String> subclasses = new ArrayList<>(extractSuperclassRefactoring.getSubclassSet());
+        Data action = DataFactory.createRefactoringData(refactoringType, subclasses.toArray(new String[subclasses.size()]));
+        for (UMLClass umlClass: extractSuperclassRefactoring.getUMLSubclassSet()) {
+            if (umlClass.getLocationInfo().getFilePath().equals(filePath)) {
+                ActionsUtils.addActionToLine(actionsMap, umlClass.getLocationInfo().getStartLine(), action);
+            }
+        }
+        LocationInfo extractedClassLocation = extractSuperclassRefactoring.getExtractedClass().getLocationInfo();
+        if (extractedClassLocation.getFilePath().equals(filePath)) {
+            ActionsUtils.addActionToLine(actionsMap, extractedClassLocation.getStartLine(), action);
+        }
+    }
+
 }
