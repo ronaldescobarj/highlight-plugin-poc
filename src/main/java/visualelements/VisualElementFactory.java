@@ -52,6 +52,10 @@ public class VisualElementFactory {
                 return new PullUpAttributeVisualElement(psiElement);
             case "PULL_UP_METHOD":
                 return new PullUpMethodVisualElement(psiElement);
+            case "PUSH_DOWN_ATTRIBUTE":
+                return new PushDownAttributeVisualElement(psiElement);
+            case "PUSH_DOWN_METHOD":
+                return new PushDownMethodVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:

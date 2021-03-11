@@ -69,6 +69,10 @@ public class RefactoringMinerUtils {
                 handlePullUpAttribute(actionsMap, filePath, (PullUpAttributeRefactoring) refactoring);
             } else if (refactoring instanceof PullUpOperationRefactoring) {
                 handlePullUpOperation(actionsMap, filePath, (PullUpOperationRefactoring) refactoring);
+            } else if (refactoring instanceof PushDownAttributeRefactoring) {
+                handlePushDownAttribute(actionsMap, filePath, (PushDownAttributeRefactoring) refactoring);
+            } else if (refactoring instanceof PushDownOperationRefactoring) {
+                handlePushDownOperation(actionsMap, filePath, (PushDownOperationRefactoring) refactoring);
             }
         }
     }
@@ -179,6 +183,20 @@ public class RefactoringMinerUtils {
         if (pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getFilePath().equals(filePath)) {
             Data action = DataFactory.createRefactoringData("PULL_UP_METHOD", pullUpOperationRefactoring.getMovedOperation().getClassName(), pullUpOperationRefactoring.getOriginalOperation().getClassName());
             ActionsUtils.addPullUpMethod(actionsMap, pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getStartLine(), (PullUpMethod) action);
+        }
+    }
+
+    private static void handlePushDownAttribute(Map<Integer, List<Data>> actionsMap, String filePath, PushDownAttributeRefactoring pushDownAttributeRefactoring) {
+        if (pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
+            Data action = DataFactory.createRefactoringData("PUSH_DOWN_ATTRIBUTE", pushDownAttributeRefactoring.getOriginalAttribute().getClassName());
+            ActionsUtils.addActionToLine(actionsMap, pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), action);
+        }
+    }
+
+    private static void handlePushDownOperation(Map<Integer, List<Data>> actionsMap, String filePath, PushDownOperationRefactoring pushDownOperationRefactoring) {
+        if (pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getFilePath().equals(filePath)) {
+            Data action = DataFactory.createRefactoringData("PUSH_DOWN_METHOD", pushDownOperationRefactoring.getOriginalOperation().getClassName());
+            ActionsUtils.addActionToLine(actionsMap, pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getStartLine(), action);
         }
     }
 

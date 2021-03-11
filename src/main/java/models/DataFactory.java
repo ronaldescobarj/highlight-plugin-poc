@@ -80,6 +80,10 @@ public class DataFactory {
                 return new PullUpAttribute(attributes);
             case "PULL_UP_METHOD":
                 return new PullUpMethod(attributes);
+            case "PUSH_DOWN_ATTRIBUTE":
+                return new PushDownAttribute(attributes);
+            case "PUSH_DOWN_METHOD":
+                return new PushDownMethod(attributes);
             default:
                 return null;
         }
