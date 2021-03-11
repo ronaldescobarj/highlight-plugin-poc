@@ -78,6 +78,8 @@ public class DataFactory {
                 return new ExtractSuperclass(attributes);
             case "PULL_UP_ATTRIBUTE":
                 return new PullUpAttribute(attributes);
+            case "PULL_UP_METHOD":
+                return new PullUpMethod(attributes);
             default:
                 return null;
         }

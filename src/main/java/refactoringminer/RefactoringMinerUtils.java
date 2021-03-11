@@ -12,6 +12,7 @@ import models.refactoringminer.Location;
 //import models.refactoringminer.Refactoring;
 import models.refactoringminer.RefactoringMinerOutput;
 import models.refactorings.PullUpAttribute;
+import models.refactorings.PullUpMethod;
 import org.refactoringminer.api.Refactoring;
 
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class RefactoringMinerUtils {
                 handleExtractSuperclass(actionsMap, filePath, (ExtractSuperclassRefactoring) refactoring);
             } else if (refactoring instanceof PullUpAttributeRefactoring) {
                 handlePullUpAttribute(actionsMap, filePath, (PullUpAttributeRefactoring) refactoring);
+            } else if (refactoring instanceof PullUpOperationRefactoring) {
+                handlePullUpOperation(actionsMap, filePath, (PullUpOperationRefactoring) refactoring);
             }
         }
     }
@@ -169,6 +172,13 @@ public class RefactoringMinerUtils {
         if (pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
             Data action = DataFactory.createRefactoringData("PULL_UP_ATTRIBUTE", pullUpAttributeRefactoring.getMovedAttribute().getClassName(), pullUpAttributeRefactoring.getOriginalAttribute().getClassName());
             ActionsUtils.addPullUpAttribute(actionsMap, pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), (PullUpAttribute) action);
+        }
+    }
+
+    private static void handlePullUpOperation(Map<Integer, List<Data>> actionsMap, String filePath, PullUpOperationRefactoring pullUpOperationRefactoring) {
+        if (pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getFilePath().equals(filePath)) {
+            Data action = DataFactory.createRefactoringData("PULL_UP_METHOD", pullUpOperationRefactoring.getMovedOperation().getClassName(), pullUpOperationRefactoring.getOriginalOperation().getClassName());
+            ActionsUtils.addPullUpMethod(actionsMap, pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getStartLine(), (PullUpMethod) action);
         }
     }
 
