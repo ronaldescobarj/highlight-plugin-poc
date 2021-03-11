@@ -24,8 +24,7 @@ public class VisualElementWrapper extends VisualElement {
             width += visualElementWidth;
             int visualElementHeight = visualElement.getHeight();
             height = Math.max(height, visualElementHeight);
-            JBPopup popup = PopupUtils.createPopup(action);
-            VisualElementMouseEventsHandler handler = new VisualElementMouseEventsHandler(popup, editor);
+            VisualElementMouseEventsHandler handler = new VisualElementMouseEventsHandler(editor, action);
             visualElement.addMouseListener(handler);
             this.add(visualElement);
         }
