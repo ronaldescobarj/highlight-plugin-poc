@@ -11,6 +11,7 @@ import models.refactoringminer.Commit;
 import models.refactoringminer.Location;
 //import models.refactoringminer.Refactoring;
 import models.refactoringminer.RefactoringMinerOutput;
+import models.refactorings.PullUpAttribute;
 import org.refactoringminer.api.Refactoring;
 
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class RefactoringMinerUtils {
                 handleReorderParameter(actionsMap, filePath, (ReorderParameterRefactoring) refactoring);
             } else if (refactoring instanceof ExtractSuperclassRefactoring) {
                 handleExtractSuperclass(actionsMap, filePath, (ExtractSuperclassRefactoring) refactoring);
+            } else if (refactoring instanceof PullUpAttributeRefactoring) {
+                handlePullUpAttribute(actionsMap, filePath, (PullUpAttributeRefactoring) refactoring);
             }
         }
     }
@@ -159,6 +162,13 @@ public class RefactoringMinerUtils {
         LocationInfo extractedClassLocation = extractSuperclassRefactoring.getExtractedClass().getLocationInfo();
         if (extractedClassLocation.getFilePath().equals(filePath)) {
             ActionsUtils.addActionToLine(actionsMap, extractedClassLocation.getStartLine(), action);
+        }
+    }
+
+    private static void handlePullUpAttribute(Map<Integer, List<Data>> actionsMap, String filePath, PullUpAttributeRefactoring pullUpAttributeRefactoring) {
+        if (pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
+            Data action = DataFactory.createRefactoringData("PULL_UP_ATTRIBUTE", pullUpAttributeRefactoring.getMovedAttribute().getClassName(), pullUpAttributeRefactoring.getOriginalAttribute().getClassName());
+            ActionsUtils.addPullUpAttribute(actionsMap, pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), (PullUpAttribute) action);
         }
     }
 

@@ -48,6 +48,8 @@ public class VisualElementFactory {
                 return new ExtractInterfaceVisualElement(psiElement);
             case "EXTRACT_SUPERCLASS":
                 return new ExtractSuperclassVisualElement(psiElement);
+            case "PULL_UP_ATTRIBUTE":
+                return new PullUpAttributeVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:
