@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.ui.awt.RelativePoint;
 import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import models.Data;
 import visualelements.PopupContent;
@@ -35,7 +36,7 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
         this.jbPopup = PopupUtils.createPopup(action);
-        jbPopup.showInBestPositionFor(editor);
+        jbPopup.show(new RelativePoint(e));
     }
 
     @Override
