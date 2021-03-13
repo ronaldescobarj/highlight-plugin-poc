@@ -2,6 +2,7 @@ package onopenproject;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
+import git.GitLocal;
 import git.GitRemote;
 import org.jetbrains.annotations.NotNull;
 import org.refactoringminer.api.Refactoring;
@@ -17,13 +18,10 @@ public class OnOpenProject implements ProjectManagerListener {
     public void projectOpened(@NotNull Project project) {
         String projectPath = project.getBasePath();
         GitService gitService = project.getService(GitService.class);
-        GitRemote gitRemote = new GitRemote();
-        String gitRemoteUrl = gitRemote.getRemoteUrlFromCmd(projectPath);
-        String repoOwner = gitRemote.getRepoOwnerFromRemoteUrl(gitRemoteUrl);
-        String repoName = gitRemote.getRepoNameFromRemoteUrl(gitRemoteUrl);
-        gitService.setRemoteUrl(gitRemoteUrl);
-        gitService.setRepoOwner(repoOwner);
-        gitService.setRepoName(repoName);
+        GitLocal gitLocal = new GitLocal(projectPath);
+        gitLocal.openRepository();
+        gitService.setRepository(gitLocal.getRepository());
+        gitService.setLatestCommitHash(gitLocal.getLatestCommit().getName());
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
         List<Refactoring> myRefactorings = refactoringGenerator.getRefactorings(projectPath);
         RefactoringService refactoringService = project.getService(RefactoringService.class);

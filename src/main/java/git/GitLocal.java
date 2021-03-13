@@ -63,6 +63,16 @@ public class GitLocal {
         }
     }
 
+    public RevCommit getLatestCommit(Repository repository) {
+        try {
+            Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
+            List<RevCommit> commitsList = new ArrayList<>(commits);
+            return commitsList.get(0);
+        } catch (IOException exception) {
+            return null;
+        }
+    }
+
     public DiffEntry getFileDiffWithPreviousCommit(RevCommit commit, String fileName) {
         DiffFormatter diffFormatter = createDiffFormatter(fileName);
         RevCommit[] parents = commit.getParents().length > 0 ? commit.getParents() : new RevCommit[]{ null };
