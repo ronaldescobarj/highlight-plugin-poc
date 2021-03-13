@@ -9,7 +9,7 @@ public class ChangeAttributeType extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "Old type:" + oldType + "<br>";
+        return "<b>Old type:</b> " + oldType + "<br>";
     }
 
     @Override

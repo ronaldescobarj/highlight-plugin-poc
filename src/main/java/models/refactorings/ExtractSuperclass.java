@@ -9,7 +9,7 @@ public class ExtractSuperclass extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "Classes that extends:<br>" + getSubclasses();
+        return "<b>Classes that extends:</b><br>" + getSubclasses();
     }
 
     private String getSubclasses() {

@@ -11,7 +11,7 @@ public class ReorderParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "Old parameters order:<br>" + getOldParametersOrderString() + "<br>";
+        return "<b>Old parameters order:</b><br>" + getOldParametersOrderString() + "<br>";
     }
 
     private String getOldParametersOrderString() {

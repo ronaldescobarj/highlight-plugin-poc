@@ -9,7 +9,7 @@ public class PushDownMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "This method was previously in:<br>" + oldParentClass;
+        return "<b>This method was previously in:</b><br>" + oldParentClass;
     }
 
     @Override
