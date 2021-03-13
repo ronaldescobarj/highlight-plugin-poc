@@ -69,11 +69,9 @@ public class PopupDialogAction extends AnAction {
                     myRefactorings.addAll(refactorings);
                     System.out.println("Refactorings at " + commitId);
                     for (Refactoring ref : refactorings) {
-                        System.out.println(ref.toString());
                     }
                 }
             });
-            System.out.println("test");
         } catch (Exception e) {
             e.printStackTrace();
         }

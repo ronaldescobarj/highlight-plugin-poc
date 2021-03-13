@@ -29,7 +29,6 @@ public class DiffHighlighter {
         EditorService editorService = project.getService(EditorService.class);
 //        ArrayList<DiffRow> diffs = editorService.getDiffsOfLastOpenedEditor();z
         diffMap = editorService.getDiffMap();
-        System.out.println("test");
 //        DiffMapper diffMapper = new DiffMapper(diffs);
 //        diffMap = diffMapper.createDiffMap();
     }

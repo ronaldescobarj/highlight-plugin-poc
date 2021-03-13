@@ -23,6 +23,11 @@
 <!--        <editorFactoryDocumentListener implementation="editorevents.OnDocument" />-->
 <!--        this extension point has events for document changes-->
         <editorFactoryMouseListener implementation="editorevents.OnEditorMouse" />
+
+<!--        <fileDocumentManagerListener implementation="editorevents.OnFileDocumentChange" />-->
+<!--        <editorActionHandler action="" implementationClass=""-->
+<!--        <editorNotificationProvider implementation=""-->
+
         <projectService serviceImplementation="services.GitService"/>
         <projectService serviceImplementation="services.EditorService"/>
         <projectService serviceImplementation="services.RefactoringService"/>
