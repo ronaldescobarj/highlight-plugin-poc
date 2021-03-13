@@ -11,6 +11,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.refactoringminer.api.Refactoring;
 import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
+import services.RefactoringService;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +26,10 @@ public class DiffMapGenerator {
         String filePath = EditorUtils.getRelativePath(editor);
         DiffModifications diffModifications = new DiffModifications();
         Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
-        RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
-//        RefactoringMinerOutput refactoringMinerOutput = refactoringGenerator.generateRefactorings(editor.getProject());
-        List<Refactoring> myRefactorings = refactoringGenerator.getRefactorings(projectPath);
+        RefactoringService refactoringService = editor.getProject().getService(RefactoringService.class);
         Map<Integer, List<Data>> diffMap = getLatestDiffMap(editor, gitLocal);
         diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
-//        RefactoringMinerUtils.addRefactoringsToMap(refactoringMinerOutput, diffMap, filePath);
-        RefactoringMinerUtils.addRefactoringsToMap(myRefactorings, diffMap, filePath);
+        RefactoringMinerUtils.addRefactoringsToMap(refactoringService.getRefactorings(), diffMap, filePath);
         gitLocal.closeRepository();
         return diffMap;
     }
