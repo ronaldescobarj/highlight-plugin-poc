@@ -5,16 +5,10 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.psi.tree.IElementType;
 import javalanguage.psi.JavaTypes;
 import models.Data;
-import models.DiffRow;
-import models.ModificationData;
 import services.EditorService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class DiffHighlighter {
     Map<Integer, List<Data>> diffMap;

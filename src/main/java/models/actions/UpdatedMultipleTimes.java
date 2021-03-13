@@ -1,5 +1,7 @@
-package models;
+package models.actions;
 
+import models.DiffRow;
+import models.actions.ModificationData;
 import org.eclipse.jgit.lib.PersonIdent;
 
 import java.time.LocalDateTime;

@@ -11,7 +11,6 @@ public class PopupContent extends JLabel {
         JLabel jl = new JLabel(content);
         jl.setSize(150, 40);
         jl.setOpaque(true);
-        jl.setBackground(JBColor.LIGHT_GRAY);
         jl.setForeground(JBColor.BLACK);
         int width = jl.getWidth();
         int height = jl.getHeight();

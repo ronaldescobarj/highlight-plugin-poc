@@ -1,5 +1,7 @@
-package models;
+package models.actions;
 
+import models.DiffRow;
+import models.actions.ModificationData;
 import org.eclipse.jgit.lib.PersonIdent;
 
 import java.time.LocalDateTime;
@@ -19,9 +21,9 @@ public class Deleted extends ModificationData {
 
     @Override
     public String renderData() {
-        return author.getName() + "<br>" +
-                author.getEmailAddress() + "<br>" +
-                getDateTimeString() + "<br>";
+        return "<b>Author username:</b> " + author.getName() + "<br>" +
+                "<b>Author email:</b> " + author.getEmailAddress() + "<br>" +
+                "<b>Commit datetime:</b> " + getDateTimeString() + "<br>";
     }
 
     @Override

@@ -1,7 +1,7 @@
 package difflogic;
 
 import models.Data;
-import models.ModificationData;
+import models.actions.ModificationData;
 
 import java.util.List;
 import java.util.stream.Collectors;

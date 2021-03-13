@@ -1,15 +1,13 @@
 package actions;
 
 import models.Data;
-import models.ModificationData;
+import models.actions.ModificationData;
 import models.refactorings.PullUpAttribute;
 import models.refactorings.PullUpMethod;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ActionsUtils {
     public static void addActionToLine(Map<Integer, List<Data>> actionsMap, int line, Data action) {

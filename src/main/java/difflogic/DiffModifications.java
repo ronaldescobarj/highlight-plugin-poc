@@ -1,10 +1,10 @@
 package difflogic;
 
-import at.aau.softwaredynamics.classifier.entities.SourceCodeChange;
-import com.intellij.workspaceModel.storage.bridgeEntities.ModifiableArchivePackagingElementEntity;
 import compare.CompareUtils;
 import git.GitLocal;
 import models.*;
+import models.actions.Inserted;
+import models.actions.Updated;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
 

@@ -2,6 +2,7 @@ package difflogic;
 
 import actions.ActionsUtils;
 import models.*;
+import models.actions.ModificationData;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
