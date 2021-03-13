@@ -7,11 +7,11 @@ import models.refactoringminer.RefactoringMinerOutput;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.refactoringminer.api.GitHistoryRefactoringMiner;
-import org.refactoringminer.api.GitService;
 import org.refactoringminer.api.Refactoring;
 import org.refactoringminer.api.RefactoringHandler;
 import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
 import org.refactoringminer.util.GitServiceImpl;
+import services.GitService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,21 +19,21 @@ import java.util.List;
 public class RefactoringGenerator {
     public RefactoringMinerOutput generateRefactorings(Project project) {
         String projectPath = project.getBasePath();
-        GitLocal gitLocal = new GitLocal(projectPath);
-        gitLocal.openRepository();
+        GitService gitService = project.getService(GitService.class);
+        GitLocal gitLocal = new GitLocal(gitService.getRepository());
         RevCommit latestCommit = gitLocal.getLatestCommit();
         RefactoringMinerCmd refactoringMinerCmd = new RefactoringMinerCmd();
         return refactoringMinerCmd.runRefactoringMiner(projectPath, latestCommit.getName());
     }
 
-    public List<Refactoring> getRefactorings(String projectPath) {
-        GitLocal gitLocal = new GitLocal(projectPath);
-        gitLocal.openRepository();
+    public List<Refactoring> getRefactorings(Project project) {
+        GitService gitService = project.getService(GitService.class);
+        Repository repository = gitService.getRepository();
+        GitLocal gitLocal = new GitLocal(repository);
         String commitSha = gitLocal.getLatestCommit().getName();
-        Repository repo = gitLocal.getRepository();
         GitHistoryRefactoringMiner miner = new GitHistoryRefactoringMinerImpl();
         List<Refactoring> myRefactorings = new ArrayList<>();
-        miner.detectAtCommit(repo, commitSha, new RefactoringHandler() {
+        miner.detectAtCommit(repository, commitSha, new RefactoringHandler() {
             @Override
             public void handle(String commitId, List<Refactoring> refactorings) {
                 myRefactorings.addAll(refactorings);

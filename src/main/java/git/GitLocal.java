@@ -25,6 +25,10 @@ public class GitLocal {
         this.repoPath = repoPath;
     }
 
+    public GitLocal(Repository repository) {
+        this.repository = repository;
+    }
+
     public void openRepository() {
         try {
             repository = GitHelper.openRepository(repoPath);

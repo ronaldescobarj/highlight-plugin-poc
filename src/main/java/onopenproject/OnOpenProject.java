@@ -23,7 +23,7 @@ public class OnOpenProject implements ProjectManagerListener {
         gitService.setRepository(gitLocal.getRepository());
         gitService.setLatestCommitHash(gitLocal.getLatestCommit().getName());
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
-        List<Refactoring> myRefactorings = refactoringGenerator.getRefactorings(projectPath);
+        List<Refactoring> myRefactorings = refactoringGenerator.getRefactorings(project);
         RefactoringService refactoringService = project.getService(RefactoringService.class);
         refactoringService.setRefactorings(myRefactorings);
     }

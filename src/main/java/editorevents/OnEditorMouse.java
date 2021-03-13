@@ -28,12 +28,13 @@ public class OnEditorMouse implements EditorMouseListener {
         Map<Integer, List<Data>> diffMap = null;
         GitService gitService = project.getService(GitService.class);
 //        RefactoringService refactoringService = project.getService(RefactoringService.class);
-        GitLocal gitLocal = new GitLocal(project.getBasePath());
-        String latestCommitHash = gitLocal.getLatestCommit(gitService.getRepository()).getName();
+        GitLocal gitLocal = new GitLocal(gitService.getRepository());
+        String latestCommitHash = gitLocal.getLatestCommit().getName();
         if (!latestCommitHash.equals(gitService.getLatestCommitHash())) {
 //            RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
 //            List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project.getProjectFilePath());
 //            refactoringService.setRefactorings(refactorings);
+
             diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);
             editorService.setLastOpenedEditor(editor);
             editorService.setDiffMap(diffMap);
