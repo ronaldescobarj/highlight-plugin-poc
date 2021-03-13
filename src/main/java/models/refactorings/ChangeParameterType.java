@@ -1,15 +1,18 @@
 package models.refactorings;
 
 public class ChangeParameterType extends RefactoringData {
+    String parameter;
     String oldType;
 
     public ChangeParameterType(String... attributes) {
-        this.oldType = attributes[0];
+        this.parameter = attributes[0];
+        this.oldType = attributes[1];
     }
 
     @Override
     public String renderData() {
-        return "<b>Old type:</b> " + oldType + "<br>";
+        return "<b>Changed parameter type<br>Parameter:</b> " + parameter + "<br>"
+                + "<b>Old parameter type:</b> " + oldType;
     }
 
     @Override

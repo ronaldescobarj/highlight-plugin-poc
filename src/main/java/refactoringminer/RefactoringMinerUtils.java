@@ -130,7 +130,8 @@ public class RefactoringMinerUtils {
     private static void handleChangeVariableType(Map<Integer, List<Data>> actionsMap, String filePath, ChangeVariableTypeRefactoring changeVariableTypeRefactoring) {
         if (changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getFilePath().equals(filePath)) {
             final String refactoringType = changeVariableTypeRefactoring.getChangedTypeVariable().isParameter() ? "CHANGE_PARAMETER_TYPE" : "CHANGE_VARIABLE_TYPE";
-            Data action = DataFactory.createRefactoringData(refactoringType, changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType());
+            String[] attributes = refactoringType.equals("CHANGE_PARAMETER_TYPE") ? new String[]{changeVariableTypeRefactoring.getChangedTypeVariable().getVariableName(), changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType()} : new String[]{changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType()};
+            Data action = DataFactory.createRefactoringData(refactoringType, attributes);
             ActionsUtils.addActionToLine(actionsMap, changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getStartLine(), action);
         }
     }
@@ -161,7 +162,7 @@ public class RefactoringMinerUtils {
         final String refactoringType = extractSuperclassRefactoring.getExtractedClass().isInterface() ? "EXTRACT_INTERFACE" : "EXTRACT_SUPERCLASS";
         List<String> subclasses = new ArrayList<>(extractSuperclassRefactoring.getSubclassSet());
         Data action = DataFactory.createRefactoringData(refactoringType, subclasses.toArray(new String[subclasses.size()]));
-        for (UMLClass umlClass: extractSuperclassRefactoring.getUMLSubclassSet()) {
+        for (UMLClass umlClass : extractSuperclassRefactoring.getUMLSubclassSet()) {
             if (umlClass.getLocationInfo().getFilePath().equals(filePath)) {
                 ActionsUtils.addActionToLine(actionsMap, umlClass.getLocationInfo().getStartLine(), action);
             }

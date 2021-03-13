@@ -9,7 +9,7 @@ public class ChangeReturnType extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Old type:</b> " + oldType + "<br>";
+        return "<b>Changed return type<br>Old return type:</b> " + oldType + "<br>";
     }
 
     @Override
