@@ -9,7 +9,7 @@ public class RenameMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Old name:</b> " + oldName + "<br>";
+        return "<b>RENAMED METHOD<br>Old method name:</b> " + oldName + "<br>";
     }
 
     @Override

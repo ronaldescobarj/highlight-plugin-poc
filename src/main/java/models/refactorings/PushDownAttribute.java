@@ -9,7 +9,7 @@ public class PushDownAttribute extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>This attribute was previously in:</b><br>" + oldParentClass;
+        return "<b>PUSHED DOWN ATTRIBUTE<br>This attribute was previously in:</b><br>" + oldParentClass;
     }
 
     @Override

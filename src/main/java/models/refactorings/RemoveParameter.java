@@ -11,7 +11,7 @@ public class RemoveParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Removed parameter:</b> " + removedParameterType + " " + removedParameterName + "<br>";
+        return "<b>REMOVED PARAMETER<br>Removed parameter:</b> " + removedParameterType + " " + removedParameterName + "<br>";
     }
 
     @Override

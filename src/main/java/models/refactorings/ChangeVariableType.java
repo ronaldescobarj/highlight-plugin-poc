@@ -9,7 +9,7 @@ public class ChangeVariableType extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Changed variable type<br>Old variable type:</b> " + oldType + "<br>";
+        return "<b>CHANGED VARIABLE TYPE<br>Old variable type:</b> " + oldType + "<br>";
     }
 
     @Override

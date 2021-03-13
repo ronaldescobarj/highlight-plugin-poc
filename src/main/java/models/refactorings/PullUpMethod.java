@@ -16,7 +16,7 @@ public class PullUpMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Classes where this method was:</b><br>" + getClassesWhereAttributeWas();
+        return "<b>PULLED UP METHOD<br>Classes where this method was:</b><br>" + getClassesWhereAttributeWas();
     }
 
     private String getClassesWhereAttributeWas() {

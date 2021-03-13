@@ -16,7 +16,7 @@ public class PullUpAttribute extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Classes where this attribute was:</b><br>" + getClassesWhereAttributeWas();
+        return "<b>PULLED UP ATTRIBUTE<br>Classes where this attribute was:</b><br>" + getClassesWhereAttributeWas();
     }
 
     private String getClassesWhereAttributeWas() {

@@ -11,7 +11,7 @@ public class AddParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Added parameter:</b> " + addedParameterType + " " + addedParameterName + "<br>";
+        return "<b>ADDED PARAMETER<br>Added parameter:</b> " + addedParameterType + " " + addedParameterName + "<br>";
     }
 
     @Override

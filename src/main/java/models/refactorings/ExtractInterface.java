@@ -9,7 +9,7 @@ public class ExtractInterface extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Classes that implement:</b><br>" + getSubclasses();
+        return "<b>EXTRACTED INTERFACE<br>Classes that implement:</b><br>" + getSubclasses();
     }
 
     private String getSubclasses() {

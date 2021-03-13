@@ -11,7 +11,7 @@ public class ChangeParameterType extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Changed parameter type<br>Parameter:</b> " + parameter + "<br>"
+        return "<b>CHANGED PARAMETER TYPE<br>Parameter:</b> " + parameter + "<br>"
                 + "<b>Old parameter type:</b> " + oldType;
     }
 

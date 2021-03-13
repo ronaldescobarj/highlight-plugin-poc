@@ -9,7 +9,7 @@ public class RenameVariable extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>Old name:</b> " + oldName + "<br>";
+        return "<b>RENAMED VARIABLE<br>Old variable name:</b> " + oldName + "<br>";
     }
 
     @Override
