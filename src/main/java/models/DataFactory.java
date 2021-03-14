@@ -20,9 +20,9 @@ public class DataFactory {
             case "UPD_MULTIPLE_TIMES":
                 return new UpdatedMultipleTimes(author, commitDate);
             case "EXTRACTED_METHOD":
-                return new ExtractedMethod();
+                return new ExtractedMethod(null);
             case "EXTRACTED_METHOD_CALL":
-                return new ExtractedMethodCall();
+                return new ExtractedMethodCall(null);
             default:
                 return null;
         }
@@ -48,9 +48,9 @@ public class DataFactory {
     public static RefactoringData createRefactoringData(String type, String... attributes) {
         switch (type) {
             case "EXTRACTED_METHOD":
-                return new ExtractedMethod();
+                return new ExtractedMethod(attributes);
             case "EXTRACTED_METHOD_CALL":
-                return new ExtractedMethodCall();
+                return new ExtractedMethodCall(attributes);
             case "RENAME_PARAMETER":
                 return new RenameParameter(attributes);
             case "RENAME_METHOD":

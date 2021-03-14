@@ -3,7 +3,9 @@ package refactoringminer;
 import actions.ActionsUtils;
 import gr.uom.java.xmi.LocationInfo;
 import gr.uom.java.xmi.UMLClass;
+import gr.uom.java.xmi.decomposition.AbstractCodeFragment;
 import gr.uom.java.xmi.decomposition.OperationInvocation;
+import gr.uom.java.xmi.decomposition.StatementObject;
 import gr.uom.java.xmi.diff.*;
 import models.Data;
 import models.DataFactory;
@@ -78,13 +80,17 @@ public class RefactoringMinerUtils {
     }
 
     private static void handleExtractOperation(Map<Integer, List<Data>> actionsMap, String filePath, ExtractOperationRefactoring extractOperationRefactoring) {
+        List<String> codeExtractedFragments = new ArrayList<>();
+        for (AbstractCodeFragment abstractCodeFragment: extractOperationRefactoring.getExtractedCodeFragmentsFromSourceOperation()) {
+            codeExtractedFragments.add(abstractCodeFragment.getString());
+        }
         if (extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createData("EXTRACTED_METHOD", null, null);
+            Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", codeExtractedFragments.toArray(new String[0]));
             ActionsUtils.addActionToLine(actionsMap, extractOperationRefactoring.getExtractedOperation().getLocationInfo().getStartLine(), action);
         }
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             if (call.getLocationInfo().getFilePath().equals(filePath)) {
-                Data action = DataFactory.createData("EXTRACTED_METHOD_CALL", null, null);
+                Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD_CALL", codeExtractedFragments.toArray(new String[0]));
                 ActionsUtils.addActionToLine(actionsMap, call.getLocationInfo().getStartLine(), action);
             }
         }
