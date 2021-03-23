@@ -14,14 +14,17 @@ public class DiffMapper {
 
     List<DiffRow> diffRows;
     RevCommit commit;
+    String previousFileContent = "";
+
+    public DiffMapper(List<DiffRow> diffRows, RevCommit commit, String previousFileContent) {
+        this.diffRows = diffRows;
+        this.commit = commit;
+        this.previousFileContent = previousFileContent;
+    }
 
     public DiffMapper(List<DiffRow> diffRows, RevCommit commit) {
         this.diffRows = diffRows;
         this.commit = commit;
-    }
-
-    public DiffMapper(List<DiffRow> diffRows) {
-        this.diffRows = diffRows;
     }
 
     public Map<Integer, List<Data>> createDiffMap() {
@@ -52,8 +55,17 @@ public class DiffMapper {
         Date date = author.getWhen();
         LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
         for (Integer line: interval) {
+            String contentDeleted = "";
+            if (diffRow.getChange().equals("DEL")) {
+                List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
+                try {
+                    contentDeleted = previousFileLines.get(line - 1);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("e");
+                }
+            }
             ModificationData modification = DataFactory.createModificationData(diffRow.getChange(), author, commitDate);
-            modification.setAdditionalData(diffRow);
+            modification.setAdditionalData(contentDeleted);
             ActionsUtils.addActionToLine(diffMap, line, modification);
         }
     }

@@ -16,7 +16,7 @@ public class Updated extends ModificationData {
     }
 
     @Override
-    public void setAdditionalData(DiffRow diffRow) {
+    public void setAdditionalData(String... additionalData) {
         this.previousContent = "temp";
     }
 

@@ -15,8 +15,8 @@ public class Moved extends ModificationData {
     }
 
     @Override
-    public void setAdditionalData(DiffRow diffRow) {
-        this.previousLine = diffRow.getSrcStart();
+    public void setAdditionalData(String... additionalData) {
+        this.previousLine = Integer.parseInt(additionalData[0]);
     }
 
     @Override

@@ -11,7 +11,7 @@ public abstract class ModificationData implements Data {
     PersonIdent author;
     LocalDateTime dateTime;
 
-    public abstract void setAdditionalData(DiffRow diffRow);
+    public abstract void setAdditionalData(String... additionalData);
 
     public String getDateTimeString() {
 

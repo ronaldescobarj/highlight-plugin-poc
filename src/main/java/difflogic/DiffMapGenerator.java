@@ -50,7 +50,7 @@ public class DiffMapGenerator {
         String previousFileContent = gitLocal.getPreviousCommitFileContent(diffEntry);
         RevCommit latestCommit = gitLocal.getLatestCommit();
         List<DiffRow> diffRows = CompareUtils.getDiffChanges(previousFileContent, currentFileContent);
-        return new DiffMapper(diffRows, latestCommit).createDiffMap();
+        return new DiffMapper(diffRows, latestCommit, previousFileContent).createDiffMap();
     }
 
 }
