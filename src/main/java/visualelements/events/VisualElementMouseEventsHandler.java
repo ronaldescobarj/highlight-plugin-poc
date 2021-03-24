@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.ui.awt.RelativePoint;
 import models.Data;
+import models.refactorings.RenameParameter;
 import visualelements.PopupUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,7 +23,10 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
-        System.out.println("clicked");
+        if (action instanceof RenameParameter) {
+            RenameParameter renameParameter = (RenameParameter) action;
+            editor.getSelectionModel().setSelection(renameParameter.getStartOffset(), renameParameter.getEndOffset());
+        }
     }
 
     @Override

@@ -100,7 +100,12 @@ public class RefactoringMinerUtils {
         if (renameVariableRefactoring.getRenamedVariable().getLocationInfo().getFilePath().equals(filePath)) {
             final String refactoringType = renameVariableRefactoring.getRenamedVariable().isParameter() ? "RENAME_PARAMETER" : "RENAME_VARIABLE";
             String[] attributes = refactoringType.equals("RENAME_PARAMETER") ?
-                    new String[]{renameVariableRefactoring.getOriginalVariable().getType().getClassType(), renameVariableRefactoring.getOriginalVariable().getVariableName()}
+                    new String[]{
+                            renameVariableRefactoring.getOriginalVariable().getType().getClassType(),
+                            renameVariableRefactoring.getOriginalVariable().getVariableName(),
+                            String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset()),
+                            String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset())
+                    }
                     : new String[]{renameVariableRefactoring.getOriginalVariable().getVariableName()};
             Data action = DataFactory.createRefactoringData(refactoringType, attributes);
             ActionsUtils.addActionToLine(actionsMap, renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartLine(), action);

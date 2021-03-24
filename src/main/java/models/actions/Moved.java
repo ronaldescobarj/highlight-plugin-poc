@@ -16,7 +16,8 @@ public class Moved extends ModificationData {
 
     @Override
     public void setAdditionalData(String... additionalData) {
-        this.previousLine = Integer.parseInt(additionalData[0]);
+//        this.previousLine = Integer.parseInt(additionalData[0]);
+        this.previousLine = 2;
     }
 
     @Override
