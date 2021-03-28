@@ -1,5 +1,6 @@
 package editorevents;
 
+import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 import com.intellij.openapi.editor.event.EditorMouseListener;
@@ -27,18 +28,14 @@ public class OnEditorMouse implements EditorMouseListener {
         EditorService editorService = project.getService(EditorService.class);
         Map<Integer, List<Data>> diffMap = null;
         GitService gitService = project.getService(GitService.class);
-//        RefactoringService refactoringService = project.getService(RefactoringService.class);
         GitLocal gitLocal = new GitLocal(gitService.getRepository());
         String latestCommitHash = gitLocal.getLatestCommit().getName();
         if (!latestCommitHash.equals(gitService.getLatestCommitHash())) {
-//            RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
-//            List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project.getProjectFilePath());
-//            refactoringService.setRefactorings(refactorings);
-
             diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);
             editorService.setLastOpenedEditor(editor);
             editorService.setDiffMap(diffMap);
             gitService.setLatestCommitHash(latestCommitHash);
+            DaemonCodeAnalyzer.getInstance(project).restart();
         }
         if (editor != editorService.getLastOpenedEditor()) {
             diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);

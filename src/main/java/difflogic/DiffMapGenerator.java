@@ -14,8 +14,6 @@ import org.refactoringminer.api.Refactoring;
 import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
 import services.GitService;
-import services.RefactoringService;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,20 +21,18 @@ import java.util.Map;
 public class DiffMapGenerator {
     public Map<Integer, List<Data>> generateHighlightMapForEditor(Editor editor) {
         Project project = editor.getProject();
-        String projectPath = project.getBasePath();
         GitService gitService = project.getService(GitService.class);
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
         String fileName = EditorUtils.getFileName(editor);
         String filePath = EditorUtils.getRelativePath(editor);
         DiffModifications diffModifications = new DiffModifications();
-        Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
-//        RefactoringService refactoringService = editor.getProject().getService(RefactoringService.class);
+        RevCommit modificationCommit = diffModifications.getCommitWithLatestModification(fileName, gitLocal);
+//        Map<Integer, Integer> amountOfTimes = diffModifications.buildNumberOfModifications(fileName, gitLocal);
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
-        List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project);
+        List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, modificationCommit);
         Map<Integer, List<Data>> diffMap = getLatestDiffMap(editor, gitLocal);
-        diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
-//        RefactoringMinerUtils.addRefactoringsToMap(refactoringService.getRefactorings(), diffMap, filePath);
+//        diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
         RefactoringMinerUtils.addRefactoringsToMap(refactorings, diffMap, filePath);
         return diffMap;
     }

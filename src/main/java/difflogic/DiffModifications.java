@@ -17,7 +17,7 @@ public class DiffModifications {
     public Map<Integer, Integer> buildNumberOfModifications(String fileName, GitLocal gitLocal) {
         Map<Integer, Integer> amountOfTimes = new HashMap<>();
         Map<Integer, List<Data>> diffMap;
-        List<RevCommit> commits = gitLocal.getSelectedLatestCommits(5);
+        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsAscendant(5);
         for (RevCommit commit : commits) {
             List<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
             diffMap = new DiffMapper(diffRows, commit).createDiffMap();
@@ -26,6 +26,22 @@ public class DiffModifications {
             }
         }
         return amountOfTimes;
+    }
+
+    public RevCommit getCommitWithLatestModification(String fileName, GitLocal gitLocal) {
+        RevCommit commitWithLatestModification = null;
+        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(10);
+        for (RevCommit commit : commits) {
+            List<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
+            if (!diffRows.isEmpty()) {
+                commitWithLatestModification = commit;
+                break;
+            }
+        }
+        if (commitWithLatestModification == null) {
+            commitWithLatestModification = commits.get(1);
+        }
+        return commitWithLatestModification;
     }
 
     public void applyAmountOfTimesToDiffMap(Map<Integer, List<Data>> diffMap, Map<Integer, Integer> amountOfTimes) {

@@ -45,13 +45,23 @@ public class GitLocal {
         repository.close();
     }
 
-    public List<RevCommit> getSelectedLatestCommits(int numberOfCommits) {
+    public List<RevCommit> getSelectedLatestCommitsAscendant(int numberOfCommits) {
         try {
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
             List<RevCommit> commitsList = new ArrayList<>(commits);
             List<RevCommit> selectedCommits = commitsList.subList(0, numberOfCommits);
             Collections.reverse(selectedCommits);
             return selectedCommits;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public List<RevCommit> getSelectedLatestCommitsDescendant(int numberOfCommits) {
+        try {
+            Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
+            List<RevCommit> commitsList = new ArrayList<>(commits);
+            return commitsList.subList(0, numberOfCommits);
         } catch (IOException e) {
             return null;
         }

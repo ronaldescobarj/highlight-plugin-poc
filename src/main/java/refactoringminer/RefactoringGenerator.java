@@ -26,11 +26,10 @@ public class RefactoringGenerator {
         return refactoringMinerCmd.runRefactoringMiner(projectPath, latestCommit.getName());
     }
 
-    public List<Refactoring> getRefactorings(Project project) {
+    public List<Refactoring> getRefactorings(Project project, RevCommit commit) {
         GitService gitService = project.getService(GitService.class);
         Repository repository = gitService.getRepository();
-        GitLocal gitLocal = new GitLocal(repository);
-        String commitSha = gitLocal.getLatestCommit().getName();
+        String commitSha = commit.getName();
         GitHistoryRefactoringMiner miner = new GitHistoryRefactoringMinerImpl();
         List<Refactoring> myRefactorings = new ArrayList<>();
         miner.detectAtCommit(repository, commitSha, new RefactoringHandler() {
