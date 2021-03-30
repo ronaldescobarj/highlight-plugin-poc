@@ -141,6 +141,16 @@ public class GitLocal {
         }
     }
 
+    public DiffEntry getDiffEntryOfCommit(RevCommit commit, Editor editor) {
+        String fileName = EditorUtils.getFileName(editor);
+        try {
+            DiffFormatter diffFormatter = createDiffFormatter(fileName);
+            return getDiffEntry(diffFormatter, commit);
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
     public String getPreviousCommitFileContent(DiffEntry diffEntry) {
         try {
             return GitHelper.getFileContent(diffEntry.getOldId(), repository);
