@@ -1,4 +1,4 @@
-package popupaction;
+package menus;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -7,15 +7,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.pom.Navigatable;
-import git.GitLocal;
-import org.eclipse.jgit.lib.Repository;
 import org.jetbrains.annotations.NotNull;
-import org.refactoringminer.api.*;
-import org.refactoringminer.rm1.GitHistoryRefactoringMinerImpl;
-import org.refactoringminer.util.GitServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PopupDialogAction extends AnAction {
 
