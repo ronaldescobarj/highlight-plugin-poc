@@ -29,11 +29,7 @@ public class SelectCommitAction extends AnAction {
         GitLocal gitLocal = new GitLocal(repository);
         List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(5);
         StringBuilder content = new StringBuilder();
-        for (RevCommit commit: commits) {
-            content.append("SHA: ").append(commit.getName()).append("\n");
-            content.append("Author: ").append(commit.getAuthorIdent().getEmailAddress()).append("\n");
-            content.append("Date: ").append(commit.getAuthorIdent().getWhen().toString()).append("\n\n");
-        }
+
         SelectCommitDialogWrapper dialog = new SelectCommitDialogWrapper(commits);
         if (dialog.showAndGet()) {
             String data = dialog.getSelectedOption();
