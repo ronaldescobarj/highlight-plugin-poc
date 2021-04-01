@@ -29,8 +29,14 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
         JPanel dialogPanel = new JPanel();
         BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);
         dialogPanel.setLayout(layout);
+        addRadioButtons(dialogPanel);
+        dialogPanel.add(new JLabel("<html>a<br>b<html>"));
+        return dialogPanel;
+    }
+
+    private void addRadioButtons(JPanel dialogPanel) {
         for (RevCommit commit: commits) {
-            JBRadioButton jbRadioButton = new JBRadioButton(commit.getName());
+            JBRadioButton jbRadioButton = new JBRadioButton(buildCommitLabel(commit));
             jbRadioButton.setActionCommand(commit.getName());
             if (commits.get(0) == commit) {
                 jbRadioButton.setSelected(true);
@@ -38,10 +44,13 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
             group.add(jbRadioButton);
             dialogPanel.add(jbRadioButton);
         }
-        return dialogPanel;
     }
 
-    String getSelectedOption() {
+    private String buildCommitLabel(RevCommit commit) {
+        return "<html>SHA: " + commit.getName() + "<br>pepito: test<br>pepito2: pepitoxd</html>";
+    }
+
+    public String getSelectedOption() {
         return group.getSelection().getActionCommand();
     }
 }
