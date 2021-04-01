@@ -1,9 +1,12 @@
 package menus;
 
+import com.intellij.execution.Executor;
+import com.intellij.ide.util.gotoByName.GotoActionModel;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.components.JBCheckBox;
 import git.GitLocal;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -25,12 +28,16 @@ public class SelectCommitAction extends AnAction {
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
         List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(5);
-        StringBuilder content = new StringBuilder("");
+        StringBuilder content = new StringBuilder();
         for (RevCommit commit: commits) {
             content.append("SHA: ").append(commit.getName()).append("\n");
             content.append("Author: ").append(commit.getAuthorIdent().getEmailAddress()).append("\n");
             content.append("Date: ").append(commit.getAuthorIdent().getWhen().toString()).append("\n\n");
         }
-        Messages.showMessageDialog(currentProject, content.toString(), "Select commit", Messages.getInformationIcon());
+        SelectCommitDialogWrapper dialog = new SelectCommitDialogWrapper(commits);
+        if (dialog.showAndGet()) {
+            String data = dialog.getSelectedOption();
+            System.out.println("test");
+        }
     }
 }
