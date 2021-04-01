@@ -29,20 +29,15 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
         JPanel dialogPanel = new JPanel();
         BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);
         dialogPanel.setLayout(layout);
-        JBRadioButton jbRadioButton = new JBRadioButton("hola");
-        jbRadioButton.setActionCommand("hola");
-        jbRadioButton.setSelected(true);
-        JBRadioButton jbRadioButton2 = new JBRadioButton("test2\ntest3\ntest4");
-        jbRadioButton2.setActionCommand("test");
-        JBRadioButton jbRadioButton3 = new JBRadioButton("xd");
-        jbRadioButton3.setActionCommand("xd");
-        group.add(jbRadioButton);
-        group.add(jbRadioButton2);
-        group.add(jbRadioButton3);
-        dialogPanel.add(jbRadioButton);
-        dialogPanel.add(jbRadioButton2);
-        dialogPanel.add(jbRadioButton3);
-//        dialogPanel.add(group, BorderLayout.CENTER);
+        for (RevCommit commit: commits) {
+            JBRadioButton jbRadioButton = new JBRadioButton(commit.getName());
+            jbRadioButton.setActionCommand(commit.getName());
+            if (commits.get(0) == commit) {
+                jbRadioButton.setSelected(true);
+            }
+            group.add(jbRadioButton);
+            dialogPanel.add(jbRadioButton);
+        }
         return dialogPanel;
     }
 

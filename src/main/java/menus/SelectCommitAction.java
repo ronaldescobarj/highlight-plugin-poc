@@ -28,8 +28,6 @@ public class SelectCommitAction extends AnAction {
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
         List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(5);
-        StringBuilder content = new StringBuilder();
-
         SelectCommitDialogWrapper dialog = new SelectCommitDialogWrapper(commits);
         if (dialog.showAndGet()) {
             String data = dialog.getSelectedOption();
