@@ -14,7 +14,6 @@ public abstract class ModificationData implements Data {
     public abstract void setAdditionalData(String... additionalData);
 
     public String getDateTimeString() {
-
         return getDayOfMonth() + "/" + getMonth() + "/" +
                 dateTime.getYear() + " " + getHour() + ":" +
                 getMinute();
