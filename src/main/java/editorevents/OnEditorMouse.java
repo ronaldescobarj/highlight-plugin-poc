@@ -8,13 +8,9 @@ import com.intellij.openapi.project.Project;
 import difflogic.DiffMapGenerator;
 import git.GitLocal;
 import models.Data;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.jetbrains.annotations.NotNull;
-import org.refactoringminer.api.Refactoring;
-import refactoringminer.RefactoringGenerator;
 import services.EditorService;
 import services.GitService;
-import services.RefactoringService;
 import visualelements.VisualElementsUtils;
 
 import java.util.List;

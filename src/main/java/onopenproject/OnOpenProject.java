@@ -3,14 +3,8 @@ package onopenproject;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
 import git.GitLocal;
-import git.GitRemote;
 import org.jetbrains.annotations.NotNull;
-import org.refactoringminer.api.Refactoring;
-import refactoringminer.RefactoringGenerator;
 import services.GitService;
-import services.RefactoringService;
-
-import java.util.List;
 
 public class OnOpenProject implements ProjectManagerListener {
 

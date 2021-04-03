@@ -30,7 +30,6 @@
 
         <projectService serviceImplementation="services.GitService"/>
         <projectService serviceImplementation="services.EditorService"/>
-        <projectService serviceImplementation="services.RefactoringService"/>
     </extensions>
     <applicationListeners>
         <listener class="onopenproject.OnOpenProject"

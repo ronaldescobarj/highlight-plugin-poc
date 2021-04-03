@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class EditorService {
-    List<DiffRow> diffsOfLastOpenedEditor;
     Map<Integer, List<Data>> diffMap = null;
     Editor lastOpenedEditor;
 
@@ -19,14 +18,6 @@ public class EditorService {
 
     public Editor getLastOpenedEditor() {
         return lastOpenedEditor;
-    }
-
-    public void setDiffsOfLastOpenedEditor(ArrayList<DiffRow> diffs) {
-        this.diffsOfLastOpenedEditor = diffs;
-    }
-
-    public List<DiffRow> getDiffsOfLastOpenedEditor() {
-        return diffsOfLastOpenedEditor;
     }
 
     public void setDiffMap(Map<Integer, List<Data>> diffMap) {
