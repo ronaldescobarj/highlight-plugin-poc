@@ -1,12 +1,15 @@
 package difflogic;
 
+import com.intellij.openapi.editor.Editor;
 import compare.CompareUtils;
+import editor.EditorUtils;
 import git.GitLocal;
 import models.*;
 import models.actions.Inserted;
 import models.actions.Updated;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.revwalk.RevCommit;
+import services.GitService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +32,25 @@ public class DiffModifications {
     }
 
     public RevCommit getCommitWithLatestModification(String fileName, GitLocal gitLocal) {
+        RevCommit commitWithLatestModification = null;
+        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(10);
+        for (RevCommit commit : commits) {
+            List<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
+            if (!diffRows.isEmpty()) {
+                commitWithLatestModification = commit;
+                break;
+            }
+        }
+        if (commitWithLatestModification == null) {
+            commitWithLatestModification = commits.get(1);
+        }
+        return commitWithLatestModification;
+    }
+
+    public RevCommit getCommitWithLatestModification(Editor editor) {
+        GitService gitService = editor.getProject().getService(GitService.class);
+        String fileName = EditorUtils.getFileName(editor);
+        GitLocal gitLocal = new GitLocal(gitService.getRepository());
         RevCommit commitWithLatestModification = null;
         List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(10);
         for (RevCommit commit : commits) {

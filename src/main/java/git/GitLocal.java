@@ -5,12 +5,17 @@ import com.intellij.openapi.editor.Editor;
 import editor.EditorUtils;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectLoader;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathSuffixFilter;
 import org.eclipse.jgit.util.io.NullOutputStream;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -105,6 +110,34 @@ public class GitLocal {
         try {
             return GitHelper.getFileContent(diffEntry.getNewId(), repository);
         } catch(IOException exception) {
+            return "";
+        }
+    }
+
+//    public String getFileContentOnCommit(Editor editor, RevCommit commit) {
+//        String fileName = EditorUtils.getFileName(editor);
+//        try {
+//            DiffFormatter diffFormatter = createDiffFormatter(fileName);
+//            DiffEntry diffEntry = getDiffEntry(diffFormatter, commit);
+//            return GitHelper.getFileContent(diffEntry.getNewId(), repository);
+//            //no va a funcionar si no se hicieron cambios
+//        } catch(NullPointerException | IOException e) {
+//            return null;
+//        }
+//    }
+
+    public String getFileContentOnCommit(Editor editor, RevCommit commit) {
+        String path = EditorUtils.getRelativePath(editor);
+        try (TreeWalk treeWalk = TreeWalk.forPath(repository, path, commit.getTree())) {
+            ObjectId blobId = treeWalk.getObjectId(0);
+            try (ObjectReader objectReader = repository.newObjectReader()) {
+                ObjectLoader objectLoader = objectReader.open(blobId);
+                byte[] bytes = objectLoader.getBytes();
+                return new String(bytes, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                return "";
+            }
+        } catch (IOException e) {
             return "";
         }
     }

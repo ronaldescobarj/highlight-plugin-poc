@@ -37,6 +37,24 @@ public class DiffMapGenerator {
         return diffMap;
     }
 
+    public Map<Integer, List<Data>> generateChangesMapForEditor(Editor editor, RevCommit sourceCommit, RevCommit destinationCommit) {
+        Project project = editor.getProject();
+        GitService gitService = project.getService(GitService.class);
+        Repository repository = gitService.getRepository();
+        GitLocal gitLocal = new GitLocal(repository);
+//        RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
+//        List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
+        //        RefactoringMinerUtils.addRefactoringsToMap(refactorings, diffMap, filePath);
+        return getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+    }
+
+    private Map<Integer, List<Data>> getDiffMapOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
+        String sourceFileContent = gitLocal.getFileContentOnCommit(editor, sourceCommit);
+        String destinationFileContent = gitLocal.getFileContentOnCommit(editor, destinationCommit);
+        List<DiffRow> diffRows = CompareUtils.getDiffChanges(sourceFileContent, destinationFileContent);
+        return new DiffMapper(diffRows, destinationCommit, sourceFileContent).createDiffMap();
+    }
+
     private Map<Integer, List<Data>> getLatestDiffMap(Editor editor, GitLocal gitLocal) {
         DiffEntry diffEntry = gitLocal.getDiffEntry(editor);
         if (diffEntry == null) {
@@ -59,5 +77,4 @@ public class DiffMapGenerator {
         List<DiffRow> diffRows = CompareUtils.getDiffChanges(previousFileContent, commitFileContent);
         return new DiffMapper(diffRows, commit, previousFileContent).createDiffMap();
     }
-
 }

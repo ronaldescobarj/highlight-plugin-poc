@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
 import git.GitLocal;
 import org.jetbrains.annotations.NotNull;
+import services.EditorService;
 import services.GitService;
 
 public class OnOpenProject implements ProjectManagerListener {
@@ -13,6 +14,7 @@ public class OnOpenProject implements ProjectManagerListener {
         String projectPath = project.getBasePath();
         GitService gitService = project.getService(GitService.class);
         GitLocal gitLocal = new GitLocal(projectPath);
+        project.getService(EditorService.class).initialize();
         gitLocal.openRepository();
         gitService.setRepository(gitLocal.getRepository());
         gitService.setLatestCommitHash(gitLocal.getLatestCommit().getName());
