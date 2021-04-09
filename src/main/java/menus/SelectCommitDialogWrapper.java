@@ -8,6 +8,7 @@ import com.intellij.ui.components.JBRadioButton;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.jetbrains.annotations.Nullable;
+import services.EditorService;
 import utils.DateUtils;
 
 import javax.swing.*;
@@ -21,11 +22,13 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
 
     ButtonGroup group;
     List<RevCommit> commits;
+    RevCommit sourceCommit;
 
-    public SelectCommitDialogWrapper(List<RevCommit> commits) {
+    public SelectCommitDialogWrapper(List<RevCommit> commits, RevCommit sourceCommit) {
         super(true);
         this.group = new ButtonGroup();
         this.commits = commits;
+        this.sourceCommit = sourceCommit;
         init();
         setTitle("Select Commit to Compare");
     }
@@ -42,7 +45,7 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
         for (RevCommit commit: commits) {
             JBRadioButton jbRadioButton = new JBRadioButton(buildCommitLabel(commit));
             jbRadioButton.setActionCommand(commit.getName());
-            if (commits.get(0) == commit) {
+            if (sourceCommit.getName().equals(commit.getName())) {
                 jbRadioButton.setSelected(true);
             }
             group.add(jbRadioButton);

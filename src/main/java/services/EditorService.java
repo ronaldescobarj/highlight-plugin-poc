@@ -38,6 +38,10 @@ public class EditorService {
         return editors.get(editor);
     }
 
+    public EditorData getActiveEditorData() {
+        return editors.values().stream().filter(EditorData::isActive).findFirst().get();
+    }
+
     public Map<Integer, List<Data>> getActiveEditorChanges() {
         return editors.values().stream().filter(EditorData::isActive).findFirst().get().getChanges();
     }
