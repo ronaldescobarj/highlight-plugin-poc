@@ -14,6 +14,8 @@ import org.refactoringminer.api.Refactoring;
 import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
 import services.GitService;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +44,14 @@ public class DiffMapGenerator {
         GitService gitService = project.getService(GitService.class);
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
-//        RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
-//        List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
-        //        RefactoringMinerUtils.addRefactoringsToMap(refactorings, diffMap, filePath);
-        return getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+        Map<Integer, List<Data>> changes = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+        if (Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
+            RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
+            List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
+            String filePath = EditorUtils.getRelativePath(editor);
+            RefactoringMinerUtils.addRefactoringsToMap(refactorings, changes, filePath);
+        }
+        return changes;
     }
 
     private Map<Integer, List<Data>> getDiffMapOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
