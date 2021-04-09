@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.event.EditorMouseListener;
 import com.intellij.openapi.project.Project;
 import difflogic.DiffMapGenerator;
 import difflogic.DiffModifications;
+import editor.EditorUtils;
 import git.GitLocal;
 import models.Data;
 import models.EditorData;
@@ -23,6 +24,7 @@ public class OnEditorMouse implements EditorMouseListener {
     @Override
     public void mouseEntered(@NotNull EditorMouseEvent event) {
         Editor editor = event.getEditor();
+        String editorPath = EditorUtils.getRelativePath(editor);
         Project project = editor.getProject();
         EditorService editorService = project.getService(EditorService.class);
         GitService gitService = project.getService(GitService.class);
@@ -36,7 +38,7 @@ public class OnEditorMouse implements EditorMouseListener {
             editorService.setEditorWithData(editor, editorData);
             gitService.setLatestCommitHash(latestCommitHash);
             DaemonCodeAnalyzer.getInstance(project).restart();
-        } else if (editor != editorService.getLastOpenedEditor()) {
+        } else if (!editorPath.equals(editorService.getActiveEditorPath())) {
             editorService.setActiveEditor(editor);
         }
         new VisualElementsUtils().addVisualElements(editor, editorService.getActiveEditorChanges());
