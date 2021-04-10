@@ -46,8 +46,8 @@
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
-        <action id="menus.SelectCommitAction" class="menus.SelectCommitAction" text="Select commit"
-                description="Select commit for comparing">
+        <action id="menus.SelectCommitAction" class="menus.SelectCommitAction" text="Select source commit"
+                description="Select source commit for comparing">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
     </actions>

@@ -39,7 +39,7 @@ public class SelectCommitAction extends AnAction {
         EditorService editorService = currentProject.getService(EditorService.class);
         Editor activeEditor = editorService.getActiveEditorData().getEditor();
         EditorData editorData = editorService.getActiveEditorData();
-        SelectCommitDialogWrapper dialog = new SelectCommitDialogWrapper(commits, editorData.getSourceCommit());
+        SelectCommitDialogWrapper dialog = new SelectCommitDialogWrapper(commits, editorData.getSourceCommit(), editorData.getDestinationCommit());
         if (dialog.showAndGet()) {
             String sourceCommitSha = dialog.getSelectedOption();
             RevCommit newSourceCommit = commits.stream().filter(commit -> commit.getName().equals(sourceCommitSha)).findFirst().get();

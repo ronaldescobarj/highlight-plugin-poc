@@ -23,20 +23,29 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
     ButtonGroup group;
     List<RevCommit> commits;
     RevCommit sourceCommit;
+    RevCommit destinationCommit;
 
-    public SelectCommitDialogWrapper(List<RevCommit> commits, RevCommit sourceCommit) {
+    public SelectCommitDialogWrapper(List<RevCommit> commits, RevCommit sourceCommit, RevCommit destinationCommit) {
         super(true);
         this.group = new ButtonGroup();
         this.commits = commits;
         this.sourceCommit = sourceCommit;
+        this.destinationCommit = destinationCommit;
         init();
-        setTitle("Select Commit to Compare");
+        setTitle("Select Source Commit to Compare");
     }
     @Override
     protected @Nullable JComponent createCenterPanel() {
         JPanel dialogPanel = new JPanel();
         BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);
         dialogPanel.setLayout(layout);
+        JLabel destinationCommitTitle = new JLabel("<html><b>Destination commit:</b></html>");
+        JLabel destinationCommitData = new JLabel(buildCommitLabel(destinationCommit));
+        dialogPanel.add(destinationCommitTitle);
+        dialogPanel.add(destinationCommitData);
+        dialogPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        JLabel selectSourceCommitTitle = new JLabel("<html><b>Select source commit:</b></html>");
+        dialogPanel.add(selectSourceCommitTitle);
         addRadioButtons(dialogPanel);
         return dialogPanel;
     }
