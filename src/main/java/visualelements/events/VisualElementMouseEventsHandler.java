@@ -8,10 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.awt.RelativePoint;
 import models.Data;
-import models.refactorings.AddParameter;
-import models.refactorings.PushDownAttribute;
-import models.refactorings.PushDownMethod;
-import models.refactorings.RenameParameter;
+import models.refactorings.*;
 import visualelements.PopupUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,12 +27,28 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
+        handleClickOnAction();
+    }
+
+    private void handleClickOnAction() {
         if (action instanceof RenameParameter) {
             RenameParameter renameParameter = (RenameParameter) action;
             editor.getSelectionModel().setSelection(renameParameter.getStartOffset(), renameParameter.getEndOffset());
         } else if (action instanceof AddParameter) {
             AddParameter addParameter = (AddParameter) action;
             editor.getSelectionModel().setSelection(addParameter.getStartOffset(), addParameter.getEndOffset());
+        } else if (action instanceof ChangeAttributeType) {
+            ChangeAttributeType changeAttributeType = (ChangeAttributeType) action;
+            editor.getSelectionModel().setSelection(changeAttributeType.getStartOffset(), changeAttributeType.getEndOffset());
+        } else if (action instanceof ChangeParameterType) {
+            ChangeParameterType changeParameterType = (ChangeParameterType) action;
+            editor.getSelectionModel().setSelection(changeParameterType.getStartOffset(), changeParameterType.getEndOffset());
+        } else if (action instanceof ChangeVariableType) {
+            ChangeVariableType changeVariableType = (ChangeVariableType) action;
+            editor.getSelectionModel().setSelection(changeVariableType.getStartOffset(), changeVariableType.getEndOffset());
+        } else if (action instanceof RenameVariable) {
+            RenameVariable renameVariable = (RenameVariable) action;
+            editor.getSelectionModel().setSelection(renameVariable.getStartOffset(), renameVariable.getEndOffset());
         } else if (action instanceof PushDownAttribute) {
             PushDownAttribute pushDownAttribute = (PushDownAttribute) action;
             VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pushDownAttribute.getParentClassUrl());

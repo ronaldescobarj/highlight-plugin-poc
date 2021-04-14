@@ -3,10 +3,14 @@ package models.refactorings;
 public class ChangeParameterType extends RefactoringData {
     String parameter;
     String oldType;
+    int startOffset;
+    int endOffset;
 
     public ChangeParameterType(String... attributes) {
         this.parameter = attributes[0];
         this.oldType = attributes[1];
+        this.startOffset = Integer.parseInt(attributes[2]);
+        this.endOffset = Integer.parseInt(attributes[3]);
     }
 
     @Override
@@ -18,5 +22,13 @@ public class ChangeParameterType extends RefactoringData {
     @Override
     public String getType() {
         return "CHANGE_PARAMETER_TYPE";
+    }
+
+    public int getStartOffset() {
+        return startOffset;
+    }
+
+    public int getEndOffset() {
+        return endOffset;
     }
 }

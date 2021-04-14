@@ -92,14 +92,16 @@ public class RefactoringMinerUtils {
     private void handleRenameVariable(Map<Integer, List<Data>> actionsMap, String filePath, RenameVariableRefactoring renameVariableRefactoring) {
         if (renameVariableRefactoring.getRenamedVariable().getLocationInfo().getFilePath().equals(filePath)) {
             final String refactoringType = renameVariableRefactoring.getRenamedVariable().isParameter() ? "RENAME_PARAMETER" : "RENAME_VARIABLE";
+            String startOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset());
             String[] attributes = refactoringType.equals("RENAME_PARAMETER") ?
                     new String[]{
                             renameVariableRefactoring.getOriginalVariable().getType().getClassType(),
                             renameVariableRefactoring.getOriginalVariable().getVariableName(),
-                            String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset()),
-                            String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset())
+                            startOffset,
+                            endOffset
                     }
-                    : new String[]{renameVariableRefactoring.getOriginalVariable().getVariableName()};
+                    : new String[]{renameVariableRefactoring.getOriginalVariable().getVariableName(), startOffset, endOffset};
             Data action = DataFactory.createRefactoringData(refactoringType, attributes);
             ActionsUtils.addActionToLine(actionsMap, renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartLine(), action);
         }
@@ -122,7 +124,9 @@ public class RefactoringMinerUtils {
 
     private void handleChangeAttributeType(Map<Integer, List<Data>> actionsMap, String filePath, ChangeAttributeTypeRefactoring changeAttributeTypeRefactoring) {
         if (changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("CHANGE_ATTRIBUTE_TYPE", changeAttributeTypeRefactoring.getOriginalAttribute().getType().getClassType());
+            String startOffset = String.valueOf(changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("CHANGE_ATTRIBUTE_TYPE", changeAttributeTypeRefactoring.getOriginalAttribute().getType().getClassType(), startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getStartLine(), action);
         }
     }
@@ -137,7 +141,11 @@ public class RefactoringMinerUtils {
     private void handleChangeVariableType(Map<Integer, List<Data>> actionsMap, String filePath, ChangeVariableTypeRefactoring changeVariableTypeRefactoring) {
         if (changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getFilePath().equals(filePath)) {
             final String refactoringType = changeVariableTypeRefactoring.getChangedTypeVariable().isParameter() ? "CHANGE_PARAMETER_TYPE" : "CHANGE_VARIABLE_TYPE";
-            String[] attributes = refactoringType.equals("CHANGE_PARAMETER_TYPE") ? new String[]{changeVariableTypeRefactoring.getChangedTypeVariable().getVariableName(), changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType()} : new String[]{changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType()};
+            String startOffset = String.valueOf(changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getEndOffset());
+            String[] attributes = refactoringType.equals("CHANGE_PARAMETER_TYPE") ?
+                    new String[]{changeVariableTypeRefactoring.getChangedTypeVariable().getVariableName(), changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType(), startOffset, endOffset}
+                    : new String[]{changeVariableTypeRefactoring.getOriginalVariable().getType().getClassType(), startOffset, endOffset};
             Data action = DataFactory.createRefactoringData(refactoringType, attributes);
             ActionsUtils.addActionToLine(actionsMap, changeVariableTypeRefactoring.getChangedTypeVariable().getLocationInfo().getStartLine(), action);
         }
