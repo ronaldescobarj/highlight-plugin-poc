@@ -159,7 +159,9 @@ public class RefactoringMinerUtils {
 
     private static void handleAddParameter(Map<Integer, List<Data>> actionsMap, String filePath, AddParameterRefactoring addParameterRefactoring) {
         if (addParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("ADD_PARAMETER", addParameterRefactoring.getParameter().getType().getClassType(), addParameterRefactoring.getParameter().getName());
+            String startOffset = String.valueOf(addParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(addParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("ADD_PARAMETER", addParameterRefactoring.getParameter().getType().getClassType(), addParameterRefactoring.getParameter().getName(), startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, addParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
         }
     }
