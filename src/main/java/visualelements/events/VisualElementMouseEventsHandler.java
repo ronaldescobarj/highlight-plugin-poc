@@ -1,10 +1,16 @@
 package visualelements.events;
 
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.ui.popup.JBPopup;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.awt.RelativePoint;
 import models.Data;
 import models.refactorings.AddParameter;
+import models.refactorings.PushDownAttribute;
+import models.refactorings.PushDownMethod;
 import models.refactorings.RenameParameter;
 import visualelements.PopupUtils;
 import java.awt.event.MouseAdapter;
@@ -30,6 +36,16 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
         } else if (action instanceof AddParameter) {
             AddParameter addParameter = (AddParameter) action;
             editor.getSelectionModel().setSelection(addParameter.getStartOffset(), addParameter.getEndOffset());
+        } else if (action instanceof PushDownAttribute) {
+            PushDownAttribute pushDownAttribute = (PushDownAttribute) action;
+            VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pushDownAttribute.getParentClassUrl());
+            OpenFileDescriptor descriptor = new OpenFileDescriptor(editor.getProject(), file);
+            FileEditorManager.getInstance(editor.getProject()).openEditor(descriptor, true);
+        } else if (action instanceof PushDownMethod) {
+            PushDownMethod pushDownMethod = (PushDownMethod) action;
+            VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pushDownMethod.getParentClassUrl());
+            OpenFileDescriptor descriptor = new OpenFileDescriptor(editor.getProject(), file);
+            FileEditorManager.getInstance(editor.getProject()).openEditor(descriptor, true);
         }
     }
 

@@ -2,9 +2,11 @@ package models.refactorings;
 
 public class PushDownMethod extends RefactoringData {
     String oldParentClass;
+    String parentClassUrl;
 
     public PushDownMethod(String... attributes) {
         this.oldParentClass = attributes[0];
+        this.parentClassUrl = attributes[1];
     }
 
     @Override
@@ -15,5 +17,9 @@ public class PushDownMethod extends RefactoringData {
     @Override
     public String getType() {
         return "PUSH_DOWN_METHOD";
+    }
+
+    public String getParentClassUrl() {
+        return parentClassUrl;
     }
 }

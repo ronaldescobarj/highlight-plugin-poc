@@ -35,7 +35,7 @@ public class DiffMapGenerator {
         List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, modificationCommit);
         Map<Integer, List<Data>> diffMap = getDiffMapOfCommit(modificationCommit, editor, gitLocal);
 //        diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
-        RefactoringMinerUtils.addRefactoringsToMap(refactorings, diffMap, filePath);
+        new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, diffMap, filePath);
         return diffMap;
     }
 
@@ -49,7 +49,7 @@ public class DiffMapGenerator {
             RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
             List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
             String filePath = EditorUtils.getRelativePath(editor);
-            RefactoringMinerUtils.addRefactoringsToMap(refactorings, changes, filePath);
+            new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
         }
         return changes;
     }
