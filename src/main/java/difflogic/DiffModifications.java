@@ -52,7 +52,7 @@ public class DiffModifications {
         String fileName = EditorUtils.getFileName(editor);
         GitLocal gitLocal = new GitLocal(gitService.getRepository());
         RevCommit commitWithLatestModification = null;
-        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(10);
+        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendant(15);
         for (RevCommit commit : commits) {
             List<DiffRow> diffRows = generateDiffWithPreviousCommit(commit, fileName, gitLocal);
             if (!diffRows.isEmpty()) {

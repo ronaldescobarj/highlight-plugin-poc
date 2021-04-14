@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.JBMenuItem;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBMenu;
 import com.intellij.ui.components.JBRadioButton;
+import com.intellij.ui.components.JBScrollPane;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.jetbrains.annotations.Nullable;
@@ -44,9 +45,15 @@ public class SelectCommitDialogWrapper extends DialogWrapper {
         dialogPanel.add(destinationCommitTitle);
         dialogPanel.add(destinationCommitData);
         dialogPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        JBScrollPane pane = new JBScrollPane();
+        JPanel commitsPanel = new JPanel();
+        BoxLayout commitsLayout = new BoxLayout(commitsPanel, BoxLayout.Y_AXIS);
+        commitsPanel.setLayout(commitsLayout);
         JLabel selectSourceCommitTitle = new JLabel("<html><b>Select source commit:</b></html>");
         dialogPanel.add(selectSourceCommitTitle);
-        addRadioButtons(dialogPanel);
+        addRadioButtons(commitsPanel);
+        pane.setViewportView(commitsPanel);
+        dialogPanel.add(pane);
         return dialogPanel;
     }
 
