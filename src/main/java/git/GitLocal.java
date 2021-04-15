@@ -3,6 +3,7 @@ package git;
 import at.aau.softwaredynamics.runner.util.GitHelper;
 import com.intellij.openapi.editor.Editor;
 import editor.EditorUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.ObjectId;
@@ -137,7 +138,7 @@ public class GitLocal {
             } catch (IOException e) {
                 return "";
             }
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return "";
         }
     }

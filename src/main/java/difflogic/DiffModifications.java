@@ -61,7 +61,7 @@ public class DiffModifications {
             }
         }
         if (commitWithLatestModification == null) {
-            commitWithLatestModification = commits.get(1);
+            commitWithLatestModification = commits.get(0);
         }
         return commitWithLatestModification;
     }
