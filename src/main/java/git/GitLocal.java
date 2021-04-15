@@ -73,6 +73,17 @@ public class GitLocal {
         }
     }
 
+    public List<RevCommit> getSelectedLatestCommitsDescendantFrom(RevCommit commit, int numberOfCommits) {
+        try {
+            Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
+            List<RevCommit> commitsList = new ArrayList<>(commits);
+            int index = commitsList.indexOf(commit) + 1;
+            return commitsList.subList(index, index + numberOfCommits);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public RevCommit getLatestCommit() {
         try {
             Collection<RevCommit> commits = GitHelper.getCommits(repository, "HEAD");
