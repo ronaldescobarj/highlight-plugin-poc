@@ -23,6 +23,11 @@ public class VisualElementsUtils {
                 EditorCoverLayerManager.getInstance(project).registerEditorCoverLayer(editor));
     }
 
+    public void resetVisualElements(Editor editor) {
+        EditorCoverLayerManager.getInstance(editor.getProject()).clearAllEditorCoverLayers();
+        registerEditorToCoverLayerManager(editor);
+    }
+
     public void addVisualElements(Editor editor, Map<Integer, List<Data>> diffMap) {
         for (Map.Entry<Integer, List<Data>> diff : diffMap.entrySet()) {
             addVisualElementsToLine(editor, diff.getKey(), diff.getValue());
