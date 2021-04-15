@@ -21,10 +21,11 @@ public class Deleted extends ModificationData {
 
     @Override
     public String renderData() {
-        return "<b>Author username:</b> " + author.getName() + "<br>" +
+        return isOnParent ? "<b>Author username:</b> " + author.getName() + "<br>" +
                 "<b>Author email:</b> " + author.getEmailAddress() + "<br>" +
                 "<b>Commit datetime:</b> " + getDateTimeString() + "<br>" +
-                "<b>Deleted code:</b>" + deletedCode;
+                "<b>Deleted code: </b>" + deletedCode :
+                "This was modified before<br>" + getDateTimeString();
     }
 
     @Override

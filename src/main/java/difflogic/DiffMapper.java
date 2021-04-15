@@ -66,6 +66,7 @@ public class DiffMapper {
             }
             ModificationData modification = DataFactory.createModificationData(diffRow.getChange(), author, commitDate);
             modification.setAdditionalData(contentDeleted);
+            modification.setOnParent(true);
             ActionsUtils.addActionToLine(diffMap, line, modification);
         }
     }

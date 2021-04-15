@@ -10,8 +10,13 @@ import java.util.Date;
 public abstract class ModificationData implements Data {
     PersonIdent author;
     LocalDateTime dateTime;
+    boolean isOnParent;
 
     public abstract void setAdditionalData(String... additionalData);
+
+    public void setOnParent(boolean isOnParent) {
+        this.isOnParent = isOnParent;
+    }
 
     public String getDateTimeString() {
         return getDayOfMonth() + "/" + getMonth() + "/" +
