@@ -4,7 +4,11 @@ import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 import com.intellij.openapi.editor.event.EditorMouseListener;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.util.FileContentUtil;
 import difflogic.DiffMapGenerator;
 import difflogic.DiffModifications;
 import editor.EditorUtils;
@@ -17,6 +21,7 @@ import services.EditorService;
 import services.GitService;
 import visualelements.VisualElementsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +42,11 @@ public class OnEditorMouse implements EditorMouseListener {
             EditorData editorData = new EditorData(changes, true, previousCommit, latestCommitWithModifications);
             editorService.setEditorWithData(editor, editorData);
             gitService.setLatestCommitHash(latestCommitHash);
-            DaemonCodeAnalyzer.getInstance(project).restart();
+
+            VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            List<VirtualFile> files = new ArrayList<>();
+            files.add(virtualFile);
+            FileContentUtil.reparseFiles(editor.getProject(), files, true);
         } else if (!editorPath.equals(editorService.getActiveEditorPath())) {
             editorService.setActiveEditor(editor);
         }
