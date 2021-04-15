@@ -24,6 +24,7 @@ import models.refactorings.PullUpMethod;
 import org.refactoringminer.api.Refactoring;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,7 +79,12 @@ public class RefactoringMinerUtils {
             codeExtractedFragments.add(abstractCodeFragment.getString());
         }
         if (extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", codeExtractedFragments.toArray(new String[0]));
+            String startOffset = String.valueOf(extractOperationRefactoring.getSourceOperationAfterExtraction().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(extractOperationRefactoring.getSourceOperationAfterExtraction().getLocationInfo().getEndOffset());
+            List<String> elements = codeExtractedFragments;
+            elements.add(0, endOffset);
+            elements.add(0, startOffset);
+            Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", elements.toArray(new String[0]));
             ActionsUtils.addActionToLine(actionsMap, extractOperationRefactoring.getExtractedOperation().getLocationInfo().getStartLine(), action);
         }
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {

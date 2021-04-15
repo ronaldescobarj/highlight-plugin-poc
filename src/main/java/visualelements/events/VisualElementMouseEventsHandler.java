@@ -36,6 +36,9 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
         if (action instanceof RenameParameter) {
             RenameParameter renameParameter = (RenameParameter) action;
             editor.getSelectionModel().setSelection(renameParameter.getStartOffset(), renameParameter.getEndOffset());
+        } else if (action instanceof ExtractedMethod) {
+            ExtractedMethod extractedMethod = (ExtractedMethod) action;
+            editor.getSelectionModel().setSelection(extractedMethod.getStartOffset(), extractedMethod.getEndOffset());
         } else if (action instanceof AddParameter) {
             AddParameter addParameter = (AddParameter) action;
             editor.getSelectionModel().setSelection(addParameter.getStartOffset(), addParameter.getEndOffset());
