@@ -7,6 +7,7 @@ import editor.EditorUtils;
 import git.GitLocal;
 import models.Data;
 import models.DiffRow;
+import models.actions.ModificationData;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -45,6 +46,10 @@ public class DiffMapGenerator {
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
         Map<Integer, List<Data>> changes = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+        if (!Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
+            Map<Integer, List<Data>> changesWithParent = new DiffMapGenerator().generateChangesMapForEditor(editor, destinationCommit.getParents()[0], destinationCommit);
+            overrideChanges(changes, changesWithParent);
+        }
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
         List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
         String filePath = EditorUtils.getRelativePath(editor);
@@ -86,5 +91,28 @@ public class DiffMapGenerator {
         String previousFileContent = gitLocal.getPreviousCommitFileContent(diffEntry);
         List<DiffRow> diffRows = CompareUtils.getDiffChanges(previousFileContent, commitFileContent);
         return new DiffMapper(diffRows, commit, previousFileContent).createDiffMap();
+    }
+
+    void overrideChanges(Map<Integer, List<Data>> changes, Map<Integer, List<Data>> changesWithParent) {
+        for (Map.Entry<Integer, List<Data>> entry : changes.entrySet()) {
+            List<Data> dataList = entry.getValue();
+            for (int i = 0; i < dataList.size(); i++) {
+                if (!contains(dataList.get(i), changesWithParent, entry.getKey())) {
+                    ModificationData modificationData = (ModificationData) dataList.get(i);
+                    modificationData.setOnParent(false);
+                    dataList.set(i, modificationData);
+                }
+            }
+            changes.put(entry.getKey(), dataList);
+        }
+    }
+
+    boolean contains(Data dataToSearch, Map<Integer, List<Data>> changesWithParent, int line) {
+        for (Map.Entry<Integer, List<Data>> entry : changesWithParent.entrySet()) {
+            if (line == entry.getKey() && entry.getValue().stream().anyMatch(data -> data.getType().equals(dataToSearch.getType()))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
