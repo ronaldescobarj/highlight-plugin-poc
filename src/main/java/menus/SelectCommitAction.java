@@ -10,6 +10,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBCheckBox;
 import difflogic.DiffMapGenerator;
+import editor.EditorUtils;
 import git.GitLocal;
 import models.Data;
 import models.EditorData;
@@ -48,7 +49,7 @@ public class SelectCommitAction extends AnAction {
             editorData.setSourceCommit(newSourceCommit);
             editorData.setChanges(changes);
             editorService.setEditorWithData(activeEditor, editorData);
-            DaemonCodeAnalyzer.getInstance(currentProject).restart();
+            EditorUtils.refreshEditor(activeEditor);
             new VisualElementsUtils().addVisualElements(activeEditor, editorService.getActiveEditorChanges());
         }
     }

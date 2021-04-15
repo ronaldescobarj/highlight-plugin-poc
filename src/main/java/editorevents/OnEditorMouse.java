@@ -42,13 +42,10 @@ public class OnEditorMouse implements EditorMouseListener {
             EditorData editorData = new EditorData(changes, true, previousCommit, latestCommitWithModifications);
             editorService.setEditorWithData(editor, editorData);
             gitService.setLatestCommitHash(latestCommitHash);
-            VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
-            List<VirtualFile> files = new ArrayList<>();
-            files.add(virtualFile);
-            FileContentUtil.reparseFiles(editor.getProject(), files, true);
-            new VisualElementsUtils().resetVisualElements(editor);
+            EditorUtils.refreshEditor(editor);
         } else if (!editorPath.equals(editorService.getActiveEditorPath())) {
             editorService.setActiveEditor(editor);
+            EditorUtils.refreshEditor(editor);
         }
         new VisualElementsUtils().addVisualElements(editor, editorService.getActiveEditorChanges());
     }

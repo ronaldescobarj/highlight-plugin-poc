@@ -5,6 +5,11 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.FileContentUtil;
+import visualelements.VisualElementsUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditorUtils {
 
@@ -25,5 +30,13 @@ public class EditorUtils {
     public static String getCurrentFileContent(Editor editor) {
         Document document = editor.getDocument();
         return document.getText();
+    }
+
+    public static void refreshEditor(Editor editor) {
+        VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
+        List<VirtualFile> files = new ArrayList<>();
+        files.add(virtualFile);
+        FileContentUtil.reparseFiles(editor.getProject(), files, true);
+        new VisualElementsUtils().resetVisualElements(editor);
     }
 }

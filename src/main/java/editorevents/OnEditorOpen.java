@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.event.EditorFactoryEvent;
 import com.intellij.openapi.editor.event.EditorFactoryListener;
 import difflogic.DiffMapGenerator;
 import difflogic.DiffModifications;
+import editor.EditorUtils;
 import models.Data;
 import models.EditorData;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -35,9 +36,6 @@ public class OnEditorOpen implements EditorFactoryListener {
             EditorData editorData = new EditorData(changes, true, previousCommit, latestCommitWithModifications);
             editorService.setEditorWithData(editor, editorData);
         }
-//        Map<Integer, List<Data>> diffMap = new DiffMapGenerator().generateHighlightMapForEditor(editor);
-//        editorService.setDiffMap(diffMap);
-//        editorService.setLastOpenedEditor(editor);
     }
 
     @Override
