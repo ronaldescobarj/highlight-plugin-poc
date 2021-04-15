@@ -41,7 +41,7 @@ public class SelectCommitAction extends AnAction {
         EditorService editorService = currentProject.getService(EditorService.class);
         Editor activeEditor = editorService.getActiveEditorData().getEditor();
         EditorData editorData = editorService.getActiveEditorData();
-        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendantFrom(editorData.getDestinationCommit(), 10);
+        List<RevCommit> commits = gitLocal.getSelectedLatestCommitsDescendantFrom(editorData.getDestinationCommit(), 15);
         SelectCommitDialogWrapper dialog = new SelectCommitDialogWrapper(commits, editorData.getSourceCommit(), editorData.getDestinationCommit());
         if (dialog.showAndGet()) {
             String sourceCommitSha = dialog.getSelectedOption();
