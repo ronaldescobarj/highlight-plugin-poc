@@ -36,12 +36,12 @@ public class OnEditorMouse implements EditorMouseListener {
         EditorService editorService = project.getService(EditorService.class);
         GitService gitService = project.getService(GitService.class);
         GitLocal gitLocal = new GitLocal(gitService.getRepository());
-        String latestCommitHash = gitLocal.getLatestCommit().getName();
+        RevCommit latestCommit = gitLocal.getLatestCommit();
+        String latestCommitHash = latestCommit.getName();
         if (!latestCommitHash.equals(gitService.getLatestCommitHash())) {
-            RevCommit latestCommitWithModifications = new DiffModifications().getCommitWithLatestModification(editor);
-            RevCommit previousCommit = latestCommitWithModifications.getParents()[0];
-            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, previousCommit, latestCommitWithModifications);
-            EditorData editorData = new EditorData(changes, true, previousCommit, latestCommitWithModifications);
+            RevCommit previousCommit = latestCommit.getParents()[0];
+            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, previousCommit, latestCommit);
+            EditorData editorData = new EditorData(changes, true, previousCommit, latestCommit);
             editorService.setEditorWithData(editor, editorData);
             gitService.setLatestCommitHash(latestCommitHash);
             EditorUtils.refreshEditor(editor);
