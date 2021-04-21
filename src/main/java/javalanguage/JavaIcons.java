@@ -6,4 +6,5 @@ import javax.swing.*;
 
 public class JavaIcons {
     public static final Icon FILE = IconLoader.getIcon("/images/mygear.png");
+    public static final Icon TEST = IconLoader.getIcon("/images/polygon.png");
 }
