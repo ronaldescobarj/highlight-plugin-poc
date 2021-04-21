@@ -2,6 +2,8 @@ package git;
 
 import at.aau.softwaredynamics.runner.util.GitHelper;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import editor.EditorUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -153,6 +155,29 @@ public class GitLocal {
             return "";
         }
     }
+
+    public String getFileContentOnCommit(VirtualFile file, RevCommit commit, Project project) {
+        String path = getFilePath(file, project);
+        try (TreeWalk treeWalk = TreeWalk.forPath(repository, path, commit.getTree())) {
+            ObjectId blobId = treeWalk.getObjectId(0);
+            try (ObjectReader objectReader = repository.newObjectReader()) {
+                ObjectLoader objectLoader = objectReader.open(blobId);
+                byte[] bytes = objectLoader.getBytes();
+                return new String(bytes, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                return "";
+            }
+        } catch (IOException | NullPointerException e) {
+            return "";
+        }
+    }
+
+    private String getFilePath(VirtualFile file, Project project) {
+        String filePath = file.getPath();
+        String projectPath = project.getBasePath();
+        return filePath.replaceAll(projectPath + "/", "");
+    }
+
 
     private DiffFormatter createDiffFormatter(String fileName) {
         DiffFormatter diffFormatter = new DiffFormatter(NullOutputStream.INSTANCE);

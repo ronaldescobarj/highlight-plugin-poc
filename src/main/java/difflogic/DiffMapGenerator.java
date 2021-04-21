@@ -2,6 +2,7 @@ package difflogic;
 
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import compare.CompareUtils;
 import editor.EditorUtils;
 import git.GitLocal;
@@ -63,9 +64,38 @@ public class DiffMapGenerator {
         return changes;
     }
 
+    public Map<Integer, List<Data>> generateChangesMapForFile(VirtualFile file, RevCommit sourceCommit, RevCommit destinationCommit, Project project) {
+        GitService gitService = project.getService(GitService.class);
+        Repository repository = gitService.getRepository();
+        GitLocal gitLocal = new GitLocal(repository);
+        Map<Integer, List<Data>> changes = getDiffMapOfCommits(sourceCommit, destinationCommit, file, gitLocal, project);
+        if (!Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
+            Map<Integer, List<Data>> changesWithParent = new DiffMapGenerator().generateChangesMapForFile(file, destinationCommit.getParents()[0], destinationCommit, project);
+            overrideChanges(changes, changesWithParent);
+        }
+        RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
+        List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
+        String filePath = getFilePath(file, project);
+        new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
+//        if (Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
+//            RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
+//            List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
+//            String filePath = EditorUtils.getRelativePath(editor);
+//            new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
+//        }
+        return changes;
+    }
+
     private Map<Integer, List<Data>> getDiffMapOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
         String sourceFileContent = gitLocal.getFileContentOnCommit(editor, sourceCommit);
         String destinationFileContent = gitLocal.getFileContentOnCommit(editor, destinationCommit);
+        List<DiffRow> diffRows = CompareUtils.getDiffChanges(sourceFileContent, destinationFileContent);
+        return new DiffMapper(diffRows, destinationCommit, sourceFileContent).createDiffMap();
+    }
+
+    private Map<Integer, List<Data>> getDiffMapOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, VirtualFile file, GitLocal gitLocal, Project project) {
+        String sourceFileContent = gitLocal.getFileContentOnCommit(file, sourceCommit, project);
+        String destinationFileContent = gitLocal.getFileContentOnCommit(file, destinationCommit, project);
         List<DiffRow> diffRows = CompareUtils.getDiffChanges(sourceFileContent, destinationFileContent);
         return new DiffMapper(diffRows, destinationCommit, sourceFileContent).createDiffMap();
     }
@@ -105,6 +135,12 @@ public class DiffMapGenerator {
             }
             changes.put(entry.getKey(), dataList);
         }
+    }
+
+    private String getFilePath(VirtualFile file, Project project) {
+        String filePath = file.getPath();
+        String projectPath = project.getBasePath();
+        return filePath.replaceAll(projectPath + "/", "");
     }
 
     boolean contains(Data dataToSearch, Map<Integer, List<Data>> changesWithParent, int line) {
