@@ -7,7 +7,7 @@ import org.eclipse.jgit.lib.PersonIdent;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public abstract class ModificationData implements Data {
+public abstract class ModificationData extends Data {
     PersonIdent author;
     LocalDateTime dateTime;
     boolean isOnParent;

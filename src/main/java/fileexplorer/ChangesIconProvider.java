@@ -20,19 +20,21 @@ import java.util.Map;
 public class ChangesIconProvider implements FileIconProvider {
     @Override
     public @Nullable Icon getIcon(@NotNull VirtualFile file, int flags, @Nullable Project project) {
-        RevCommit latestCommit = getLatestCommit(project);
-        RevCommit previousCommit = latestCommit.getParents()[0];
-        Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForFile(file, previousCommit, latestCommit, project);
-        int numberOfChanges = countChanges(changes);
-        if (numberOfChanges == 0) {
-            return JavaIcons.NO_CHANGES;
-        } else if (numberOfChanges < 10) {
-            return JavaIcons.FEW_CHANGES;
-        } else if (numberOfChanges < 25) {
-            return JavaIcons.MEDIUM_CHANGES;
-        } else {
-            return JavaIcons.MANY_CHANGES;
-        }
+//        RevCommit latestCommit = getLatestCommit(project);
+//        RevCommit previousCommit = latestCommit.getParents()[0];
+//        Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForFile(file, previousCommit, latestCommit, project);
+//        int numberOfChanges = countChanges(changes);
+//        if (numberOfChanges == 0) {
+//            return JavaIcons.NO_CHANGES;
+//        } else if (numberOfChanges < 10) {
+//            return JavaIcons.FEW_CHANGES;
+//        } else if (numberOfChanges < 25) {
+//            return JavaIcons.MEDIUM_CHANGES;
+//        } else {
+//            return JavaIcons.MANY_CHANGES;
+//        }
+        return JavaIcons.NO_CHANGES;
+
     }
 
     private RevCommit getLatestCommit(Project project) {

@@ -1,7 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package javalanguage;
 
-import com.intellij.lexer.FlexLexer;
+import changes.ChangesHighlighter;import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import difflogic.DiffHighlighter;
 import javalanguage.psi.JavaTypes;
@@ -16,19 +16,20 @@ import java.util.ArrayList;
 %unicode
 %char
 %line
+%column
 %function advance
 %type IElementType
 %eof{  return;
 %eof}
 
 %init{
-      diffHighlighter = new DiffHighlighter();
+  changesHighlighter = new ChangesHighlighter();
 %init}
 
 %{
-  DiffHighlighter diffHighlighter;
+  ChangesHighlighter changesHighlighter;
   private IElementType getCorrespondingToken() {
-      return diffHighlighter.getLineHighlight(yyline);
+      return changesHighlighter.getCharHighlight(yyline, yychar);
   }
 %}
 

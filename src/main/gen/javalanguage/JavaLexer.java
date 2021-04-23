@@ -3,7 +3,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package javalanguage;
 
-import com.intellij.lexer.FlexLexer;
+import changes.ChangesHighlighter;import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import difflogic.DiffHighlighter;
 import javalanguage.psi.JavaTypes;
@@ -31,6 +31,7 @@ class JavaLexer implements FlexLexer {
 
   long yychar = 0;
   int yyline = 1;
+  int yycolumn = 1;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -224,9 +225,9 @@ class JavaLexer implements FlexLexer {
   private boolean zzEOFDone;
 
   /* user code: */
-  DiffHighlighter diffHighlighter;
+  ChangesHighlighter changesHighlighter;
   private IElementType getCorrespondingToken() {
-      return diffHighlighter.getLineHighlight(yyline);
+      return changesHighlighter.getCharHighlight(yyline, yychar);
   }
 
 
@@ -236,7 +237,7 @@ class JavaLexer implements FlexLexer {
    * @param   in  the java.io.Reader to read input from.
    */
   JavaLexer(java.io.Reader in) {
-        diffHighlighter = new DiffHighlighter();
+    changesHighlighter = new ChangesHighlighter();
     this.zzReader = in;
   }
 
@@ -438,10 +439,12 @@ class JavaLexer implements FlexLexer {
         case '\u2028':  // fall through
         case '\u2029':
           yyline++;
+          yycolumn = 0;
           zzR = false;
           break;
         case '\r':
           yyline++;
+          yycolumn = 0;
           zzR = true;
           break;
         case '\n':
@@ -449,10 +452,12 @@ class JavaLexer implements FlexLexer {
             zzR = false;
           else {
             yyline++;
+            yycolumn = 0;
           }
           break;
         default:
           zzR = false;
+          yycolumn += zzCharCount;
         }
       }
 

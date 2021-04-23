@@ -5,6 +5,8 @@ public class ChangeReturnType extends RefactoringData {
 
     public ChangeReturnType(String... attributes) {
         this.oldType = attributes[0];
+        this.startOffset = Long.parseLong(attributes[1]);
+        this.endOffset = Long.parseLong(attributes[2]);
     }
 
     @Override

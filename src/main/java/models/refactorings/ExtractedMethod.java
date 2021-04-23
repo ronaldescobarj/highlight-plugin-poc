@@ -34,12 +34,5 @@ public class ExtractedMethod extends RefactoringData {
         return "EXTRACTED_METHOD";
     }
 
-    public int getStartOffset() {
-        return startOffset;
-    }
-
-    public int getEndOffset() {
-        return endOffset;
-    }
 
 }

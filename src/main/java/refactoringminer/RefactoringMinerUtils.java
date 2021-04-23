@@ -139,7 +139,7 @@ public class RefactoringMinerUtils {
 
     private void handleChangeReturnType(Map<Integer, List<Data>> actionsMap, String filePath, ChangeReturnTypeRefactoring changeReturnTypeRefactoring) {
         if (changeReturnTypeRefactoring.getChangedType().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("CHANGE_RETURN_TYPE", changeReturnTypeRefactoring.getOriginalType().getClassType());
+            Data action = DataFactory.createRefactoringData("CHANGE_RETURN_TYPE", changeReturnTypeRefactoring.getOriginalType().getClassType(), String.valueOf(changeReturnTypeRefactoring.getChangedType().getLocationInfo().getStartOffset()), String.valueOf(changeReturnTypeRefactoring.getChangedType().getLocationInfo().getEndOffset()));
             ActionsUtils.addActionToLine(actionsMap, changeReturnTypeRefactoring.getChangedType().getLocationInfo().getStartLine(), action);
         }
     }

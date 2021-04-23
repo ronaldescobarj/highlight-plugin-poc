@@ -46,7 +46,8 @@ public class DiffMapGenerator {
         GitService gitService = project.getService(GitService.class);
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
-        Map<Integer, List<Data>> changes = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+//        Map<Integer, List<Data>> changes = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+        Map<Integer, List<Data>> changes = new HashMap<>();
         if (!Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
             Map<Integer, List<Data>> changesWithParent = new DiffMapGenerator().generateChangesMapForEditor(editor, destinationCommit.getParents()[0], destinationCommit);
             overrideChanges(changes, changesWithParent);

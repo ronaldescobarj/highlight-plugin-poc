@@ -2,8 +2,6 @@ package models.refactorings;
 
 public class ChangeAttributeType extends RefactoringData {
     String oldType;
-    int startOffset;
-    int endOffset;
 
     public ChangeAttributeType(String... attributes) {
         this.oldType = attributes[0];
@@ -21,11 +19,4 @@ public class ChangeAttributeType extends RefactoringData {
         return "CHANGE_ATTRIBUTE_TYPE";
     }
 
-    public int getStartOffset() {
-        return startOffset;
-    }
-
-    public int getEndOffset() {
-        return endOffset;
-    }
 }

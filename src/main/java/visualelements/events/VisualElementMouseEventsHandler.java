@@ -35,25 +35,25 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
     private void handleClickOnAction() {
         if (action instanceof RenameParameter) {
             RenameParameter renameParameter = (RenameParameter) action;
-            editor.getSelectionModel().setSelection(renameParameter.getStartOffset(), renameParameter.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(renameParameter.getStartOffset()), Math.toIntExact(renameParameter.getEndOffset()));
         } else if (action instanceof ExtractedMethod) {
             ExtractedMethod extractedMethod = (ExtractedMethod) action;
-            editor.getSelectionModel().setSelection(extractedMethod.getStartOffset(), extractedMethod.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(extractedMethod.getStartOffset()), Math.toIntExact(extractedMethod.getEndOffset()));
         } else if (action instanceof AddParameter) {
             AddParameter addParameter = (AddParameter) action;
-            editor.getSelectionModel().setSelection(addParameter.getStartOffset(), addParameter.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(addParameter.getStartOffset()), Math.toIntExact(addParameter.getEndOffset()));
         } else if (action instanceof ChangeAttributeType) {
             ChangeAttributeType changeAttributeType = (ChangeAttributeType) action;
-            editor.getSelectionModel().setSelection(changeAttributeType.getStartOffset(), changeAttributeType.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(changeAttributeType.getStartOffset()), Math.toIntExact(changeAttributeType.getEndOffset()));
         } else if (action instanceof ChangeParameterType) {
             ChangeParameterType changeParameterType = (ChangeParameterType) action;
-            editor.getSelectionModel().setSelection(changeParameterType.getStartOffset(), changeParameterType.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(changeParameterType.getStartOffset()), Math.toIntExact(changeParameterType.getEndOffset()));
         } else if (action instanceof ChangeVariableType) {
             ChangeVariableType changeVariableType = (ChangeVariableType) action;
-            editor.getSelectionModel().setSelection(changeVariableType.getStartOffset(), changeVariableType.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(changeVariableType.getStartOffset()), Math.toIntExact(changeVariableType.getEndOffset()));
         } else if (action instanceof RenameVariable) {
             RenameVariable renameVariable = (RenameVariable) action;
-            editor.getSelectionModel().setSelection(renameVariable.getStartOffset(), renameVariable.getEndOffset());
+            editor.getSelectionModel().setSelection(Math.toIntExact(renameVariable.getStartOffset()), Math.toIntExact(renameVariable.getEndOffset()));
         } else if (action instanceof PushDownAttribute) {
             PushDownAttribute pushDownAttribute = (PushDownAttribute) action;
             VirtualFile file = VirtualFileManager.getInstance().findFileByUrl(pushDownAttribute.getParentClassUrl());

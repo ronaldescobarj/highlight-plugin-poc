@@ -21,11 +21,4 @@ public class RenameVariable extends RefactoringData {
         return "RENAME_VARIABLE";
     }
 
-    public int getStartOffset() {
-        return startOffset;
-    }
-
-    public int getEndOffset() {
-        return endOffset;
-    }
 }

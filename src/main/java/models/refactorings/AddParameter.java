@@ -3,14 +3,12 @@ package models.refactorings;
 public class AddParameter extends RefactoringData {
     String addedParameterType;
     String addedParameterName;
-    int startOffset;
-    int endOffset;
 
     public AddParameter(String... attributes) {
         this.addedParameterType = attributes[0];
         this.addedParameterName = attributes[1];
-        this.startOffset = Integer.parseInt(attributes[2]);
-        this.endOffset = Integer.parseInt(attributes[3]);
+        this.startOffset = Long.parseLong(attributes[2]);
+        this.endOffset = Long.parseLong(attributes[3]);
     }
 
     @Override
@@ -23,11 +21,4 @@ public class AddParameter extends RefactoringData {
         return "ADD_PARAMETER";
     }
 
-    public int getStartOffset() {
-        return startOffset;
-    }
-
-    public int getEndOffset() {
-        return endOffset;
-    }
 }

@@ -21,11 +21,4 @@ public class ChangeVariableType extends RefactoringData {
         return "CHANGE_VARIABLE_TYPE";
     }
 
-    public int getStartOffset() {
-        return startOffset;
-    }
-
-    public int getEndOffset() {
-        return endOffset;
-    }
 }
