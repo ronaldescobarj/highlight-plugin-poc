@@ -6,13 +6,15 @@ import java.util.List;
 public class ExtractedMethod extends RefactoringData {
 
     String[] extractedCodeFragments;
-    int startOffset;
-    int endOffset;
+    long startOffsetOfSourceOperation;
+    long endOffsetOfSourceOperation;
 
     public ExtractedMethod(String... attributes) {
-        this.startOffset = Integer.parseInt(attributes[0]);
-        this.endOffset = Integer.parseInt(attributes[1]);
-        List<String> extractedCodeFragments = Arrays.asList(attributes).subList(2, attributes.length);
+        this.startOffset = Long.parseLong(attributes[0]);
+        this.endOffset = Long.parseLong(attributes[1]);
+        this.startOffsetOfSourceOperation = Long.parseLong(attributes[2]);
+        this.endOffsetOfSourceOperation = Long.parseLong(attributes[3]);
+        List<String> extractedCodeFragments = Arrays.asList(attributes).subList(4, attributes.length);
         this.extractedCodeFragments = extractedCodeFragments.toArray(new String[0]);
     }
 

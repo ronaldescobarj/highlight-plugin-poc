@@ -10,7 +10,9 @@ public class PullUpAttribute extends RefactoringData {
 
     public PullUpAttribute(String... attributes) {
         this.parentClass = attributes[0];
-        List<String> oldClassesList = Arrays.asList(attributes).subList(1, attributes.length);
+        this.startOffset = Long.parseLong(attributes[1]);
+        this.endOffset = Long.parseLong(attributes[2]);
+        List<String> oldClassesList = Arrays.asList(attributes).subList(3, attributes.length);
         this.oldClasses = oldClassesList.toArray(new String[0]);
     }
 

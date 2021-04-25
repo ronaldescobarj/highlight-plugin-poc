@@ -7,6 +7,8 @@ public class PushDownAttribute extends RefactoringData {
     public PushDownAttribute(String... attributes) {
         this.oldParentClass = attributes[0];
         this.parentClassUrl = attributes[1];
+        this.startOffset = Long.parseLong(attributes[2]);
+        this.endOffset = Long.parseLong(attributes[3]);
     }
 
     @Override

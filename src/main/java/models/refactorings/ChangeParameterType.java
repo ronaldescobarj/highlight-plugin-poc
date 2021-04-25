@@ -7,8 +7,8 @@ public class ChangeParameterType extends RefactoringData {
     public ChangeParameterType(String... attributes) {
         this.parameter = attributes[0];
         this.oldType = attributes[1];
-        this.startOffset = Integer.parseInt(attributes[2]);
-        this.endOffset = Integer.parseInt(attributes[3]);
+        this.startOffset = Long.parseLong(attributes[2]);
+        this.endOffset = Long.parseLong(attributes[3]);
     }
 
     @Override

@@ -2,13 +2,11 @@ package models.refactorings;
 
 public class RenameVariable extends RefactoringData {
     String oldName;
-    int startOffset;
-    int endOffset;
 
     public RenameVariable(String... attributes) {
         this.oldName = attributes[0];
-        this.startOffset = Integer.parseInt(attributes[1]);
-        this.endOffset = Integer.parseInt(attributes[2]);
+        this.startOffset = Long.parseLong(attributes[1]);
+        this.endOffset = Long.parseLong(attributes[2]);
     }
 
     @Override

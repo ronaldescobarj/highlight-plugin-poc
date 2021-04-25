@@ -1,10 +1,16 @@
 package models.refactorings;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ExtractInterface extends RefactoringData {
     String[] subclasses;
 
     public ExtractInterface(String... attributes) {
-        this.subclasses = attributes;
+        this.startOffset = Long.parseLong(attributes[0]);
+        this.endOffset = Long.parseLong(attributes[1]);
+        List<String> subclasses = Arrays.asList(attributes).subList(2, attributes.length);
+        this.subclasses = subclasses.toArray(new String[0]);
     }
 
     @Override

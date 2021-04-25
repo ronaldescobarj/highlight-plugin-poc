@@ -1,12 +1,16 @@
 package models.refactorings;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ReorderParameter extends RefactoringData {
     String[] oldParametersOrder;
 
     public ReorderParameter(String... attributes) {
-        this.oldParametersOrder = attributes;
+        this.startOffset = Long.parseLong(attributes[0]);
+        this.endOffset = Long.parseLong(attributes[1]);
+        List<String> oldParametersOrder = Arrays.asList(attributes).subList(2, attributes.length);
+        this.oldParametersOrder = oldParametersOrder.toArray(new String[0]);
     }
 
     @Override

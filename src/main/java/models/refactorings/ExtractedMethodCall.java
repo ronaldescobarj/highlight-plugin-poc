@@ -1,11 +1,17 @@
 package models.refactorings;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ExtractedMethodCall extends RefactoringData {
 
     String[] extractedCodeFragments;
 
-    public ExtractedMethodCall(String[] extractedCodeFragments) {
-        this.extractedCodeFragments = extractedCodeFragments;
+    public ExtractedMethodCall(String[] attributes) {
+        this.startOffset = Long.parseLong(attributes[0]);
+        this.endOffset = Long.parseLong(attributes[1]);
+        List<String> extractedCodeFragments = Arrays.asList(attributes).subList(2, attributes.length);
+        this.extractedCodeFragments = extractedCodeFragments.toArray(new String[0]);
     }
 
     @Override

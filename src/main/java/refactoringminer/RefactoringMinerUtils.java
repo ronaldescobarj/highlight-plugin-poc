@@ -12,6 +12,7 @@ import gr.uom.java.xmi.UMLClass;
 import gr.uom.java.xmi.decomposition.AbstractCodeFragment;
 import gr.uom.java.xmi.decomposition.OperationInvocation;
 import gr.uom.java.xmi.decomposition.StatementObject;
+import gr.uom.java.xmi.decomposition.VariableDeclaration;
 import gr.uom.java.xmi.diff.*;
 import models.Data;
 import models.DataFactory;
@@ -79,9 +80,13 @@ public class RefactoringMinerUtils {
             codeExtractedFragments.add(abstractCodeFragment.getString());
         }
         if (extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath().equals(filePath)) {
-            String startOffset = String.valueOf(extractOperationRefactoring.getSourceOperationAfterExtraction().getLocationInfo().getStartOffset());
-            String endOffset = String.valueOf(extractOperationRefactoring.getSourceOperationAfterExtraction().getLocationInfo().getEndOffset());
-            List<String> elements = codeExtractedFragments;
+            String startOffsetOfSourceOperation = String.valueOf(extractOperationRefactoring.getSourceOperationAfterExtraction().getLocationInfo().getStartOffset());
+            String endOffsetOfSourceOperation = String.valueOf(extractOperationRefactoring.getSourceOperationAfterExtraction().getLocationInfo().getEndOffset());
+            String startOffset = String.valueOf(extractOperationRefactoring.getExtractedOperation().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(extractOperationRefactoring.getExtractedOperation().getLocationInfo().getEndOffset());
+            List<String> elements = new ArrayList<>(codeExtractedFragments);
+            elements.add(0, endOffsetOfSourceOperation);
+            elements.add(0, startOffsetOfSourceOperation);
             elements.add(0, endOffset);
             elements.add(0, startOffset);
             Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", elements.toArray(new String[0]));
@@ -89,7 +94,12 @@ public class RefactoringMinerUtils {
         }
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             if (call.getLocationInfo().getFilePath().equals(filePath)) {
-                Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD_CALL", codeExtractedFragments.toArray(new String[0]));
+                String startOffset = String.valueOf(call.getLocationInfo().getStartOffset());
+                String endOffset = String.valueOf(call.getLocationInfo().getEndOffset());
+                List<String> elements = new ArrayList<>(codeExtractedFragments);
+                elements.add(0, endOffset);
+                elements.add(0, startOffset);
+                Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD_CALL", elements.toArray(new String[0]));
                 ActionsUtils.addActionToLine(actionsMap, call.getLocationInfo().getStartLine(), action);
             }
         }
@@ -115,7 +125,9 @@ public class RefactoringMinerUtils {
 
     private void handleRenameOperation(Map<Integer, List<Data>> actionsMap, String filePath, RenameOperationRefactoring renameOperationRefactoring) {
         if (renameOperationRefactoring.getRenamedOperation().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName());
+            String startOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartLine(), action);
         }
     }
@@ -123,15 +135,17 @@ public class RefactoringMinerUtils {
     private void handleRenameClass(Map<Integer, List<Data>> actionsMap, String filePath, RenameClassRefactoring renameClassRefactoring) {
         if (renameClassRefactoring.getRenamedClass().getLocationInfo().getFilePath().equals(filePath)) {
             String[] classParts = renameClassRefactoring.getOriginalClassName().split("\\.");
-            Data action = DataFactory.createRefactoringData("RENAME_CLASS", classParts[classParts.length - 1]);
+            String startOffset = String.valueOf(renameClassRefactoring.getRenamedClass().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(renameClassRefactoring.getRenamedClass().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("RENAME_CLASS", classParts[classParts.length - 1], startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, renameClassRefactoring.getRenamedClass().getLocationInfo().getStartLine(), action);
         }
     }
 
     private void handleChangeAttributeType(Map<Integer, List<Data>> actionsMap, String filePath, ChangeAttributeTypeRefactoring changeAttributeTypeRefactoring) {
         if (changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getFilePath().equals(filePath)) {
-            String startOffset = String.valueOf(changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getStartOffset());
-            String endOffset = String.valueOf(changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getEndOffset());
+            String startOffset = String.valueOf(changeAttributeTypeRefactoring.getChangedTypeAttribute().getType().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(changeAttributeTypeRefactoring.getChangedTypeAttribute().getType().getLocationInfo().getEndOffset());
             Data action = DataFactory.createRefactoringData("CHANGE_ATTRIBUTE_TYPE", changeAttributeTypeRefactoring.getOriginalAttribute().getType().getClassType(), startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, changeAttributeTypeRefactoring.getChangedTypeAttribute().getLocationInfo().getStartLine(), action);
         }
@@ -159,7 +173,7 @@ public class RefactoringMinerUtils {
 
     private void handleRemoveParameter(Map<Integer, List<Data>> actionsMap, String filePath, RemoveParameterRefactoring removeParameterRefactoring) {
         if (removeParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("REMOVE_PARAMETER", removeParameterRefactoring.getParameter().getType().getClassType(), removeParameterRefactoring.getParameter().getName());
+            Data action = DataFactory.createRefactoringData("REMOVE_PARAMETER", removeParameterRefactoring.getParameter().getType().getClassType(), removeParameterRefactoring.getParameter().getName(), "-1", "-1");
             ActionsUtils.addActionToLine(actionsMap, removeParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
         }
     }
@@ -176,7 +190,12 @@ public class RefactoringMinerUtils {
     private void handleReorderParameter(Map<Integer, List<Data>> actionsMap, String filePath, ReorderParameterRefactoring reorderParameterRefactoring) {
         if (reorderParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
             List<String> oldParametersOrder = reorderParameterRefactoring.getParametersBefore().stream().map(parameter -> parameter.getType().getClassType() + " " + parameter.getVariableName()).collect(Collectors.toList());
-            Data action = DataFactory.createRefactoringData("REORDER_PARAMETER", oldParametersOrder.toArray(new String[oldParametersOrder.size()]));
+            String startOffset = String.valueOf(reorderParameterRefactoring.getParametersAfter().get(0).getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(reorderParameterRefactoring.getParametersAfter().get(reorderParameterRefactoring.getParametersAfter().size() - 1).getLocationInfo().getEndOffset());
+            List<String> allParameters = oldParametersOrder;
+            allParameters.add(0, endOffset);
+            allParameters.add(0, startOffset);
+            Data action = DataFactory.createRefactoringData("REORDER_PARAMETER", allParameters.toArray(new String[allParameters.size()]));
             ActionsUtils.addActionToLine(actionsMap, reorderParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
         }
     }
@@ -184,28 +203,41 @@ public class RefactoringMinerUtils {
     private void handleExtractSuperclass(Map<Integer, List<Data>> actionsMap, String filePath, ExtractSuperclassRefactoring extractSuperclassRefactoring) {
         final String refactoringType = extractSuperclassRefactoring.getExtractedClass().isInterface() ? "EXTRACT_INTERFACE" : "EXTRACT_SUPERCLASS";
         List<String> subclasses = new ArrayList<>(extractSuperclassRefactoring.getSubclassSet());
-        Data action = DataFactory.createRefactoringData(refactoringType, subclasses.toArray(new String[subclasses.size()]));
+        List<String> attributes = new ArrayList<>(subclasses);
+        attributes.add(0, "-1");
+        attributes.add(0, "-1");
+        Data actionForExtractedClass = DataFactory.createRefactoringData(refactoringType, attributes.toArray(new String[attributes.size()]));
         for (UMLClass umlClass : extractSuperclassRefactoring.getUMLSubclassSet()) {
+            String startOffset = String.valueOf(umlClass.getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(umlClass.getLocationInfo().getEndOffset());
+            List<String> subclassAttributes = new ArrayList<>(subclasses);
+            subclassAttributes.add(0, endOffset);
+            subclassAttributes.add(0, startOffset);
+            Data actionForChildClass = DataFactory.createRefactoringData(refactoringType, subclassAttributes.toArray(new String[subclassAttributes.size()]));
             if (umlClass.getLocationInfo().getFilePath().equals(filePath)) {
-                ActionsUtils.addActionToLine(actionsMap, umlClass.getLocationInfo().getStartLine(), action);
+                ActionsUtils.addActionToLine(actionsMap, umlClass.getLocationInfo().getStartLine(), actionForChildClass);
             }
         }
         LocationInfo extractedClassLocation = extractSuperclassRefactoring.getExtractedClass().getLocationInfo();
         if (extractedClassLocation.getFilePath().equals(filePath)) {
-            ActionsUtils.addActionToLine(actionsMap, extractedClassLocation.getStartLine(), action);
+            ActionsUtils.addActionToLine(actionsMap, extractedClassLocation.getStartLine(), actionForExtractedClass);
         }
     }
 
     private void handlePullUpAttribute(Map<Integer, List<Data>> actionsMap, String filePath, PullUpAttributeRefactoring pullUpAttributeRefactoring) {
         if (pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("PULL_UP_ATTRIBUTE", pullUpAttributeRefactoring.getMovedAttribute().getClassName(), pullUpAttributeRefactoring.getOriginalAttribute().getClassName());
+            String startOffset = String.valueOf(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("PULL_UP_ATTRIBUTE", pullUpAttributeRefactoring.getMovedAttribute().getClassName(), startOffset, endOffset, pullUpAttributeRefactoring.getOriginalAttribute().getClassName());
             ActionsUtils.addPullUpAttribute(actionsMap, pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), (PullUpAttribute) action);
         }
     }
 
     private void handlePullUpOperation(Map<Integer, List<Data>> actionsMap, String filePath, PullUpOperationRefactoring pullUpOperationRefactoring) {
         if (pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("PULL_UP_METHOD", pullUpOperationRefactoring.getMovedOperation().getClassName(), pullUpOperationRefactoring.getOriginalOperation().getClassName());
+            String startOffset = String.valueOf(pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("PULL_UP_METHOD", pullUpOperationRefactoring.getMovedOperation().getClassName(), startOffset, endOffset, pullUpOperationRefactoring.getOriginalOperation().getClassName());
             ActionsUtils.addPullUpMethod(actionsMap, pullUpOperationRefactoring.getMovedOperation().getLocationInfo().getStartLine(), (PullUpMethod) action);
         }
     }
@@ -213,7 +245,9 @@ public class RefactoringMinerUtils {
     private void handlePushDownAttribute(Map<Integer, List<Data>> actionsMap, String filePath, PushDownAttributeRefactoring pushDownAttributeRefactoring) {
         if (pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
             String url  = "file://" + project.getBasePath() + "/" + pushDownAttributeRefactoring.getOriginalAttribute().getLocationInfo().getFilePath();
-            Data action = DataFactory.createRefactoringData("PUSH_DOWN_ATTRIBUTE", pushDownAttributeRefactoring.getOriginalAttribute().getClassName(), url);
+            String startOffset = String.valueOf(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("PUSH_DOWN_ATTRIBUTE", pushDownAttributeRefactoring.getOriginalAttribute().getClassName(), url, startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), action);
         }
     }
@@ -221,7 +255,9 @@ public class RefactoringMinerUtils {
     private void handlePushDownOperation(Map<Integer, List<Data>> actionsMap, String filePath, PushDownOperationRefactoring pushDownOperationRefactoring) {
         if (pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getFilePath().equals(filePath)) {
             String url  = "file://" + project.getBasePath() + "/" + pushDownOperationRefactoring.getOriginalOperation().getLocationInfo().getFilePath();
-            Data action = DataFactory.createRefactoringData("PUSH_DOWN_METHOD", pushDownOperationRefactoring.getOriginalOperation().getClassName(), url);
+            String startOffset = String.valueOf(pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("PUSH_DOWN_METHOD", pushDownOperationRefactoring.getOriginalOperation().getClassName(), url, startOffset, endOffset);
             ActionsUtils.addActionToLine(actionsMap, pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getStartLine(), action);
         }
     }

@@ -5,6 +5,8 @@ public class RenameMethod extends RefactoringData {
 
     public RenameMethod(String... attributes) {
         this.oldName = attributes[0];
+        this.startOffset = Long.parseLong(attributes[1]);
+        this.endOffset = Long.parseLong(attributes[2]);
     }
 
     @Override
