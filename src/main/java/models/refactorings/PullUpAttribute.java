@@ -9,6 +9,7 @@ public class PullUpAttribute extends RefactoringData {
     private String[] oldClasses;
 
     public PullUpAttribute(String... attributes) {
+        super();
         this.parentClass = attributes[0];
         this.startOffset = Long.parseLong(attributes[1]);
         this.endOffset = Long.parseLong(attributes[2]);
@@ -18,7 +19,8 @@ public class PullUpAttribute extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>PULLED UP ATTRIBUTE<br>Classes where this attribute was:</b><br>" + getClassesWhereAttributeWas();
+        return "<b>PULLED UP ATTRIBUTE<br>Classes where this attribute was:</b><br>"
+                + getClassesWhereAttributeWas() + printAdditionalData();
     }
 
     private String getClassesWhereAttributeWas() {

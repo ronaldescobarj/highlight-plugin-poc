@@ -7,6 +7,7 @@ public class ExtractInterface extends RefactoringData {
     String[] subclasses;
 
     public ExtractInterface(String... attributes) {
+        super();
         this.startOffset = Long.parseLong(attributes[0]);
         this.endOffset = Long.parseLong(attributes[1]);
         List<String> subclasses = Arrays.asList(attributes).subList(2, attributes.length);
@@ -15,7 +16,8 @@ public class ExtractInterface extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>EXTRACTED INTERFACE<br>Classes that implement:</b><br>" + getSubclasses();
+        return "<b>EXTRACTED INTERFACE<br>Classes that implement:</b><br>"
+                + getSubclasses() + printAdditionalData();
     }
 
     private String getSubclasses() {

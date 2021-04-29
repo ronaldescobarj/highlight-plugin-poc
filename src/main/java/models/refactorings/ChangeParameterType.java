@@ -5,6 +5,7 @@ public class ChangeParameterType extends RefactoringData {
     String oldType;
 
     public ChangeParameterType(String... attributes) {
+        super();
         this.parameter = attributes[0];
         this.oldType = attributes[1];
         this.startOffset = Long.parseLong(attributes[2]);
@@ -14,7 +15,7 @@ public class ChangeParameterType extends RefactoringData {
     @Override
     public String renderData() {
         return "<b>CHANGED PARAMETER TYPE<br>Parameter:</b> " + parameter + "<br>"
-                + "<b>Old parameter type:</b> " + oldType;
+                + "<b>Old parameter type:</b> " + oldType + "<br>" + printAdditionalData();
     }
 
     @Override

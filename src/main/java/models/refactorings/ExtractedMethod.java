@@ -10,6 +10,7 @@ public class ExtractedMethod extends RefactoringData {
     long endOffsetOfSourceOperation;
 
     public ExtractedMethod(String... attributes) {
+        super();
         this.startOffset = Long.parseLong(attributes[0]);
         this.endOffset = Long.parseLong(attributes[1]);
         this.startOffsetOfSourceOperation = Long.parseLong(attributes[2]);
@@ -20,7 +21,8 @@ public class ExtractedMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>EXTRACTED METHOD<br>Extracted code fragments:</b><br>" + renderExtractedCodeFragments();
+        return "<b>EXTRACTED METHOD<br>Extracted code fragments:</b><br>"
+                + renderExtractedCodeFragments() + printAdditionalData();
     }
 
     public String renderExtractedCodeFragments() {

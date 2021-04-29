@@ -5,6 +5,7 @@ public class PushDownAttribute extends RefactoringData {
     String parentClassUrl;
 
     public PushDownAttribute(String... attributes) {
+        super();
         this.oldParentClass = attributes[0];
         this.parentClassUrl = attributes[1];
         this.startOffset = Long.parseLong(attributes[2]);
@@ -13,7 +14,8 @@ public class PushDownAttribute extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>PUSHED DOWN ATTRIBUTE<br>This attribute was previously in:</b><br>" + oldParentClass;
+        return "<b>PUSHED DOWN ATTRIBUTE<br>This attribute was previously in:</b><br>"
+                + oldParentClass + "<br>" + printAdditionalData();
     }
 
     @Override

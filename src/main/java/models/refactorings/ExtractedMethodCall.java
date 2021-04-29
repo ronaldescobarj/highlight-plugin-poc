@@ -8,6 +8,7 @@ public class ExtractedMethodCall extends RefactoringData {
     String[] extractedCodeFragments;
 
     public ExtractedMethodCall(String[] attributes) {
+        super();
         this.startOffset = Long.parseLong(attributes[0]);
         this.endOffset = Long.parseLong(attributes[1]);
         List<String> extractedCodeFragments = Arrays.asList(attributes).subList(2, attributes.length);
@@ -16,7 +17,8 @@ public class ExtractedMethodCall extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>EXTRACTED METHOD CALL<br>Extracted code fragments:</b><br>" + renderExtractedCodeFragments();
+        return "<b>EXTRACTED METHOD CALL<br>Extracted code fragments:</b><br>"
+                + renderExtractedCodeFragments() + printAdditionalData();
     }
 
     public String renderExtractedCodeFragments() {

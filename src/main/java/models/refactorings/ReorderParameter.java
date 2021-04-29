@@ -7,6 +7,7 @@ public class ReorderParameter extends RefactoringData {
     String[] oldParametersOrder;
 
     public ReorderParameter(String... attributes) {
+        super();
         this.startOffset = Long.parseLong(attributes[0]);
         this.endOffset = Long.parseLong(attributes[1]);
         List<String> oldParametersOrder = Arrays.asList(attributes).subList(2, attributes.length);
@@ -15,7 +16,8 @@ public class ReorderParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>REORDERED PARAMETER<br>Old parameters order:</b><br>" + getOldParametersOrderString() + "<br>";
+        return "<b>REORDERED PARAMETER<br>Old parameters order:</b><br>"
+                + getOldParametersOrderString() + "<br>" + printAdditionalData();
     }
 
     private String getOldParametersOrderString() {

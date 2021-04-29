@@ -5,6 +5,7 @@ public class AddParameter extends RefactoringData {
     String addedParameterName;
 
     public AddParameter(String... attributes) {
+        super();
         this.addedParameterType = attributes[0];
         this.addedParameterName = attributes[1];
         this.startOffset = Long.parseLong(attributes[2]);
@@ -13,7 +14,8 @@ public class AddParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>ADDED PARAMETER<br>Added parameter:</b> " + addedParameterType + " " + addedParameterName + "<br>";
+        return "<b>ADDED PARAMETER<br>Added parameter:</b> " + addedParameterType + " " +
+                addedParameterName + "<br>" + printAdditionalData();
     }
 
     @Override

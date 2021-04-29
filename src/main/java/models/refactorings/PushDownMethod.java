@@ -5,6 +5,7 @@ public class PushDownMethod extends RefactoringData {
     String parentClassUrl;
 
     public PushDownMethod(String... attributes) {
+        super();
         this.oldParentClass = attributes[0];
         this.parentClassUrl = attributes[1];
         this.startOffset = Long.parseLong(attributes[2]);
@@ -13,7 +14,8 @@ public class PushDownMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>PUSHED DOWN METHOD<br>This method was previously in:</b><br>" + oldParentClass;
+        return "<b>PUSHED DOWN METHOD<br>This method was previously in:</b><br>"
+                + oldParentClass + "<br>" + printAdditionalData();
     }
 
     @Override

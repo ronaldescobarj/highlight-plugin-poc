@@ -5,6 +5,7 @@ public class RemoveParameter extends RefactoringData {
     String removedParameterName;
 
     public RemoveParameter(String... attributes) {
+        super();
         this.removedParameterType = attributes[0];
         this.removedParameterName = attributes[1];
         this.startOffset = Long.parseLong(attributes[2]);
@@ -13,7 +14,8 @@ public class RemoveParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>REMOVED PARAMETER<br>Removed parameter:</b> " + removedParameterType + " " + removedParameterName + "<br>";
+        return "<b>REMOVED PARAMETER<br>Removed parameter:</b> " + removedParameterType + " "
+                + removedParameterName + "<br>" + printAdditionalData();
     }
 
     @Override

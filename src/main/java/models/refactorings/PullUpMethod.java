@@ -9,6 +9,7 @@ public class PullUpMethod extends RefactoringData {
     private String[] oldClasses;
 
     public PullUpMethod(String... attributes) {
+        super();
         this.parentClass = attributes[0];
         this.startOffset = Long.parseLong(attributes[1]);
         this.endOffset = Long.parseLong(attributes[2]);
@@ -18,7 +19,8 @@ public class PullUpMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>PULLED UP METHOD<br>Classes where this method was:</b><br>" + getClassesWhereAttributeWas();
+        return "<b>PULLED UP METHOD<br>Classes where this method was:</b><br>"
+                + getClassesWhereAttributeWas() + printAdditionalData();
     }
 
     private String getClassesWhereAttributeWas() {

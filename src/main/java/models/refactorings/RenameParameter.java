@@ -5,6 +5,7 @@ public class RenameParameter extends RefactoringData {
     String oldName;
 
     public RenameParameter(String... attributes) {
+        super();
         this.parameterType = attributes[0];
         this.oldName = attributes[1];
         this.startOffset = Long.parseLong(attributes[2]);
@@ -13,7 +14,8 @@ public class RenameParameter extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>RENAMED PARAMETER<br>Old parameter name:</b> " + parameterType + " " + oldName + "<br>";
+        return "<b>RENAMED PARAMETER<br>Old parameter name:</b> "
+                + parameterType + " " + oldName + "<br>" + printAdditionalData();
     }
 
     @Override
