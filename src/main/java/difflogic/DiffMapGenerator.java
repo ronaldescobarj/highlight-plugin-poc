@@ -1,5 +1,9 @@
 package difflogic;
 
+import actions.ActionsUtils;
+import at.aau.softwaredynamics.classifier.entities.SourceCodeChange;
+import at.aau.softwaredynamics.gen.NodeType;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -7,9 +11,11 @@ import compare.CompareUtils;
 import editor.EditorUtils;
 import git.GitLocal;
 import models.Data;
+import models.DataFactory;
 import models.DiffRow;
 import models.actions.ModificationData;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.refactoringminer.api.Refactoring;
@@ -17,10 +23,9 @@ import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
 import services.GitService;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 public class DiffMapGenerator {
     public Map<Integer, List<Data>> generateHighlightMapForEditor(Editor editor) {
@@ -37,7 +42,7 @@ public class DiffMapGenerator {
         List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, modificationCommit);
         Map<Integer, List<Data>> diffMap = getDiffMapOfCommit(modificationCommit, editor, gitLocal);
 //        diffModifications.applyAmountOfTimesToDiffMap(diffMap, amountOfTimes);
-        new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, diffMap, filePath);
+        new RefactoringMinerUtils(project, modificationCommit).addRefactoringsToMap(refactorings, diffMap, filePath);
         return diffMap;
     }
 
@@ -46,7 +51,8 @@ public class DiffMapGenerator {
         GitService gitService = project.getService(GitService.class);
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
-//        Map<Integer, List<Data>> changes = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+//        Map<Integer, List<Data>> aaaa = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
+        List<SourceCodeChange> sourceCodeChanges = getSourceCodeChangesOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
         Map<Integer, List<Data>> changes = new HashMap<>();
         if (!Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
             Map<Integer, List<Data>> changesWithParent = new DiffMapGenerator().generateChangesMapForEditor(editor, destinationCommit.getParents()[0], destinationCommit);
@@ -55,7 +61,9 @@ public class DiffMapGenerator {
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
         List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
         String filePath = EditorUtils.getRelativePath(editor);
-        new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
+        new RefactoringMinerUtils(project, destinationCommit).addRefactoringsToMap(refactorings, changes, filePath);
+        String previousFileContent = gitLocal.getFileContentOnCommit(editor, sourceCommit);
+        addSourceCodeChangesToMap(sourceCodeChanges, changes, editor.getDocument(), destinationCommit, previousFileContent);
 //        if (Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
 //            RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
 //            List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
@@ -63,6 +71,73 @@ public class DiffMapGenerator {
 //            new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
 //        }
         return changes;
+    }
+
+    private List<SourceCodeChange> getSourceCodeChangesOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
+        String sourceFileContent = gitLocal.getFileContentOnCommit(editor, sourceCommit);
+        String destinationFileContent = gitLocal.getFileContentOnCommit(editor, destinationCommit);
+        return CompareUtils.getSourceCodeChanges(sourceFileContent, destinationFileContent);
+    }
+
+    private void addSourceCodeChangesToMap(List<SourceCodeChange> sourceCodeChanges, Map<Integer, List<Data>> changes, Document document, RevCommit commit, String previousFileContent) {
+        for (SourceCodeChange sourceCodeChange : sourceCodeChanges) {
+            if (String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("METHOD_DECLARATION")) {
+                long startOffset = document.getLineStartOffset(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
+                long endOffset = document.getLineEndOffset(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
+                if (!isInMap(startOffset, endOffset, changes)) {
+                    PersonIdent author = commit.getAuthorIdent();
+                    Date date = author.getWhen();
+                    LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                    String contentDeleted = "";
+                    if (sourceCodeChange.getAction().getName().equals("DEL")) {
+                        List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
+                        try {
+                            contentDeleted = previousFileLines.get(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("e");
+                        }
+                    }
+                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, contentDeleted);
+                    ActionsUtils.addActionToLineWithOffsets(changes, sourceCodeChange.getDstInfo().getStartLineNumber(), action, startOffset, endOffset);
+                }
+            } else if (sourceCodeChange.getDstInfo().getStartLineNumber() == sourceCodeChange.getDstInfo().getEndLineNumber()) {
+                long startLineOffset = document.getLineStartOffset(sourceCodeChange.getDstInfo().getStartLineNumber());
+                long startOffset = startLineOffset + sourceCodeChange.getDstInfo().getStartOffset();
+                long endOffset = startLineOffset + sourceCodeChange.getDstInfo().getEndOffset();
+                if (!isInMap(startOffset, endOffset, changes)) {
+                    PersonIdent author = commit.getAuthorIdent();
+                    Date date = author.getWhen();
+                    LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                    String contentDeleted = "";
+                    if (sourceCodeChange.getAction().getName().equals("DEL")) {
+                        List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
+                        try {
+                            contentDeleted = previousFileLines.get(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("e");
+                        }
+                    }
+                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, contentDeleted);
+                    ActionsUtils.addActionToLineWithOffsets(changes, sourceCodeChange.getDstInfo().getStartLineNumber(), action, startOffset, endOffset);
+                }
+            }
+        }
+    }
+
+    private boolean isInMap(long startOffset, long endOffset, Map<Integer, List<Data>> changes) {
+        for (Map.Entry<Integer, List<Data>> changesEntry : changes.entrySet()) {
+            if (changesEntry.getValue().stream().anyMatch(data -> containsInterval(startOffset, endOffset, data.getStartOffset(), data.getEndOffset()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsInterval(long startOffset, long endOffset, long dataStartOffset, long dataEndOffset) {
+        return (dataStartOffset <= startOffset && dataEndOffset >= endOffset)
+                || (dataStartOffset >= startOffset && dataEndOffset <= endOffset)
+                || (dataStartOffset <= startOffset && dataEndOffset <= endOffset)
+                || (dataStartOffset >= startOffset && dataEndOffset >= dataEndOffset);
     }
 
     public Map<Integer, List<Data>> generateChangesMapForFile(VirtualFile file, RevCommit sourceCommit, RevCommit destinationCommit, Project project) {
@@ -77,7 +152,7 @@ public class DiffMapGenerator {
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
         List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
         String filePath = getFilePath(file, project);
-        new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
+//        new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
 //        if (Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
 //            RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
 //            List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);

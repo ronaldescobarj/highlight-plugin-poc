@@ -21,6 +21,10 @@ public class CompareUtils {
         return getDiff(changes);
     }
 
+    public static List<SourceCodeChange> getSourceCodeChanges(String previousVersion, String currentVersion) {
+        return getChangesBetweenVersions(previousVersion, currentVersion);
+    }
+
     private static List<SourceCodeChange> getChangesBetweenVersions(String previousVersion, String latestVersion) {
         AbstractJavaChangeClassifier classifier = createClassifier();
         try {

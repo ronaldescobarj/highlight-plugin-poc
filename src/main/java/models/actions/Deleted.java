@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 public class Deleted extends ModificationData {
     String deletedCode;
 
-    public Deleted(PersonIdent author, LocalDateTime commitDate) {
+    public Deleted(PersonIdent author, LocalDateTime commitDate, String... additionalData) {
         this.author = author;
         this.dateTime = commitDate;
+        this.deletedCode = additionalData[0];
     }
 
     @Override

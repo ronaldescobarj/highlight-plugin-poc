@@ -15,11 +15,19 @@ public abstract class Data {
     public abstract String getType();
 //    public abstract void setAdditionalData(String... additionalData);
 
+    public void setAuthor(PersonIdent author) {
+        this.author = author;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public long getStartOffset() {
         return startOffset;
     }
 
-    public void setStartOffset(int startOffset) {
+    public void setStartOffset(long startOffset) {
         this.startOffset = startOffset;
     }
 
@@ -27,7 +35,7 @@ public abstract class Data {
         return endOffset;
     }
 
-    public void setEndOffset(int endOffset) {
+    public void setEndOffset(long endOffset) {
         this.endOffset = endOffset;
     }
 

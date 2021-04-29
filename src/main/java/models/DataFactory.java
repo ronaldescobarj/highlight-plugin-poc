@@ -28,7 +28,7 @@ public class DataFactory {
         }
     }
 
-    public static ModificationData createModificationData(String type, PersonIdent author, LocalDateTime commitDate) {
+    public static ModificationData createModificationData(String type, PersonIdent author, LocalDateTime commitDate, String... additionalData) {
         switch (type) {
             case "UPD":
                 return new Updated(author, commitDate);
@@ -37,7 +37,7 @@ public class DataFactory {
             case "MOV":
                 return new Moved(author, commitDate);
             case "DEL":
-                return new Deleted(author, commitDate);
+                return new Deleted(author, commitDate, additionalData);
             case "UPD_MULTIPLE_TIMES":
                 return new UpdatedMultipleTimes(author, commitDate);
             default:
