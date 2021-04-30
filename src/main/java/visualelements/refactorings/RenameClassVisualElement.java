@@ -13,7 +13,7 @@ public class RenameClassVisualElement extends VisualElement {
         this.setText(" RNC ");
         this.setSize(95, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.CYAN);
-        this.setForeground(JBColor.BLACK);
+        this.setBackground(JBColor.GREEN);
+        this.setForeground(JBColor.WHITE);
     }
 }

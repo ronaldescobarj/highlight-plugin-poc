@@ -13,7 +13,7 @@ public class ChangeReturnTypeVisualElement extends VisualElement {
         this.setText(" CRT ");
         this.setSize(65, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.MAGENTA);
-        this.setForeground(JBColor.BLACK);
+        this.setBackground(JBColor.GREEN);
+        this.setForeground(JBColor.WHITE);
     }
 }

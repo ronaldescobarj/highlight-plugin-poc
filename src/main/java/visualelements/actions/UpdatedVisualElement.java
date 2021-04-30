@@ -15,6 +15,6 @@ public class UpdatedVisualElement extends VisualElement {
         this.setSize(35, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);
-        this.setForeground(JBColor.BLACK);
+        this.setForeground(JBColor.WHITE);
     }
 }

@@ -13,7 +13,7 @@ public class ReorderParameterVisualElement extends VisualElement {
         this.setText(" ROP ");
         this.setSize(90, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.ORANGE);
+        this.setBackground(JBColor.PINK);
         this.setForeground(JBColor.WHITE);
     }
 }

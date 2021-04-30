@@ -13,7 +13,7 @@ public class ChangeParameterTypeVisualElement extends VisualElement {
         this.setText(" CPT ");
         this.setSize(70, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.MAGENTA);
-        this.setForeground(JBColor.BLACK);
+        this.setBackground(JBColor.GREEN);
+        this.setForeground(JBColor.WHITE);
     }
 }

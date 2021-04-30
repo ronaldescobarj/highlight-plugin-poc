@@ -16,13 +16,13 @@ public class JavaSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey NOTMODIFIED =
             createTextAttributesKey("JAVA_NOTMODIFIED", DefaultLanguageHighlighterColors.OPERATION_SIGN);
     public static final TextAttributesKey INSERTED =
-            createTextAttributesKey("JAVA_INSERTED", DefaultLanguageHighlighterColors.KEYWORD);
+            createTextAttributesKey("JAVA_INSERTED", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey UPDATED =
             createTextAttributesKey("JAVA_UPDATED", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey UPDATEDMULTIPLETIMES =
             createTextAttributesKey("JAVA_UPDATEDMULTIPLETIMES", DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_HIGHLIGHTED);
     public static final TextAttributesKey MOVED =
-            createTextAttributesKey("JAVA_MOVED", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
+            createTextAttributesKey("JAVA_MOVED", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("JAVA_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =

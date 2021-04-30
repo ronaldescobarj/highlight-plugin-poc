@@ -13,7 +13,7 @@ public class ChangeVariableTypeVisualElement extends VisualElement {
         this.setText(" CVT ");
         this.setSize(75, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.MAGENTA);
-        this.setForeground(JBColor.BLACK);
+        this.setBackground(JBColor.GREEN);
+        this.setForeground(JBColor.WHITE);
     }
 }

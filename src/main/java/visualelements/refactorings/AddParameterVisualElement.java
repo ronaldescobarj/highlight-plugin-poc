@@ -13,7 +13,7 @@ public class AddParameterVisualElement extends VisualElement {
         this.setText(" ADP ");
         this.setSize(85, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.ORANGE);
+        this.setBackground(JBColor.CYAN);
         this.setForeground(JBColor.WHITE);
     }
 }

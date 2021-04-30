@@ -13,7 +13,7 @@ public class PushDownMethodVisualElement extends VisualElement {
         this.setText(" PDM ");
         this.setSize(125, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.GREEN);
-        this.setForeground(JBColor.BLACK);
+        this.setBackground(JBColor.PINK);
+        this.setForeground(JBColor.WHITE);
     }
 }

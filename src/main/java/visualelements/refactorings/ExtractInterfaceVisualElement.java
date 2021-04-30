@@ -13,7 +13,7 @@ public class ExtractInterfaceVisualElement extends VisualElement {
         this.setText(" EI ");
         this.setSize(100, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.PINK);
-        this.setForeground(JBColor.BLACK);
+        this.setBackground(JBColor.CYAN);
+        this.setForeground(JBColor.WHITE);
     }
 }
