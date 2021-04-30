@@ -22,7 +22,7 @@ public abstract class RefactoringData extends Data {
                 + "<b>Author email:</b> " + author.getEmailAddress() + "<br>" : "";
         String datetimeData = this.dateTime != null ? "<b>Commit datetime:</b> "
                 + getDateTimeString() + "<br>" : "";
-        return authorData + datetimeData;
+        return "<b>Commit info</b><br>" + authorData + datetimeData;
     }
 
     public void setAuthor(PersonIdent author) {

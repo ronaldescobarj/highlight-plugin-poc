@@ -25,7 +25,7 @@ public class Updated extends ModificationData {
 
     @Override
     public String renderData() {
-        return isOnParent ? "<b>Author username:</b> " + author.getName() + "<br>" +
+        return isOnParent ? "<b>UPDATED<br>Commit info<br>Author username:</b> " + author.getName() + "<br>" +
                 "<b>Author email:</b> " + author.getEmailAddress() + "<br>" +
                 "<b>Commit datetime:</b> " + getDateTimeString() + "<br>" :
                 "This was modified before<br>" + getDateTimeString();
