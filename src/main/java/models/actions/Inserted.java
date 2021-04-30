@@ -9,6 +9,7 @@ public class Inserted extends ModificationData {
     String tempMetadata;
 
     public Inserted(PersonIdent author, LocalDateTime commitDate) {
+        super();
         this.author = author;
         this.dateTime = commitDate;
     }

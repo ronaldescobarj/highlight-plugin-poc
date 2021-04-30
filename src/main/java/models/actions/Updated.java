@@ -11,6 +11,7 @@ public class Updated extends ModificationData {
     String previousContent;
 
     public Updated(PersonIdent author, LocalDateTime commitDate) {
+        super();
         this.author = author;
         this.dateTime = commitDate;
     }

@@ -134,10 +134,11 @@ public class DiffMapGenerator {
     }
 
     private boolean containsInterval(long startOffset, long endOffset, long dataStartOffset, long dataEndOffset) {
-        return (dataStartOffset <= startOffset && dataEndOffset >= endOffset)
-                || (dataStartOffset >= startOffset && dataEndOffset <= endOffset)
-                || (dataStartOffset <= startOffset && dataEndOffset <= endOffset)
-                || (dataStartOffset >= startOffset && dataEndOffset >= dataEndOffset);
+        boolean contains = startOffset <= dataStartOffset && endOffset >= dataEndOffset;
+        boolean isInside = startOffset >= dataStartOffset && endOffset <= dataEndOffset;
+        boolean isPartiallyOnLeft = startOffset <= dataStartOffset && endOffset <= dataEndOffset && endOffset > dataStartOffset;
+        boolean isPartiallyOnRight = startOffset >= dataStartOffset && endOffset >= dataEndOffset && startOffset < dataEndOffset;
+        return contains || isInside || isPartiallyOnLeft || isPartiallyOnRight;
     }
 
     public Map<Integer, List<Data>> generateChangesMapForFile(VirtualFile file, RevCommit sourceCommit, RevCommit destinationCommit, Project project) {

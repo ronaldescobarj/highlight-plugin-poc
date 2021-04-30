@@ -10,6 +10,7 @@ public class Moved extends ModificationData {
     int previousLine;
 
     public Moved(PersonIdent author, LocalDateTime commitDate) {
+        super();
         this.author = author;
         this.dateTime = commitDate;
     }

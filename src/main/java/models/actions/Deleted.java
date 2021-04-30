@@ -10,6 +10,7 @@ public class Deleted extends ModificationData {
     String deletedCode;
 
     public Deleted(PersonIdent author, LocalDateTime commitDate, String... additionalData) {
+        super();
         this.author = author;
         this.dateTime = commitDate;
         this.deletedCode = additionalData[0];

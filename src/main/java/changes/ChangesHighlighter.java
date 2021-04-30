@@ -26,14 +26,41 @@ public class ChangesHighlighter {
         if (actions != null) {
             for (Data action: actions) {
                 if (currentOffset >= action.getStartOffset() && currentOffset <= action.getEndOffset()) {
-                    if (action.getType().equals("ADD_PARAMETER")) {
+                    if (isInsertion(action)) {
                         return JavaTypes.INSERTED;
-                    } else {
+                    } else if (isUpdate(action)) {
                         return JavaTypes.UPDATED;
+                    } else if (isMove(action)) {
+                        return JavaTypes.MOVED;
+                    } else {
+                        return JavaTypes.NOTMODIFIED;
                     }
                 }
             }
         }
         return JavaTypes.NOTMODIFIED;
+    }
+
+    private boolean isInsertion(Data action) {
+        return action.getType().equals("INS") || action.getType().equals("ADD_PARAMETER") ||
+                action.getType().equals("EXTRACTED_METHOD");
+    }
+
+    private boolean isUpdate(Data action) {
+        return action.getType().equals("UPD") || action.getType().equals("RENAME_METHOD") ||
+                action.getType().equals("RENAME_CLASS") || action.getType().equals("RENAME_VARIABLE") ||
+                action.getType().equals("RENAME_PARAMETER") || action.getType().equals("RENAME_ATTRIBUTE") ||
+                action.getType().equals("CHANGE_VARIABLE_TYPE") ||
+                action.getType().equals("CHANGE_PARAMETER_TYPE") ||
+                action.getType().equals("CHANGE_RETURN_TYPE") ||
+                action.getType().equals("CHANGE_ATTRIBUTE_TYPE");
+    }
+
+    private boolean isMove(Data action) {
+        return action.getType().equals("PULL_UP_METHOD") || action.getType().equals("PULL_UP_ATTRIBUTE") ||
+                action.getType().equals("PUSH_DOWN_METHOD") ||
+                action.getType().equals("PUSH_DOWN_ATTRIBUTE") ||
+                action.getType().equals("PUSH_DOWN_ATTRIBUTE") ||
+                action.getType().equals("REORDER_PARAMETER");
     }
 }

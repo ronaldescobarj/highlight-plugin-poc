@@ -11,6 +11,7 @@ public class UpdatedMultipleTimes extends ModificationData {
     int amountOfTimes;
 
     public UpdatedMultipleTimes(PersonIdent author, LocalDateTime commitDate) {
+        super();
         this.author = author;
         this.dateTime = commitDate;
     }
