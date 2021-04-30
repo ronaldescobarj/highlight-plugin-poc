@@ -37,7 +37,7 @@ public class VisualElementsUtils {
     private void addVisualElementsToLine(Editor editor, int line, List<Data> actions) {
         Document document = editor.getDocument();
         Project project = editor.getProject();
-        int offset = document.getLineStartOffset(line - 1);
+        int offset = document.getLineStartOffset(line > 0 ? line - 1 : 0);
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         PsiElement psiElement = psiFile.findElementAt(offset);
 //        JLabel myElement = VisualElementFactory.createVisualElement(actionData.getType(), psiElement);
