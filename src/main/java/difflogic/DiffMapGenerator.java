@@ -90,7 +90,7 @@ public class DiffMapGenerator {
     private void addSourceCodeChangesToMap(List<SourceCodeChange> sourceCodeChanges, Map<Integer, List<Data>> changes, Document document, RevCommit commit, String previousFileContent) {
         for (SourceCodeChange sourceCodeChange : sourceCodeChanges) {
             NodeInfo nodeInfo = sourceCodeChange.getAction().getName().equals("DEL") ? sourceCodeChange.getSrcInfo() : sourceCodeChange.getDstInfo();
-            if (String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("METHOD_DECLARATION")) {
+            if (String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("METHOD_DECLARATION") || String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("TYPE_DECLARATION")) {
                 int startLineNumber = nodeInfo.getStartLineNumber() < document.getLineCount() ? nodeInfo.getStartLineNumber() - 1 : document.getLineCount() - 1;
                 long startOffset = document.getLineStartOffset(startLineNumber);
                 long endOffset = document.getLineEndOffset(startLineNumber);

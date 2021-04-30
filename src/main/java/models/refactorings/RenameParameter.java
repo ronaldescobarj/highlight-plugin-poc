@@ -15,7 +15,7 @@ public class RenameParameter extends RefactoringData {
     @Override
     public String renderData() {
         return "<b>RENAMED PARAMETER<br>Old parameter name:</b> "
-                + parameterType + " " + oldName + "<br>" + printAdditionalData();
+                + parameterType + " " + oldName + "<br>" + printAdditionalData() + "<br>Click on the label to select the renamed parameter";
     }
 
     @Override

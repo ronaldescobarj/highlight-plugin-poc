@@ -38,7 +38,7 @@ public class VisualElementMouseEventsHandler extends MouseAdapter {
             editor.getSelectionModel().setSelection(Math.toIntExact(renameParameter.getStartOffset()), Math.toIntExact(renameParameter.getEndOffset()));
         } else if (action instanceof ExtractedMethod) {
             ExtractedMethod extractedMethod = (ExtractedMethod) action;
-            editor.getSelectionModel().setSelection(Math.toIntExact(extractedMethod.getStartOffset()), Math.toIntExact(extractedMethod.getEndOffset()));
+            editor.getSelectionModel().setSelection(Math.toIntExact(extractedMethod.getStartOffsetOfSourceOperation()), Math.toIntExact(extractedMethod.getEndOffsetOfSourceOperation()));
         } else if (action instanceof AddParameter) {
             AddParameter addParameter = (AddParameter) action;
             editor.getSelectionModel().setSelection(Math.toIntExact(addParameter.getStartOffset()), Math.toIntExact(addParameter.getEndOffset()));
