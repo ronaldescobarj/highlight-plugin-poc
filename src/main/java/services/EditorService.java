@@ -59,9 +59,8 @@ public class EditorService {
         return editors.values()
                 .stream()
                 .filter(EditorData::isActive)
-                .findFirst()
-                .get()
-                .getChanges();
+                .map(EditorData::getChanges)
+                .findFirst().orElse(new HashMap<>());
     }
 
 }
