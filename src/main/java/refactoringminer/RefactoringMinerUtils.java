@@ -183,7 +183,9 @@ public class RefactoringMinerUtils {
 
     private void handleRemoveParameter(Map<Integer, List<Data>> actionsMap, String filePath, RemoveParameterRefactoring removeParameterRefactoring) {
         if (removeParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath().equals(filePath)) {
-            Data action = DataFactory.createRefactoringData("REMOVE_PARAMETER", removeParameterRefactoring.getParameter().getType().getClassType(), removeParameterRefactoring.getParameter().getName(), "-1", "-1");
+            String startOffset = String.valueOf(removeParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(removeParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("REMOVE_PARAMETER", removeParameterRefactoring.getParameter().getType().getClassType(), removeParameterRefactoring.getParameter().getName(), startOffset, endOffset);
             addActionData(action);
             ActionsUtils.addActionToLine(actionsMap, removeParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
         }

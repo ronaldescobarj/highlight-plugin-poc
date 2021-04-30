@@ -1,6 +1,7 @@
 package difflogic;
 
 import actions.ActionsUtils;
+import at.aau.softwaredynamics.classifier.entities.NodeInfo;
 import at.aau.softwaredynamics.classifier.entities.SourceCodeChange;
 import at.aau.softwaredynamics.gen.NodeType;
 import com.intellij.openapi.editor.Document;
@@ -81,8 +82,9 @@ public class DiffMapGenerator {
 
     private void addSourceCodeChangesToMap(List<SourceCodeChange> sourceCodeChanges, Map<Integer, List<Data>> changes, Document document, RevCommit commit, String previousFileContent) {
         for (SourceCodeChange sourceCodeChange : sourceCodeChanges) {
+            NodeInfo nodeInfo = sourceCodeChange.getAction().getName().equals("DEL") ? sourceCodeChange.getSrcInfo() : sourceCodeChange.getDstInfo();
             if (String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("METHOD_DECLARATION")) {
-                int startLineNumber = sourceCodeChange.getDstInfo().getStartLineNumber() > 0 ? sourceCodeChange.getDstInfo().getStartLineNumber() - 1 : 0;
+                int startLineNumber = nodeInfo.getStartLineNumber() < document.getLineCount() ? nodeInfo.getStartLineNumber() - 1 : document.getLineCount() - 1;
                 long startOffset = document.getLineStartOffset(startLineNumber);
                 long endOffset = document.getLineEndOffset(startLineNumber);
                 if (!isInMap(startOffset, endOffset, changes)) {
@@ -93,18 +95,18 @@ public class DiffMapGenerator {
                     if (sourceCodeChange.getAction().getName().equals("DEL")) {
                         List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
                         try {
-                            contentDeleted = previousFileLines.get(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
+                            contentDeleted = previousFileLines.get(nodeInfo.getStartLineNumber() - 1);
                         } catch (IndexOutOfBoundsException e) {
                             System.out.println("e");
                         }
                     }
                     Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, contentDeleted);
-                    ActionsUtils.addActionToLineWithOffsets(changes, sourceCodeChange.getDstInfo().getStartLineNumber(), action, startOffset, endOffset);
+                    ActionsUtils.addActionToLineWithOffsets(changes, nodeInfo.getStartLineNumber(), action, startOffset, endOffset);
                 }
-            } else if (sourceCodeChange.getDstInfo().getStartLineNumber() == sourceCodeChange.getDstInfo().getEndLineNumber()) {
-                long startLineOffset = document.getLineStartOffset(sourceCodeChange.getDstInfo().getStartLineNumber() > 0 ? sourceCodeChange.getDstInfo().getStartLineNumber() - 1 : 0);
-                long startOffset = startLineOffset + sourceCodeChange.getDstInfo().getStartOffset();
-                long endOffset = startLineOffset + sourceCodeChange.getDstInfo().getEndOffset();
+            } else if (nodeInfo.getStartLineNumber() == nodeInfo.getEndLineNumber()) {
+                long startLineOffset = document.getLineStartOffset(nodeInfo.getStartLineNumber() < document.getLineCount() ? nodeInfo.getStartLineNumber() - 1 : document.getLineCount() - 1);
+                long startOffset = startLineOffset + nodeInfo.getStartOffset();
+                long endOffset = startLineOffset + nodeInfo.getEndOffset();
                 if (!isInMap(startOffset, endOffset, changes)) {
                     PersonIdent author = commit.getAuthorIdent();
                     Date date = author.getWhen();
@@ -113,13 +115,14 @@ public class DiffMapGenerator {
                     if (sourceCodeChange.getAction().getName().equals("DEL")) {
                         List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
                         try {
-                            contentDeleted = previousFileLines.get(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
+                            contentDeleted = previousFileLines.get(nodeInfo.getStartLineNumber() - 1);
+//                            contentDeleted = contentDeleted.substring(nodeInfo.getStartOffset(), nodeInfo.getEndOffset());
                         } catch (IndexOutOfBoundsException e) {
                             System.out.println("e");
                         }
                     }
                     Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, contentDeleted);
-                    ActionsUtils.addActionToLineWithOffsets(changes, sourceCodeChange.getDstInfo().getStartLineNumber(), action, startOffset, endOffset);
+                    ActionsUtils.addActionToLineWithOffsets(changes, nodeInfo.getStartLineNumber(), action, startOffset, endOffset);
                 }
             }
         }
