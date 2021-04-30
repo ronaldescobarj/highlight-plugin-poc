@@ -9,11 +9,13 @@ import java.time.LocalDateTime;
 public class Deleted extends ModificationData {
     String deletedCode;
 
-    public Deleted(PersonIdent author, LocalDateTime commitDate, String... additionalData) {
+    public Deleted(PersonIdent author, LocalDateTime commitDate, long startOffset, long endOffset, String... additionalData) {
         super();
         this.author = author;
         this.dateTime = commitDate;
         this.deletedCode = additionalData[0];
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     @Override

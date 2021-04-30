@@ -8,10 +8,12 @@ import java.time.LocalDateTime;
 public class Inserted extends ModificationData {
     String tempMetadata;
 
-    public Inserted(PersonIdent author, LocalDateTime commitDate) {
+    public Inserted(PersonIdent author, LocalDateTime commitDate, long startOffset, long endOffset) {
         super();
         this.author = author;
         this.dateTime = commitDate;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     @Override

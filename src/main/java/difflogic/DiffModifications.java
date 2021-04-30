@@ -66,18 +66,18 @@ public class DiffModifications {
         return commitWithLatestModification;
     }
 
-    public void applyAmountOfTimesToDiffMap(Map<Integer, List<Data>> diffMap, Map<Integer, Integer> amountOfTimes) {
-        for (Map.Entry<Integer, Integer> line: amountOfTimes.entrySet()) {
-            if (line.getValue() >= 5) {
-                List<Data> modifications = diffMap.get(line.getKey());
-                Data modification = modifications.stream().filter(mod -> mod.getType().equals("UPD")).findFirst().get();
-                int index = modifications.indexOf(modification);
-                modification = DataFactory.createData("UPD_MULTIPLE_TIMES", null, null);
-                modifications.set(index, modification);
-                diffMap.put(line.getKey(), modifications);
-            }
-        }
-    }
+//    public void applyAmountOfTimesToDiffMap(Map<Integer, List<Data>> diffMap, Map<Integer, Integer> amountOfTimes) {
+//        for (Map.Entry<Integer, Integer> line: amountOfTimes.entrySet()) {
+//            if (line.getValue() >= 5) {
+//                List<Data> modifications = diffMap.get(line.getKey());
+//                Data modification = modifications.stream().filter(mod -> mod.getType().equals("UPD")).findFirst().get();
+//                int index = modifications.indexOf(modification);
+//                modification = DataFactory.createData("UPD_MULTIPLE_TIMES", null, null);
+//                modifications.set(index, modification);
+//                diffMap.put(line.getKey(), modifications);
+//            }
+//        }
+//    }
 
     private List<DiffRow> generateDiffWithPreviousCommit(RevCommit commit, String fileName, GitLocal gitLocal) {
         DiffEntry diff = gitLocal.getFileDiffWithPreviousCommit(commit, fileName);

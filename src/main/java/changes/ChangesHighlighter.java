@@ -25,7 +25,7 @@ public class ChangesHighlighter {
         List<Data> actions = changesMap.get(line);
         if (actions != null) {
             for (Data action: actions) {
-                if (currentOffset >= action.getStartOffset() && currentOffset <= action.getEndOffset()) {
+                if (currentOffset >= action.getStartOffset() && currentOffset < action.getEndOffset()) {
                     if (isInsertion(action)) {
                         return JavaTypes.INSERTED;
                     } else if (isUpdate(action)) {

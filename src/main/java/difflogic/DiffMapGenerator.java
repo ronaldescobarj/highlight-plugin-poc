@@ -97,11 +97,11 @@ public class DiffMapGenerator {
                             System.out.println("e");
                         }
                     }
-                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, contentDeleted);
+                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, contentDeleted);
                     ActionsUtils.addActionToLineWithOffsets(changes, sourceCodeChange.getDstInfo().getStartLineNumber(), action, startOffset, endOffset);
                 }
             } else if (sourceCodeChange.getDstInfo().getStartLineNumber() == sourceCodeChange.getDstInfo().getEndLineNumber()) {
-                long startLineOffset = document.getLineStartOffset(sourceCodeChange.getDstInfo().getStartLineNumber());
+                long startLineOffset = document.getLineStartOffset(sourceCodeChange.getDstInfo().getStartLineNumber() - 1);
                 long startOffset = startLineOffset + sourceCodeChange.getDstInfo().getStartOffset();
                 long endOffset = startLineOffset + sourceCodeChange.getDstInfo().getEndOffset();
                 if (!isInMap(startOffset, endOffset, changes)) {
@@ -117,7 +117,7 @@ public class DiffMapGenerator {
                             System.out.println("e");
                         }
                     }
-                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, contentDeleted);
+                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, contentDeleted);
                     ActionsUtils.addActionToLineWithOffsets(changes, sourceCodeChange.getDstInfo().getStartLineNumber(), action, startOffset, endOffset);
                 }
             }

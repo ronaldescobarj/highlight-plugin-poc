@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
 public class Moved extends ModificationData {
     int previousLine;
 
-    public Moved(PersonIdent author, LocalDateTime commitDate) {
+    public Moved(PersonIdent author, LocalDateTime commitDate, long startOffset, long endOffset) {
         super();
         this.author = author;
         this.dateTime = commitDate;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     @Override

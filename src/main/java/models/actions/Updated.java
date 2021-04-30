@@ -10,10 +10,12 @@ public class Updated extends ModificationData {
 
     String previousContent;
 
-    public Updated(PersonIdent author, LocalDateTime commitDate) {
+    public Updated(PersonIdent author, LocalDateTime commitDate, long startOffset, long endOffset) {
         super();
         this.author = author;
         this.dateTime = commitDate;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     @Override

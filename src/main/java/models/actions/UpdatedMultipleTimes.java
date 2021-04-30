@@ -10,10 +10,12 @@ public class UpdatedMultipleTimes extends ModificationData {
     String previousContent;
     int amountOfTimes;
 
-    public UpdatedMultipleTimes(PersonIdent author, LocalDateTime commitDate) {
+    public UpdatedMultipleTimes(PersonIdent author, LocalDateTime commitDate, long startOffset, long endOffset) {
         super();
         this.author = author;
         this.dateTime = commitDate;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     @Override
