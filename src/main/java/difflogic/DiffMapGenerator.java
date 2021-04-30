@@ -61,7 +61,7 @@ public class DiffMapGenerator {
         RefactoringGenerator refactoringGenerator = new RefactoringGenerator();
         List<Refactoring> refactorings = refactoringGenerator.getRefactorings(project, destinationCommit);
         String filePath = EditorUtils.getRelativePath(editor);
-        new RefactoringMinerUtils(project, destinationCommit).addRefactoringsToMap(refactorings, changes, filePath);
+        new RefactoringMinerUtils(project, destinationCommit, editor).addRefactoringsToMap(refactorings, changes, filePath);
         String previousFileContent = gitLocal.getFileContentOnCommit(editor, sourceCommit);
         addSourceCodeChangesToMap(sourceCodeChanges, changes, editor.getDocument(), destinationCommit, previousFileContent);
 //        if (Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {

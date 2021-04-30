@@ -43,7 +43,9 @@ public class ChangesHighlighter {
 
     private boolean isInsertion(Data action) {
         return action.getType().equals("INS") || action.getType().equals("ADD_PARAMETER") ||
-                action.getType().equals("EXTRACTED_METHOD");
+                action.getType().equals("EXTRACTED_METHOD") ||
+                action.getType().equals("EXTRACT_INTERFACE") ||
+                action.getType().equals("EXTRACT_SUPERCLASS");
     }
 
     private boolean isUpdate(Data action) {
