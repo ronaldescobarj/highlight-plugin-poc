@@ -1,7 +1,7 @@
 package refactoringminer;
 
 import actions.ActionsUtils;
-import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import gr.uom.java.xmi.LocationInfo;
 import gr.uom.java.xmi.UMLClass;
@@ -27,17 +27,17 @@ public class RefactoringMinerUtils {
 
     Project project;
     RevCommit commit;
-    Editor editor;
+    Document document;
 
     public RefactoringMinerUtils(Project project, RevCommit commit) {
         this.project = project;
         this.commit = commit;
     }
 
-    public RefactoringMinerUtils(Project project, RevCommit commit, Editor editor) {
+    public RefactoringMinerUtils(Project project, RevCommit commit, Document document) {
         this.project = project;
         this.commit = commit;
-        this.editor = editor;
+        this.document = document;
     }
     
     public void addRefactoringsToMap(List<Refactoring> refactorings, Map<Integer, List<Data>> actionsMap, String filePath) {
@@ -219,8 +219,8 @@ public class RefactoringMinerUtils {
         final String refactoringType = extractSuperclassRefactoring.getExtractedClass().isInterface() ? "EXTRACT_INTERFACE" : "EXTRACT_SUPERCLASS";
         List<String> subclasses = new ArrayList<>(extractSuperclassRefactoring.getSubclassSet());
         List<String> attributes = new ArrayList<>(subclasses);
-        attributes.add(0, String.valueOf(editor.getDocument().getLineEndOffset(extractSuperclassRefactoring.getExtractedClass().getLocationInfo().getStartLine() - 1)));
-        attributes.add(0, String.valueOf(editor.getDocument().getLineStartOffset(extractSuperclassRefactoring.getExtractedClass().getLocationInfo().getStartLine() - 1)));
+        attributes.add(0, String.valueOf(document.getLineEndOffset(extractSuperclassRefactoring.getExtractedClass().getLocationInfo().getStartLine() - 1)));
+        attributes.add(0, String.valueOf(document.getLineStartOffset(extractSuperclassRefactoring.getExtractedClass().getLocationInfo().getStartLine() - 1)));
         Data actionForExtractedClass = DataFactory.createRefactoringData(refactoringType, attributes.toArray(new String[attributes.size()]));
         addActionData(actionForExtractedClass);
         for (UMLClass umlClass : extractSuperclassRefactoring.getUMLSubclassSet()) {
@@ -246,9 +246,9 @@ public class RefactoringMinerUtils {
     private void handlePullUpAttribute(Map<Integer, List<Data>> actionsMap, String filePath, PullUpAttributeRefactoring pullUpAttributeRefactoring) {
         if (pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
 //            String startOffset = String.valueOf(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartOffset());
-            String startOffset = String.valueOf(editor.getDocument().getLineStartOffset(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
+            String startOffset = String.valueOf(document.getLineStartOffset(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
 //            String endOffset = String.valueOf(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getEndOffset());
-            String endOffset = String.valueOf(editor.getDocument().getLineEndOffset(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
+            String endOffset = String.valueOf(document.getLineEndOffset(pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
             Data action = DataFactory.createRefactoringData("PULL_UP_ATTRIBUTE", pullUpAttributeRefactoring.getMovedAttribute().getClassName(), startOffset, endOffset, pullUpAttributeRefactoring.getOriginalAttribute().getClassName());
             addActionData(action);
             ActionsUtils.addPullUpAttribute(actionsMap, pullUpAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), (PullUpAttribute) action);
@@ -269,9 +269,9 @@ public class RefactoringMinerUtils {
         if (pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
             String url  = "file://" + project.getBasePath() + "/" + pushDownAttributeRefactoring.getOriginalAttribute().getLocationInfo().getFilePath();
 //            String startOffset = String.valueOf(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartOffset());
-            String startOffset = String.valueOf(editor.getDocument().getLineStartOffset(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
+            String startOffset = String.valueOf(document.getLineStartOffset(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
 //            String endOffset = String.valueOf(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getEndOffset());
-            String endOffset = String.valueOf(editor.getDocument().getLineEndOffset(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
+            String endOffset = String.valueOf(document.getLineEndOffset(pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine() - 1));
             Data action = DataFactory.createRefactoringData("PUSH_DOWN_ATTRIBUTE", pushDownAttributeRefactoring.getOriginalAttribute().getClassName(), url, startOffset, endOffset);
             addActionData(action);
             ActionsUtils.addActionToLine(actionsMap, pushDownAttributeRefactoring.getMovedAttribute().getLocationInfo().getStartLine(), action);
