@@ -25,7 +25,7 @@ public class Deleted extends ModificationData {
 
     @Override
     public String renderData() {
-        return isOnParent ? "<b>DELETED<br>Deleted code:</b> " + deletedCode + "<br>" +
+        return isOnParent ? "<b>DELETED<br>Deleted code:</b><br>" + deletedCode + "<br>" +
                 "<b>Commit info</b><br>" +
                 "<b>Author username:</b> " + author.getName() + "<br>" +
                 "<b>Author email:</b> " + author.getEmailAddress() + "<br>" +

@@ -98,16 +98,23 @@ public class DiffMapGenerator {
                     PersonIdent author = commit.getAuthorIdent();
                     Date date = author.getWhen();
                     LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-                    String contentDeleted = "";
+                    String previousLineContent = "";
                     if (sourceCodeChange.getAction().getName().equals("DEL")) {
                         List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
                         try {
-                            contentDeleted = previousFileLines.get(nodeInfo.getStartLineNumber() - 1);
+                            previousLineContent = previousFileLines.get(nodeInfo.getStartLineNumber() - 1);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("e");
+                        }
+                    } else if (sourceCodeChange.getAction().getName().equals("UPD")) {
+                        List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
+                        try {
+                            previousLineContent = previousFileLines.get(sourceCodeChange.getSrcInfo().getStartLineNumber() - 1);
                         } catch (IndexOutOfBoundsException e) {
                             System.out.println("e");
                         }
                     }
-                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, contentDeleted);
+                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, previousLineContent);
                     ActionsUtils.addActionToLineWithOffsets(changes, nodeInfo.getStartLineNumber(), action, startOffset, endOffset);
                 }
             } else if (nodeInfo.getStartLineNumber() == nodeInfo.getEndLineNumber()) {
@@ -118,17 +125,23 @@ public class DiffMapGenerator {
                     PersonIdent author = commit.getAuthorIdent();
                     Date date = author.getWhen();
                     LocalDateTime commitDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-                    String contentDeleted = "";
+                    String previousLineContent = "";
                     if (sourceCodeChange.getAction().getName().equals("DEL")) {
                         List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
                         try {
-                            contentDeleted = previousFileLines.get(nodeInfo.getStartLineNumber() - 1);
-//                            contentDeleted = contentDeleted.substring(nodeInfo.getStartOffset(), nodeInfo.getEndOffset());
+                            previousLineContent = previousFileLines.get(nodeInfo.getStartLineNumber() - 1);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("e");
+                        }
+                    } else if (sourceCodeChange.getAction().getName().equals("UPD")) {
+                        List<String> previousFileLines = Arrays.asList(previousFileContent.split("\n"));
+                        try {
+                            previousLineContent = previousFileLines.get(sourceCodeChange.getSrcInfo().getStartLineNumber() - 1);
                         } catch (IndexOutOfBoundsException e) {
                             System.out.println("e");
                         }
                     }
-                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, contentDeleted);
+                    Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, previousLineContent);
                     ActionsUtils.addActionToLineWithOffsets(changes, nodeInfo.getStartLineNumber(), action, startOffset, endOffset);
                 }
             }

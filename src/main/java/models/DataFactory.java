@@ -31,7 +31,7 @@ public class DataFactory {
     public static ModificationData createModificationData(String type, PersonIdent author, LocalDateTime commitDate, long startOffset, long endOffset, String... additionalData) {
         switch (type) {
             case "UPD":
-                return new Updated(author, commitDate, startOffset, endOffset);
+                return new Updated(author, commitDate, startOffset, endOffset, additionalData);
             case "INS":
                 return new Inserted(author, commitDate, startOffset, endOffset);
             case "MOV":
