@@ -12,6 +12,8 @@ import javax.swing.*;
 public class VisualElementFactory {
     public static JLabel createVisualElement(String type, PsiElement psiElement) {
         switch (type) {
+            case "CHANGES_SUMMARY":
+                return new ChangesSummaryVisualElement(psiElement);
             case "UPD":
                 return new UpdatedVisualElement(psiElement);
             case "INS":

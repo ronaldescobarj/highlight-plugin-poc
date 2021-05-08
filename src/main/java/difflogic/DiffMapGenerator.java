@@ -12,6 +12,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import compare.CompareUtils;
 import editor.EditorUtils;
 import git.GitLocal;
+import models.ChangesSummary;
 import models.Data;
 import models.DataFactory;
 import models.DiffRow;
@@ -71,7 +72,18 @@ public class DiffMapGenerator {
 //            String filePath = EditorUtils.getRelativePath(editor);
 //            new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
 //        }
+        ActionsUtils.addActionToLine(changes, 1, createChangesSummary(changes));
         return changes;
+    }
+
+    public Data createChangesSummary(Map<Integer, List<Data>> changes) {
+        ChangesSummary changesSummary = new ChangesSummary();
+        for (Map.Entry<Integer, List<Data>> change : changes.entrySet()) {
+            for (Data data : change.getValue()) {
+                changesSummary.addChange(data.getType());
+            }
+        }
+        return changesSummary;
     }
 
     public List<SourceCodeChange> getSourceCodeChangesOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
