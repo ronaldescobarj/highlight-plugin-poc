@@ -62,5 +62,4 @@ public class EditorService {
                 .map(EditorData::getChanges)
                 .findFirst().orElse(new HashMap<>());
     }
-
 }

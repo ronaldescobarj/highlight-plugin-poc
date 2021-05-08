@@ -31,6 +31,7 @@
 
         <projectService serviceImplementation="services.GitService"/>
         <projectService serviceImplementation="services.EditorService"/>
+        <projectService serviceImplementation="services.GlobalChangesService"/>
     </extensions>
     <applicationListeners>
         <listener class="onopenproject.OnOpenProject"

@@ -53,7 +53,6 @@ public class DiffMapGenerator {
         GitService gitService = project.getService(GitService.class);
         Repository repository = gitService.getRepository();
         GitLocal gitLocal = new GitLocal(repository);
-//        Map<Integer, List<Data>> aaaa = getDiffMapOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
         List<SourceCodeChange> sourceCodeChanges = getSourceCodeChangesOfCommits(sourceCommit, destinationCommit, editor, gitLocal);
         Map<Integer, List<Data>> changes = new HashMap<>();
 //        if (!Arrays.stream(destinationCommit.getParents()).anyMatch(commit -> commit == sourceCommit)) {
@@ -75,19 +74,19 @@ public class DiffMapGenerator {
         return changes;
     }
 
-    private List<SourceCodeChange> getSourceCodeChangesOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
+    public List<SourceCodeChange> getSourceCodeChangesOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, Editor editor, GitLocal gitLocal) {
         String sourceFileContent = gitLocal.getFileContentOnCommit(editor, sourceCommit);
         String destinationFileContent = gitLocal.getFileContentOnCommit(editor, destinationCommit);
         return CompareUtils.getSourceCodeChanges(sourceFileContent, destinationFileContent);
     }
 
-    private List<SourceCodeChange> getSourceCodeChangesOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, VirtualFile file, GitLocal gitLocal, Project project) {
+    public List<SourceCodeChange> getSourceCodeChangesOfCommits(RevCommit sourceCommit, RevCommit destinationCommit, VirtualFile file, GitLocal gitLocal, Project project) {
         String sourceFileContent = gitLocal.getFileContentOnCommit(file, sourceCommit, project);
         String destinationFileContent = gitLocal.getFileContentOnCommit(file, destinationCommit, project);
         return CompareUtils.getSourceCodeChanges(sourceFileContent, destinationFileContent);
     }
 
-    private void addSourceCodeChangesToMap(List<SourceCodeChange> sourceCodeChanges, Map<Integer, List<Data>> changes, Document document, RevCommit commit, String previousFileContent) {
+    public void addSourceCodeChangesToMap(List<SourceCodeChange> sourceCodeChanges, Map<Integer, List<Data>> changes, Document document, RevCommit commit, String previousFileContent) {
         for (SourceCodeChange sourceCodeChange : sourceCodeChanges) {
             NodeInfo nodeInfo = sourceCodeChange.getAction().getName().equals("DEL") ? sourceCodeChange.getSrcInfo() : sourceCodeChange.getDstInfo();
             if (String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("METHOD_DECLARATION") || String.valueOf(NodeType.getEnum(sourceCodeChange.getNodeType())).equals("TYPE_DECLARATION")) {

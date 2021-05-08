@@ -3,9 +3,11 @@ package onopenproject;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
 import git.GitLocal;
+import org.apache.batik.dom.svg12.Global;
 import org.jetbrains.annotations.NotNull;
 import services.EditorService;
 import services.GitService;
+import services.GlobalChangesService;
 
 public class OnOpenProject implements ProjectManagerListener {
 
@@ -18,6 +20,7 @@ public class OnOpenProject implements ProjectManagerListener {
         gitLocal.openRepository();
         gitService.setRepository(gitLocal.getRepository());
         gitService.setLatestCommitHash(gitLocal.getLatestCommit().getName());
+        project.getService(GlobalChangesService.class).addAllChanges(project, gitLocal.getLatestCommit());
     }
 
     @Override

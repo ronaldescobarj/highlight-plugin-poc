@@ -25,7 +25,7 @@ public class CompareUtils {
         return getChangesBetweenVersions(previousVersion, currentVersion);
     }
 
-    private static List<SourceCodeChange> getChangesBetweenVersions(String previousVersion, String latestVersion) {
+    public static List<SourceCodeChange> getChangesBetweenVersions(String previousVersion, String latestVersion) {
         AbstractJavaChangeClassifier classifier = createClassifier();
         try {
             classifier.classify(previousVersion, latestVersion);
