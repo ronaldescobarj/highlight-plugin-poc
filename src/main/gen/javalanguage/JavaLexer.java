@@ -62,7 +62,7 @@ class JavaLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 256 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\3\1\2\2\1\1\2\22\0\1\3\11\0\1\5\4\0\1\4\125\0\1\1\142\0\2\1\26\0");
+    "\11\0\1\4\1\2\2\1\1\3\22\0\1\4\11\0\1\6\4\0\1\5\125\0\1\1\142\0\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -70,10 +70,11 @@ class JavaLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\2\1\1\3\1\4";
+    "\2\0\1\1\1\2\2\1\1\3\1\4\1\0\2\4"+
+    "\3\0\1\4";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[8];
+    int [] result = new int[15];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -98,10 +99,11 @@ class JavaLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\6\0\14\0\22\0\22\0\30\0\14\0\36";
+    "\0\0\0\7\0\16\0\25\0\25\0\34\0\16\0\43"+
+    "\0\52\0\16\0\61\0\70\0\77\0\106\0\70";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[8];
+    int [] result = new int[15];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -124,11 +126,13 @@ class JavaLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\3\2\4\1\5\1\6\1\3\1\7\3\4\2\7"+
-    "\7\0\3\4\6\0\4\10\1\0\3\10";
+    "\1\3\3\4\1\5\1\6\1\3\1\7\4\4\2\7"+
+    "\10\0\4\4\7\0\1\10\1\11\2\10\1\12\1\13"+
+    "\3\10\6\14\1\15\2\0\1\12\4\0\6\14\1\16"+
+    "\5\14\1\17\1\16\5\14\1\12\1\16";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[36];
+    int [] result = new int[77];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -166,10 +170,11 @@ class JavaLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\3\1\1\11\1\1";
+    "\2\0\1\11\3\1\1\11\1\1\1\0\1\11\1\1"+
+    "\3\0\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[8];
+    int [] result = new int[15];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;

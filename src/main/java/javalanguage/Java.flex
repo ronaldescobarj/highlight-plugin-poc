@@ -37,7 +37,17 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("//"|"/*")[^\r\n]*
+//END_OF_LINE_COMMENT=("//"|"/*")[^\r\n]*
+
+LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r\n]
+Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+TraditionalComment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+// Comment can be the last line of the file, without line terminator.
+EndOfLineComment = "//" {InputCharacter}* {LineTerminator}?
+DocumentationComment = "/**" {CommentContent} "*"+ "/"
+CommentContent = ( [^*] | \*+ [^/*] )*
+
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
@@ -46,7 +56,7 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 %%
 <YYINITIAL> .                                               { yybegin(YYINITIAL); return getCorrespondingToken(); }
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return JavaTypes.COMMENT; }
+<YYINITIAL> {Comment}                           { yybegin(YYINITIAL); return JavaTypes.COMMENT; }
 
 /*
 <YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return SimpleTypes.LLAVE; }
