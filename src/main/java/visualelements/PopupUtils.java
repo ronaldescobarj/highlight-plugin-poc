@@ -22,7 +22,7 @@ public class PopupUtils {
         JComponent visualElement = new PopupContent(content);
         ComponentPopupBuilder popupBuilder = jbPopupFactory.createComponentPopupBuilder(visualElement ,null);
         JBPopup popup = popupBuilder.createPopup();
-        popup.setSize(new Dimension(330, 200));
+        popup.setSize(new Dimension(visualElement.getWidth() + 15, visualElement.getHeight() + 10));
         return popup;
     }
 }

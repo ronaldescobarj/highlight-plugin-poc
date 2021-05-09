@@ -1,6 +1,7 @@
 package visualelements;
 
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +9,8 @@ import java.awt.*;
 public class PopupContent extends JLabel {
     public PopupContent(String content) {
         this.setLayout(new FlowLayout());
-        JLabel jl = new JLabel(content);
-        jl.setSize(150, 40);
+        JBLabel jl = new JBLabel(content);
+        jl.setSize(jl.getPreferredSize());
         jl.setOpaque(true);
         jl.setForeground(JBColor.BLACK);
         int width = jl.getWidth();
