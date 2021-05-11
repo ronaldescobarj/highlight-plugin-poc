@@ -26,7 +26,7 @@ public class Updated extends ModificationData {
 
     @Override
     public String renderData() {
-        return isOnParent ? "<b>UPDATED<br>Previous line content:</b><br>" + printPreviousContent() + "<br>" +
+        return isOnParent ? "<b>UPDATED<br>Previous line content:</b><br>" + previousContent + "<br>" +
                 "<b>Commit info<br>Author username:</b> " + author.getName() + "<br>" +
                 "<b>Author email:</b> " + author.getEmailAddress() + "<br>" +
                 "<b>Commit datetime:</b> " + getDateTimeString() + "<br>" :
@@ -39,7 +39,6 @@ public class Updated extends ModificationData {
     }
 
     private String printPreviousContent() {
-//        return "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         return previousContent.length() > 70 ? previousContent.substring(0, 70) + "..." : previousContent;
     }
 }
