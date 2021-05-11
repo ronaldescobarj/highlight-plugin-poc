@@ -26,18 +26,20 @@ public class OnEditorOpen implements EditorFactoryListener {
         Editor editor = event.getEditor();
         EditorService editorService = editor.getProject().getService(EditorService.class);
         new VisualElementsUtils().registerEditorToCoverLayerManager(editor);
-        if (editorService.editorIsOnMap(editor)) {
-            EditorData editorData = editorService.getEditorData(editor);
-            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, editorData.getSourceCommit(), editorData.getDestinationCommit());
-            editorData.setActive(true);
-            editorData.setChanges(changes);
-            editorService.setEditorWithData(editor, editorData);
-        } else {
-            RevCommit latestCommit = getLatestCommit(editor.getProject());
-            RevCommit previousCommit = latestCommit.getParents()[0];
-            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, previousCommit, latestCommit);
-            EditorData editorData = new EditorData(changes, true, previousCommit, latestCommit);
-            editorService.setEditorWithData(editor, editorData);
+        if (!EditorUtils.getRelativePath(editor).equals("")) {
+            if (editorService.editorIsOnMap(editor)) {
+                EditorData editorData = editorService.getEditorData(editor);
+                Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, editorData.getSourceCommit(), editorData.getDestinationCommit());
+                editorData.setActive(true);
+                editorData.setChanges(changes);
+                editorService.setEditorWithData(editor, editorData);
+            } else {
+                RevCommit latestCommit = getLatestCommit(editor.getProject());
+                RevCommit previousCommit = latestCommit.getParents()[0];
+                Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, previousCommit, latestCommit);
+                EditorData editorData = new EditorData(changes, true, previousCommit, latestCommit);
+                editorService.setEditorWithData(editor, editorData);
+            }
         }
     }
 

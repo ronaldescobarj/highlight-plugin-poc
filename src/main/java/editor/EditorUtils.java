@@ -20,11 +20,16 @@ public class EditorUtils {
     }
 
     public static String getRelativePath(Editor editor) {
-        VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
-        String filePath = virtualFile.getPath();
-        Project project = editor.getProject();
-        String projectPath = project.getBasePath();
-        return filePath.replaceAll(projectPath + "/", "");
+        Document document = editor.getDocument();
+        VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(document);
+        if (virtualFile != null) {
+            String filePath = virtualFile.getPath();
+            Project project = editor.getProject();
+            String projectPath = project.getBasePath();
+            return filePath.replaceAll(projectPath + "/", "");
+        } else {
+            return "";
+        }
     }
 
     public static String getCurrentFileContent(Editor editor) {
