@@ -126,6 +126,8 @@ public class DiffMapGenerator {
                         } catch (IndexOutOfBoundsException e) {
                             System.out.println("e");
                         }
+                    } else if (sourceCodeChange.getAction().getName().equals("MOV")) {
+                        previousLineContent = String.valueOf(sourceCodeChange.getSrcInfo().getStartLineNumber());
                     }
                     Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, previousLineContent);
                     ActionsUtils.addActionToLineWithOffsets(changes, nodeInfo.getStartLineNumber(), action, startOffset, endOffset);
@@ -153,6 +155,8 @@ public class DiffMapGenerator {
                         } catch (IndexOutOfBoundsException e) {
                             System.out.println("e");
                         }
+                    } else if (sourceCodeChange.getAction().getName().equals("MOV")) {
+                        previousLineContent = String.valueOf(sourceCodeChange.getSrcInfo().getStartLineNumber());
                     }
                     Data action = DataFactory.createModificationData(sourceCodeChange.getAction().getName(), author, commitDate, startOffset, endOffset, previousLineContent);
                     ActionsUtils.addActionToLineWithOffsets(changes, nodeInfo.getStartLineNumber(), action, startOffset, endOffset);

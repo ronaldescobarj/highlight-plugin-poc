@@ -35,7 +35,7 @@ public class DataFactory {
             case "INS":
                 return new Inserted(author, commitDate, startOffset, endOffset);
             case "MOV":
-                return new Moved(author, commitDate, startOffset, endOffset);
+                return new Moved(author, commitDate, startOffset, endOffset, additionalData);
             case "DEL":
                 return new Deleted(author, commitDate, startOffset, endOffset, additionalData);
             case "UPD_MULTIPLE_TIMES":
