@@ -59,7 +59,8 @@ public class ChangesHighlighter {
     }
 
     private boolean isMove(Data action) {
-        return action.getType().equals("PULL_UP_METHOD") || action.getType().equals("PULL_UP_ATTRIBUTE") ||
+        return action.getType().equals("MOV") || action.getType().equals("PULL_UP_METHOD") ||
+                action.getType().equals("PULL_UP_ATTRIBUTE") ||
                 action.getType().equals("PUSH_DOWN_METHOD") ||
                 action.getType().equals("PUSH_DOWN_ATTRIBUTE") ||
                 action.getType().equals("PUSH_DOWN_ATTRIBUTE") ||

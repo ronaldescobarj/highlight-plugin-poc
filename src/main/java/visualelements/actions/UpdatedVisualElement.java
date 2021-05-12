@@ -11,7 +11,7 @@ public class UpdatedVisualElement extends VisualElement {
     public UpdatedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" UPD ");
+        this.setText("<html><b> UPD </b></html>");
         this.setSize(35, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);
