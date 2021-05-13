@@ -10,7 +10,7 @@ public class ChangeReturnTypeVisualElement extends VisualElement {
     public ChangeReturnTypeVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" CRT ");
+        this.setText("<html><b> CRT </b></html>");
         this.setSize(65, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);

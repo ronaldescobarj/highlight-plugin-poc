@@ -10,7 +10,7 @@ public class AddParameterVisualElement extends VisualElement {
     public AddParameterVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" ADP ");
+        this.setText("<html><b> ADP </b></html>");
         this.setSize(85, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.CYAN);

@@ -10,7 +10,7 @@ public class PullUpMethodVisualElement extends VisualElement {
     public PullUpMethodVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" PUM ");
+        this.setText("<html><b> PUM </b></html>");
         this.setSize(115, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.PINK);

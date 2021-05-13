@@ -10,7 +10,7 @@ public class ReorderParameterVisualElement extends VisualElement {
     public ReorderParameterVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" ROP ");
+        this.setText("<html><b> ROP </b></html>");
         this.setSize(90, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.PINK);

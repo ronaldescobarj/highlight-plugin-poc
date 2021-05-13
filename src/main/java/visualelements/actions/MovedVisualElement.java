@@ -11,7 +11,7 @@ public class MovedVisualElement extends VisualElement {
     public MovedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" MOV ");
+        this.setText("<html><b> MOV </b></html>");
         this.setSize(35, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.ORANGE);

@@ -10,7 +10,7 @@ public class RenameParameterVisualElement extends VisualElement {
     public RenameParameterVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" RNP ");
+        this.setText("<html><b> RNP </b></html>");
         this.setSize(45, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);

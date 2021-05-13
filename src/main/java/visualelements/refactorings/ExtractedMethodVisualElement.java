@@ -11,7 +11,7 @@ public class ExtractedMethodVisualElement extends VisualElement {
     public ExtractedMethodVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" EXT ");
+        this.setText("<html><b> EXT </b></html>");
         this.setSize(40, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.CYAN);

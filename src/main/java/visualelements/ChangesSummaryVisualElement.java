@@ -9,7 +9,7 @@ public class ChangesSummaryVisualElement extends VisualElement {
     public ChangesSummaryVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" SUMMARY ");
+        this.setText("<html><b> SUMMARY </b></html>");
         this.setSize(150, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GRAY);

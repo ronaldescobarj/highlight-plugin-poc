@@ -10,7 +10,7 @@ public class RemoveParameterVisualElement extends VisualElement {
     public RemoveParameterVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" RMP ");
+        this.setText("<html><b> RMP </b></html>");
         this.setSize(80, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.RED);

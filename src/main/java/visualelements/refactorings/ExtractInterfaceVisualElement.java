@@ -10,7 +10,7 @@ public class ExtractInterfaceVisualElement extends VisualElement {
     public ExtractInterfaceVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" EI ");
+        this.setText("<html><b> EIN </b></html>");
         this.setSize(100, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.CYAN);

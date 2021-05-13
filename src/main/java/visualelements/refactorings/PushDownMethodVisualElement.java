@@ -10,7 +10,7 @@ public class PushDownMethodVisualElement extends VisualElement {
     public PushDownMethodVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" PDM ");
+        this.setText("<html><b> PDM </b></html>");
         this.setSize(125, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.PINK);

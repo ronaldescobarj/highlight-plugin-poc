@@ -10,7 +10,7 @@ public class RenameClassVisualElement extends VisualElement {
     public RenameClassVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" RNC ");
+        this.setText("<html><b> RNC </b></html>");
         this.setSize(95, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);

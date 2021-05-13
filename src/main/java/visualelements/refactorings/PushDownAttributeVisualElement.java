@@ -10,7 +10,7 @@ public class PushDownAttributeVisualElement extends VisualElement {
     public PushDownAttributeVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" PDA ");
+        this.setText("<html><b> PDA </b></html>");
         this.setSize(120, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.PINK);

@@ -10,7 +10,7 @@ public class ChangeVariableTypeVisualElement extends VisualElement {
     public ChangeVariableTypeVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" CVT ");
+        this.setText("<html><b> CVT </b></html>");
         this.setSize(75, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);

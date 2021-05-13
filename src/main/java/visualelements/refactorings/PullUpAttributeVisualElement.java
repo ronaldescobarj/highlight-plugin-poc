@@ -10,7 +10,7 @@ public class PullUpAttributeVisualElement extends VisualElement {
     public PullUpAttributeVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" PUA ");
+        this.setText("<html><b> PUA </b></html>");
         this.setSize(110, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.PINK);

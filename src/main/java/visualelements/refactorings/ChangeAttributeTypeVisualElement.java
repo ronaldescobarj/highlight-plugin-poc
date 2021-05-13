@@ -10,7 +10,7 @@ public class ChangeAttributeTypeVisualElement extends VisualElement {
     public ChangeAttributeTypeVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" CAT ");
+        this.setText("<html><b> CAT </b></html>");
         this.setSize(60, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.GREEN);

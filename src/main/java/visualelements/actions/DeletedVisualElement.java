@@ -11,7 +11,7 @@ public class DeletedVisualElement extends VisualElement {
     public DeletedVisualElement(PsiElement psiElement) {
         super(psiElement);
         this.setLayout(new FlowLayout());
-        this.setText(" DEL ");
+        this.setText("<html><b> DEL </b></html>");
         this.setSize(30, 20);
         this.setOpaque(true);
         this.setBackground(JBColor.RED);
