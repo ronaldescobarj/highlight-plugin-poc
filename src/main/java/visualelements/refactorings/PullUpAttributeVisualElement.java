@@ -13,7 +13,7 @@ public class PullUpAttributeVisualElement extends VisualElement {
         this.setText("<html><b> PUA </b></html>");
         this.setSize(110, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.PINK);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

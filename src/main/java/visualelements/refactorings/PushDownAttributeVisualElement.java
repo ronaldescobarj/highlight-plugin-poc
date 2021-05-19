@@ -13,7 +13,7 @@ public class PushDownAttributeVisualElement extends VisualElement {
         this.setText("<html><b> PDA </b></html>");
         this.setSize(120, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.PINK);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

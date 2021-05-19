@@ -13,7 +13,7 @@ public class RenameMethodVisualElement extends VisualElement {
         this.setText("<html><b> RNM </b></html>");
         this.setSize(50, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.GREEN);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

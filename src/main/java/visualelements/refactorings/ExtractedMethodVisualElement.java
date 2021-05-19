@@ -14,7 +14,7 @@ public class ExtractedMethodVisualElement extends VisualElement {
         this.setText("<html><b> EXT </b></html>");
         this.setSize(40, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.CYAN);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

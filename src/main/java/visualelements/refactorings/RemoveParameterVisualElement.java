@@ -13,7 +13,7 @@ public class RemoveParameterVisualElement extends VisualElement {
         this.setText("<html><b> RMP </b></html>");
         this.setSize(80, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.RED);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

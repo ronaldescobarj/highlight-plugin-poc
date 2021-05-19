@@ -13,7 +13,7 @@ public class RenameParameterVisualElement extends VisualElement {
         this.setText("<html><b> RNP </b></html>");
         this.setSize(45, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.GREEN);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

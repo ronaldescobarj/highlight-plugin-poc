@@ -13,7 +13,7 @@ public class ExtractSuperclassVisualElement extends VisualElement {
         this.setText("<html><b> ESC </b></html>");
         this.setSize(105, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.CYAN);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }

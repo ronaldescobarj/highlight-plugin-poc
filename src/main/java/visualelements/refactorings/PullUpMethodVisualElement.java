@@ -13,7 +13,7 @@ public class PullUpMethodVisualElement extends VisualElement {
         this.setText("<html><b> PUM </b></html>");
         this.setSize(115, 20);
         this.setOpaque(true);
-        this.setBackground(JBColor.PINK);
+        this.setBackground(JBColor.YELLOW);
         this.setForeground(JBColor.WHITE);
     }
 }
