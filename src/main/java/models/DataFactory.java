@@ -89,6 +89,8 @@ public class DataFactory {
                 return new ExtractedVariable(attributes);
             case "EXTRACTED_VARIABLE_USAGE":
                 return new ExtractedVariableUsage(attributes);
+            case "RENAME_ATTRIBUTE":
+                return new RenameAttribute(attributes);
             default:
                 return null;
         }

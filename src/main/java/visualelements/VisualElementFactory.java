@@ -62,6 +62,8 @@ public class VisualElementFactory {
             case "EXTRACTED_VARIABLE":
             case "EXTRACTED_VARIABLE_USAGE":
                 return new ExtractedVariableVisualElement(psiElement);
+            case "RENAME_ATTRIBUTE":
+                return new RenameAttributeVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:

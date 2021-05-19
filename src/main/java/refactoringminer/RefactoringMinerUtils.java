@@ -80,6 +80,8 @@ public class RefactoringMinerUtils {
                 addPushDownOperation((PushDownOperationRefactoring) refactoring);
             } else if (refactoring instanceof ExtractVariableRefactoring) {
                 addExtractVariable((ExtractVariableRefactoring) refactoring);
+            } else if (refactoring instanceof RenameAttributeRefactoring) {
+                addRenameAttribute((RenameAttributeRefactoring) refactoring);
             }
         }
     }
@@ -118,6 +120,8 @@ public class RefactoringMinerUtils {
                 handlePushDownOperation(actionsMap, filePath, (PushDownOperationRefactoring) refactoring);
             } else if (refactoring instanceof ExtractVariableRefactoring) {
                 handleExtractVariable(actionsMap, filePath, (ExtractVariableRefactoring) refactoring);
+            } else if (refactoring instanceof RenameAttributeRefactoring) {
+                handleRenameAttribute(actionsMap, filePath, (RenameAttributeRefactoring) refactoring);
             }
         }
     }
@@ -597,8 +601,27 @@ public class RefactoringMinerUtils {
             filePath = reference.getFragment2().getLocationInfo().getFilePath();
             line = reference.getFragment2().getLocationInfo().getStartLine();
             project.getService(GlobalChangesService.class).addChange(filePath, line, action);
-
         }
+    }
+
+    private void handleRenameAttribute(Map<Integer, List<Data>> actionsMap, String filePath, RenameAttributeRefactoring renameAttributeRefactoring) {
+        if (renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getFilePath().equals(filePath)) {
+            String startOffset = String.valueOf(renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getEndOffset());
+            Data action = DataFactory.createRefactoringData("RENAME_ATTRIBUTE", renameAttributeRefactoring.getOriginalAttribute().getName(), startOffset, endOffset);
+            addActionData(action);
+            ActionsUtils.addActionToLine(actionsMap, renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getStartLine(), action);
+        }
+    }
+
+    private void addRenameAttribute(RenameAttributeRefactoring renameAttributeRefactoring) {
+        String startOffset = String.valueOf(renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getStartOffset());
+        String endOffset = String.valueOf(renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getEndOffset());
+        Data action = DataFactory.createRefactoringData("RENAME_ATTRIBUTE", renameAttributeRefactoring.getOriginalAttribute().getName(), startOffset, endOffset);
+        addActionData(action);
+        String filePath = renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getFilePath();
+        int line = renameAttributeRefactoring.getRenamedAttribute().getLocationInfo().getStartLine();
+        project.getService(GlobalChangesService.class).addChange(filePath, line, action);
     }
 
     private void addActionData(Data action) {

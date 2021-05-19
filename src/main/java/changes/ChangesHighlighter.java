@@ -54,6 +54,7 @@ public class ChangesHighlighter {
         return action.getType().equals("UPD") || action.getType().equals("RENAME_METHOD") ||
                 action.getType().equals("RENAME_CLASS") || action.getType().equals("RENAME_VARIABLE") ||
                 action.getType().equals("RENAME_PARAMETER") || action.getType().equals("RENAME_ATTRIBUTE") ||
+                action.getType().equals("RENAME_ATTRIBUTE") ||
                 action.getType().equals("CHANGE_VARIABLE_TYPE") ||
                 action.getType().equals("EXTRACTED_VARIABLE_USAGE") ||
                 action.getType().equals("CHANGE_PARAMETER_TYPE") ||
