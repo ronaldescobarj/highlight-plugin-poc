@@ -45,6 +45,7 @@ public class ChangesHighlighter {
         return action.getType().equals("INS") || action.getType().equals("ADD_PARAMETER") ||
                 action.getType().equals("EXTRACTED_METHOD") ||
                 action.getType().equals("EXTRACTED_METHOD_CALL") ||
+                action.getType().equals("EXTRACTED_VARIABLE") ||
                 action.getType().equals("EXTRACT_INTERFACE") ||
                 action.getType().equals("EXTRACT_SUPERCLASS");
     }
@@ -54,6 +55,7 @@ public class ChangesHighlighter {
                 action.getType().equals("RENAME_CLASS") || action.getType().equals("RENAME_VARIABLE") ||
                 action.getType().equals("RENAME_PARAMETER") || action.getType().equals("RENAME_ATTRIBUTE") ||
                 action.getType().equals("CHANGE_VARIABLE_TYPE") ||
+                action.getType().equals("EXTRACTED_VARIABLE_USAGE") ||
                 action.getType().equals("CHANGE_PARAMETER_TYPE") ||
                 action.getType().equals("CHANGE_RETURN_TYPE") ||
                 action.getType().equals("CHANGE_ATTRIBUTE_TYPE");
