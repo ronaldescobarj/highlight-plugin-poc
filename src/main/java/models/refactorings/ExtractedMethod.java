@@ -28,11 +28,11 @@ public class ExtractedMethod extends RefactoringData {
 
     public String renderExtractedCodeFragments() {
         StringBuilder result = new StringBuilder();
-        int limit = Math.min(extractedCodeFragments.length, 3);
+        int limit = Math.min(extractedCodeFragments.length, 7);
         for (int i = 0; i < limit; i++) {
             result.append(extractedCodeFragments[i]).append("<br>");
         }
-        if (extractedCodeFragments.length > 3) {
+        if (extractedCodeFragments.length > 7) {
             result.append("...<br>");
         }
         return result.toString();
