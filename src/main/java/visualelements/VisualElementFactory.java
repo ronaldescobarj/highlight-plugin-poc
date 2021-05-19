@@ -23,6 +23,7 @@ public class VisualElementFactory {
             case "DEL":
                 return new DeletedVisualElement(psiElement);
             case "EXTRACTED_METHOD":
+            case "EXTRACTED_METHOD_CALL":
                 return new ExtractedMethodVisualElement(psiElement);
             case "RENAME_PARAMETER":
                 return new RenameParameterVisualElement(psiElement);

@@ -34,6 +34,6 @@ public class ExtractedMethodCall extends RefactoringData {
 
     @Override
     public String getType() {
-        return "EXTRACTED_METHOD";
+        return "EXTRACTED_METHOD_CALL";
     }
 }
