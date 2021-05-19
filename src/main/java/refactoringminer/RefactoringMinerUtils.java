@@ -196,7 +196,8 @@ public class RefactoringMinerUtils {
         if (renameVariableRefactoring.getRenamedVariable().getLocationInfo().getFilePath().equals(filePath)) {
             final String refactoringType = renameVariableRefactoring.getRenamedVariable().isParameter() ? "RENAME_PARAMETER" : "RENAME_VARIABLE";
             String startOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset());
-            String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset());
+            int variableNameLength = renameVariableRefactoring.getRenamedVariable().getVariableName().length();
+            String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset() + variableNameLength);
             String[] attributes = refactoringType.equals("RENAME_PARAMETER") ?
                     new String[]{
                             renameVariableRefactoring.getOriginalVariable().getType().getClassType(),
@@ -214,7 +215,8 @@ public class RefactoringMinerUtils {
     private void addRenameVariable(RenameVariableRefactoring renameVariableRefactoring) {
         final String refactoringType = renameVariableRefactoring.getRenamedVariable().isParameter() ? "RENAME_PARAMETER" : "RENAME_VARIABLE";
         String startOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset());
-        String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset());
+        int variableNameLength = renameVariableRefactoring.getRenamedVariable().getVariableName().length();
+        String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset() + variableNameLength);
         String[] attributes = refactoringType.equals("RENAME_PARAMETER") ?
                 new String[]{
                         renameVariableRefactoring.getOriginalVariable().getType().getClassType(),
