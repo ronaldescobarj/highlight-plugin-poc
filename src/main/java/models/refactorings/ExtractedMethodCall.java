@@ -23,7 +23,8 @@ public class ExtractedMethodCall extends RefactoringData {
 
     public String renderExtractedCodeFragments() {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
+        int limit = Math.min(extractedCodeFragments.length, 3);
+        for (int i = 0; i < limit; i++) {
             result.append(extractedCodeFragments[i]).append("<br>");
         }
         if (extractedCodeFragments.length > 3) {
