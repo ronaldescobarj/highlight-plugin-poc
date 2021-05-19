@@ -58,6 +58,9 @@ public class VisualElementFactory {
                 return new PushDownAttributeVisualElement(psiElement);
             case "PUSH_DOWN_METHOD":
                 return new PushDownMethodVisualElement(psiElement);
+            case "EXTRACTED_VARIABLE":
+            case "EXTRACTED_VARIABLE_USAGE":
+                return new ExtractedVariableVisualElement(psiElement);
             case "GEAR":
                 return new GearVisualElement(psiElement);
             default:

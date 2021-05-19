@@ -85,6 +85,10 @@ public class DataFactory {
                 return new PushDownAttribute(attributes);
             case "PUSH_DOWN_METHOD":
                 return new PushDownMethod(attributes);
+            case "EXTRACTED_VARIABLE":
+                return new ExtractedVariable(attributes);
+            case "EXTRACTED_VARIABLE_USAGE":
+                return new ExtractedVariableUsage(attributes);
             default:
                 return null;
         }

@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import gr.uom.java.xmi.LocationInfo;
 import gr.uom.java.xmi.UMLClass;
 import gr.uom.java.xmi.decomposition.AbstractCodeFragment;
+import gr.uom.java.xmi.decomposition.AbstractCodeMapping;
 import gr.uom.java.xmi.decomposition.OperationInvocation;
 import gr.uom.java.xmi.diff.*;
 import models.Data;
@@ -77,6 +78,8 @@ public class RefactoringMinerUtils {
                 addPushDownAttribute((PushDownAttributeRefactoring) refactoring);
             } else if (refactoring instanceof PushDownOperationRefactoring) {
                 addPushDownOperation((PushDownOperationRefactoring) refactoring);
+            } else if (refactoring instanceof ExtractVariableRefactoring) {
+                addExtractVariable((ExtractVariableRefactoring) refactoring);
             }
         }
     }
@@ -113,6 +116,8 @@ public class RefactoringMinerUtils {
                 handlePushDownAttribute(actionsMap, filePath, (PushDownAttributeRefactoring) refactoring);
             } else if (refactoring instanceof PushDownOperationRefactoring) {
                 handlePushDownOperation(actionsMap, filePath, (PushDownOperationRefactoring) refactoring);
+            } else if (refactoring instanceof ExtractVariableRefactoring) {
+                handleExtractVariable(actionsMap, filePath, (ExtractVariableRefactoring) refactoring);
             }
         }
     }
@@ -547,6 +552,53 @@ public class RefactoringMinerUtils {
         String filePath = pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getFilePath();
         int line = pushDownOperationRefactoring.getMovedOperation().getLocationInfo().getStartLine();
         project.getService(GlobalChangesService.class).addChange(filePath, line, action);
+    }
+
+    private void handleExtractVariable(Map<Integer, List<Data>> actionsMap, String filePath, ExtractVariableRefactoring extractVariableRefactoring) {
+        if (extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getFilePath().equals(filePath)) {
+            String startOffset = String.valueOf(extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getStartOffset());
+            String endOffset = String.valueOf(extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getEndOffset());
+            String[] attributes = {startOffset, endOffset};
+            Data action = DataFactory.createRefactoringData("EXTRACTED_VARIABLE", attributes);
+            addActionData(action);
+            ActionsUtils.addActionToLine(actionsMap, extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getStartLine(), action);
+        }
+        for (AbstractCodeMapping reference : extractVariableRefactoring.getReferences()) {
+            if (reference.getFragment2().getLocationInfo().getFilePath().equals(filePath)) {
+                String startOffset = String.valueOf(reference.getFragment2().getLocationInfo().getStartOffset());
+                String endOffset = String.valueOf(reference.getFragment2().getLocationInfo().getEndOffset());
+                String extractedCode = extractVariableRefactoring.getVariableDeclaration().getInitializer().getExpression();
+                String replacedBy = extractVariableRefactoring.getVariableDeclaration().getVariableName();
+                String[] attributes = {startOffset, endOffset, extractedCode, replacedBy};
+                Data action = DataFactory.createRefactoringData("EXTRACTED_VARIABLE_USAGE", attributes);
+                addActionData(action);
+                ActionsUtils.addActionToLine(actionsMap, reference.getFragment2().getLocationInfo().getStartLine(), action);
+            }
+        }
+    }
+
+    private void addExtractVariable(ExtractVariableRefactoring extractVariableRefactoring) {
+        String startOffset = String.valueOf(extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getStartOffset());
+        String endOffset = String.valueOf(extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getEndOffset());
+        String[] attributes = {startOffset, endOffset};
+        Data action = DataFactory.createRefactoringData("EXTRACTED_VARIABLE", attributes);
+        addActionData(action);
+        String filePath = extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getFilePath();
+        int line = extractVariableRefactoring.getVariableDeclaration().getLocationInfo().getStartLine();
+        project.getService(GlobalChangesService.class).addChange(filePath, line, action);
+        for (AbstractCodeMapping reference : extractVariableRefactoring.getReferences()) {
+            startOffset = String.valueOf(reference.getFragment2().getLocationInfo().getStartOffset());
+            endOffset = String.valueOf(reference.getFragment2().getLocationInfo().getEndOffset());
+            String extractedCode = extractVariableRefactoring.getVariableDeclaration().getInitializer().getExpression();
+            String replacedBy = extractVariableRefactoring.getVariableDeclaration().getVariableName();
+            String[] referenceAttributes = {startOffset, endOffset, extractedCode, replacedBy};
+            action = DataFactory.createRefactoringData("EXTRACTED_VARIABLE_USAGE", referenceAttributes);
+            addActionData(action);
+            filePath = reference.getFragment2().getLocationInfo().getFilePath();
+            line = reference.getFragment2().getLocationInfo().getStartLine();
+            project.getService(GlobalChangesService.class).addChange(filePath, line, action);
+
+        }
     }
 
     private void addActionData(Data action) {
