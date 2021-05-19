@@ -7,7 +7,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import gr.uom.java.xmi.LocationInfo;
+import gr.uom.java.xmi.UMLAnnotation;
 import gr.uom.java.xmi.UMLClass;
+import gr.uom.java.xmi.UMLOperation;
 import gr.uom.java.xmi.decomposition.AbstractCodeFragment;
 import gr.uom.java.xmi.decomposition.AbstractCodeMapping;
 import gr.uom.java.xmi.decomposition.OperationInvocation;
@@ -126,6 +128,21 @@ public class RefactoringMinerUtils {
         }
     }
 
+    private int getLineForMethod(UMLOperation method) {
+        int startLine = method.getLocationInfo().getStartLine();
+        if (method.getJavadoc() != null) {
+            int lines = method.getJavadoc().getLocationInfo().getEndLine() - method.getJavadoc().getLocationInfo().getStartLine() + 1;
+            startLine += lines;
+        }
+        if (method.getAnnotations().size() > 0) {
+            for (UMLAnnotation annotation : method.getAnnotations()) {
+                int lines = annotation.getLocationInfo().getEndLine() - annotation.getLocationInfo().getStartLine() + 1;
+                startLine += lines;
+            }
+        }
+        return startLine;
+    }
+
     private void handleExtractOperation(Map<Integer, List<Data>> actionsMap, String filePath, ExtractOperationRefactoring extractOperationRefactoring) {
         List<String> codeExtractedFragments = new ArrayList<>();
         for (AbstractCodeFragment abstractCodeFragment : extractOperationRefactoring.getExtractedCodeFragmentsFromSourceOperation()) {
@@ -143,7 +160,7 @@ public class RefactoringMinerUtils {
             elements.add(0, startOffset);
             Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", elements.toArray(new String[0]));
             addActionData(action);
-            ActionsUtils.addActionToLine(actionsMap, extractOperationRefactoring.getExtractedOperation().getLocationInfo().getStartLine(), action);
+            ActionsUtils.addActionToLine(actionsMap, getLineForMethod(extractOperationRefactoring.getExtractedOperation()), action);
         }
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             if (call.getLocationInfo().getFilePath().equals(filePath)) {
@@ -176,7 +193,7 @@ public class RefactoringMinerUtils {
         Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", elements.toArray(new String[0]));
         addActionData(action);
         String filePath = extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath();
-        int line = extractOperationRefactoring.getExtractedOperation().getLocationInfo().getStartLine();
+        int line = getLineForMethod(extractOperationRefactoring.getExtractedOperation());
         project.getService(GlobalChangesService.class).addChange(filePath, line, action);
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             startOffset = String.valueOf(call.getLocationInfo().getStartOffset());
@@ -238,7 +255,7 @@ public class RefactoringMinerUtils {
             String endOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getEndOffset());
             Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
             addActionData(action);
-            ActionsUtils.addActionToLine(actionsMap, renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartLine(), action);
+            ActionsUtils.addActionToLine(actionsMap, getLineForMethod(renameOperationRefactoring.getRenamedOperation()), action);
         }
     }
 
@@ -248,7 +265,7 @@ public class RefactoringMinerUtils {
         Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
         addActionData(action);
         String filePath = renameOperationRefactoring.getRenamedOperation().getLocationInfo().getFilePath();
-        int line = renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartLine();
+        int line = getLineForMethod(renameOperationRefactoring.getRenamedOperation());
         project.getService(GlobalChangesService.class).addChange(filePath, line, action);
     }
 
