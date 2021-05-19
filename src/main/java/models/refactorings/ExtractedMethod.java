@@ -22,8 +22,8 @@ public class ExtractedMethod extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>EXTRACTED METHOD<br>Extracted code fragments:</b><br>"
-                + renderExtractedCodeFragments() + printAdditionalData() + "<br>Click on the label to select the source operation";
+        return "<b>EXTRACTED METHOD</b><br>"
+                + printAdditionalData();
     }
 
     public String renderExtractedCodeFragments() {

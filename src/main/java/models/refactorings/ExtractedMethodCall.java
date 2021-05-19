@@ -17,8 +17,8 @@ public class ExtractedMethodCall extends RefactoringData {
 
     @Override
     public String renderData() {
-        return "<b>EXTRACTED METHOD CALL<br>Extracted code fragments:</b><br>"
-                + renderExtractedCodeFragments() + printAdditionalData();
+        return "<b>EXTRACTED METHOD CALL</b><br>"
+                + printAdditionalData();
     }
 
     public String renderExtractedCodeFragments() {
