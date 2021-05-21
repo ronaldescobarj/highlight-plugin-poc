@@ -14,6 +14,7 @@ import gr.uom.java.xmi.decomposition.AbstractCodeFragment;
 import gr.uom.java.xmi.decomposition.AbstractCodeMapping;
 import gr.uom.java.xmi.decomposition.OperationInvocation;
 import gr.uom.java.xmi.diff.*;
+import kotlin.Pair;
 import models.Data;
 import models.DataFactory;
 //import models.refactoringminer.Refactoring;
@@ -128,7 +129,7 @@ public class RefactoringMinerUtils {
         }
     }
 
-    private int getLineForMethod(UMLOperation method) {
+    private int getLineForMethod(UMLOperation method, Document document) {
         int startLine = method.getLocationInfo().getStartLine();
         if (method.getJavadoc() != null) {
             int lines = method.getJavadoc().getLocationInfo().getEndLine() - method.getJavadoc().getLocationInfo().getStartLine() + 1;
@@ -140,7 +141,25 @@ public class RefactoringMinerUtils {
                 startLine += lines;
             }
         }
+        while (true) {
+            String lineContent = document.getText().split("\n")[startLine - 1];
+            if (lineContent.contains(method.getName())) {
+                break;
+            } else {
+                startLine++;
+            }
+        }
         return startLine;
+    }
+
+    private Pair<Integer, Integer> getOffsets(UMLOperation method, Document document) {
+        int line = getLineForMethod(method, document);
+        String methodName = method.getName();
+        int startOffset = document.getLineStartOffset(line - 1);
+        int relativeStartOffset = document.getText().split("\n")[line - 1].contains(methodName) ? document.getText().split("\n")[line - 1].indexOf(methodName) : 0;
+        startOffset = startOffset + relativeStartOffset;
+        int endOffset = relativeStartOffset != 0 ? startOffset + methodName.length() : document.getLineEndOffset(line - 1);
+        return new Pair<>(startOffset, endOffset);
     }
 
     private void handleExtractOperation(Map<Integer, List<Data>> actionsMap, String filePath, ExtractOperationRefactoring extractOperationRefactoring) {
@@ -160,7 +179,7 @@ public class RefactoringMinerUtils {
             elements.add(0, startOffset);
             Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", elements.toArray(new String[0]));
             addActionData(action);
-            ActionsUtils.addActionToLine(actionsMap, getLineForMethod(extractOperationRefactoring.getExtractedOperation()), action);
+            ActionsUtils.addActionToLine(actionsMap, getLineForMethod(extractOperationRefactoring.getExtractedOperation(), document), action);
         }
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             if (call.getLocationInfo().getFilePath().equals(filePath)) {
@@ -193,7 +212,9 @@ public class RefactoringMinerUtils {
         Data action = DataFactory.createRefactoringData("EXTRACTED_METHOD", elements.toArray(new String[0]));
         addActionData(action);
         String filePath = extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath();
-        int line = getLineForMethod(extractOperationRefactoring.getExtractedOperation());
+        VirtualFile virtualFile = VirtualFileManager.getInstance().findFileByUrl("file://" + project.getBasePath() + "/" + extractOperationRefactoring.getExtractedOperation().getLocationInfo().getFilePath());
+        Document foundDocument = FileDocumentManager.getInstance().getDocument(virtualFile);
+        int line = getLineForMethod(extractOperationRefactoring.getExtractedOperation(), foundDocument);
         project.getService(GlobalChangesService.class).addChange(filePath, line, action);
         for (OperationInvocation call : extractOperationRefactoring.getExtractedOperationInvocations()) {
             startOffset = String.valueOf(call.getLocationInfo().getStartOffset());
@@ -251,21 +272,27 @@ public class RefactoringMinerUtils {
 
     private void handleRenameOperation(Map<Integer, List<Data>> actionsMap, String filePath, RenameOperationRefactoring renameOperationRefactoring) {
         if (renameOperationRefactoring.getRenamedOperation().getLocationInfo().getFilePath().equals(filePath)) {
-            String startOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartOffset());
-            String endOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getEndOffset());
-            Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
+//            String startOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartOffset());
+//            String endOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getEndOffset());
+            Pair<Integer, Integer> offsets = getOffsets(renameOperationRefactoring.getRenamedOperation(), document);
+//            Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
+            Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), String.valueOf(offsets.getFirst()), String.valueOf(offsets.getSecond()));
             addActionData(action);
-            ActionsUtils.addActionToLine(actionsMap, getLineForMethod(renameOperationRefactoring.getRenamedOperation()), action);
+            ActionsUtils.addActionToLine(actionsMap, getLineForMethod(renameOperationRefactoring.getRenamedOperation(), document), action);
         }
     }
 
     private void addRenameOperation(RenameOperationRefactoring renameOperationRefactoring) {
-        String startOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartOffset());
-        String endOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getEndOffset());
-        Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
+//        String startOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getStartOffset());
+//        String endOffset = String.valueOf(renameOperationRefactoring.getRenamedOperation().getLocationInfo().getEndOffset());
+        VirtualFile virtualFile = VirtualFileManager.getInstance().findFileByUrl("file://" + project.getBasePath() + "/" + renameOperationRefactoring.getRenamedOperation().getLocationInfo().getFilePath());
+        Document foundDocument = FileDocumentManager.getInstance().getDocument(virtualFile);
+        Pair<Integer, Integer> offsets = getOffsets(renameOperationRefactoring.getRenamedOperation(), foundDocument);
+//        Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), startOffset, endOffset);
+        Data action = DataFactory.createRefactoringData("RENAME_METHOD", renameOperationRefactoring.getOriginalOperation().getName(), String.valueOf(offsets.getFirst()), String.valueOf(offsets.getSecond()));
         addActionData(action);
         String filePath = renameOperationRefactoring.getRenamedOperation().getLocationInfo().getFilePath();
-        int line = getLineForMethod(renameOperationRefactoring.getRenamedOperation());
+        int line = getLineForMethod(renameOperationRefactoring.getRenamedOperation(), foundDocument);
         project.getService(GlobalChangesService.class).addChange(filePath, line, action);
     }
 
