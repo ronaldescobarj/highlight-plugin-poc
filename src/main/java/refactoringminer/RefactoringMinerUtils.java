@@ -235,7 +235,9 @@ public class RefactoringMinerUtils {
             final String refactoringType = renameVariableRefactoring.getRenamedVariable().isParameter() ? "RENAME_PARAMETER" : "RENAME_VARIABLE";
             String startOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset());
             int variableNameLength = renameVariableRefactoring.getRenamedVariable().getVariableName().length();
-            String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset() + variableNameLength);
+            String endOffset = refactoringType.equals("RENAME_VARIABLE")
+                    ? String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset() + variableNameLength)
+                    : String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset());
             String[] attributes = refactoringType.equals("RENAME_PARAMETER") ?
                     new String[]{
                             renameVariableRefactoring.getOriginalVariable().getType().getClassType(),
@@ -254,7 +256,9 @@ public class RefactoringMinerUtils {
         final String refactoringType = renameVariableRefactoring.getRenamedVariable().isParameter() ? "RENAME_PARAMETER" : "RENAME_VARIABLE";
         String startOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset());
         int variableNameLength = renameVariableRefactoring.getRenamedVariable().getVariableName().length();
-        String endOffset = String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset() + variableNameLength);
+        String endOffset = refactoringType.equals("RENAME_VARIABLE")
+                ? String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getStartOffset() + variableNameLength)
+                : String.valueOf(renameVariableRefactoring.getRenamedVariable().getLocationInfo().getEndOffset());
         String[] attributes = refactoringType.equals("RENAME_PARAMETER") ?
                 new String[]{
                         renameVariableRefactoring.getOriginalVariable().getType().getClassType(),
