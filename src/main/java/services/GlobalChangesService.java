@@ -51,11 +51,13 @@ public class GlobalChangesService {
         RevCommit parentCommit = commit.getParents()[0];
         List<DiffEntry> diffs = GitHelper.getDiffs(repository, commit, parentCommit);
         for (DiffEntry diff : diffs) {
-            VirtualFile file = VirtualFileManager.getInstance().findFileByUrl("file://" + project.getBasePath() + "/" + diff.getNewPath());
-            List<SourceCodeChange> changes = new DiffMapGenerator().getSourceCodeChangesOfCommits(parentCommit, commit, file, gitLocal, project);
-            Document document = FileDocumentManager.getInstance().getDocument(file);
-            String previousFileContent = gitLocal.getFileContentOnCommit(file, parentCommit, project);
-            addSourceCodeChanges(diff.getNewPath(), changes, document, commit, previousFileContent);
+            if (!diff.getChangeType().equals(DiffEntry.ChangeType.DELETE)) {
+                VirtualFile file = VirtualFileManager.getInstance().findFileByUrl("file://" + project.getBasePath() + "/" + diff.getNewPath());
+                List<SourceCodeChange> changes = new DiffMapGenerator().getSourceCodeChangesOfCommits(parentCommit, commit, file, gitLocal, project);
+                Document document = FileDocumentManager.getInstance().getDocument(file);
+                String previousFileContent = gitLocal.getFileContentOnCommit(file, parentCommit, project);
+                addSourceCodeChanges(diff.getNewPath(), changes, document, commit, previousFileContent);
+            }
         }
     }
 
