@@ -31,6 +31,14 @@ import java.util.Map;
 public class GlobalChangesService {
     private Map<String, JavaFileData> files;
 
+    public Map<Integer, List<Data>> getChangesForFile(String path) {
+        if (files.get(path) == null) {
+            return new HashMap<>();
+        } else {
+            return files.get(path).getChanges();
+        }
+    }
+
     public int getAmountOfChanges(String filePath) {
         JavaFileData fileData = files.get(filePath);
         if (fileData != null) {

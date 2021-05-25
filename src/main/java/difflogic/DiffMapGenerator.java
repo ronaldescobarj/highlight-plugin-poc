@@ -25,6 +25,7 @@ import org.refactoringminer.api.Refactoring;
 import refactoringminer.RefactoringGenerator;
 import refactoringminer.RefactoringMinerUtils;
 import services.GitService;
+import services.GlobalChangesService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -72,6 +73,14 @@ public class DiffMapGenerator {
 //            String filePath = EditorUtils.getRelativePath(editor);
 //            new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
 //        }
+        ActionsUtils.addActionToLine(changes, 1, createChangesSummary(changes));
+        return changes;
+    }
+
+    public Map<Integer, List<Data>> getChangesMapForEditor(Editor editor) {
+        String path = EditorUtils.getRelativePath(editor);
+        Map<Integer, List<Data>> changes = new HashMap<>();
+        changes = editor.getProject().getService(GlobalChangesService.class).getChangesForFile(path);
         ActionsUtils.addActionToLine(changes, 1, createChangesSummary(changes));
         return changes;
     }

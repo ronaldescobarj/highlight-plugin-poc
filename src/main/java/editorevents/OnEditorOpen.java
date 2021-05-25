@@ -28,14 +28,16 @@ public class OnEditorOpen implements EditorFactoryListener {
         new VisualElementsUtils().registerEditorToCoverLayerManager(editor);
         if (editorService.editorIsOnMap(editor)) {
             EditorData editorData = editorService.getEditorData(editor);
-            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, editorData.getSourceCommit(), editorData.getDestinationCommit());
+//            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, editorData.getSourceCommit(), editorData.getDestinationCommit());
+            Map<Integer, List<Data>> changes = new DiffMapGenerator().getChangesMapForEditor(editor);
             editorData.setActive(true);
             editorData.setChanges(changes);
             editorService.setEditorWithData(editor, editorData);
         } else {
             RevCommit latestCommit = getLatestCommit(editor.getProject());
             RevCommit previousCommit = latestCommit.getParents()[0];
-            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, previousCommit, latestCommit);
+//            Map<Integer, List<Data>> changes = new DiffMapGenerator().generateChangesMapForEditor(editor, previousCommit, latestCommit);
+            Map<Integer, List<Data>> changes = new DiffMapGenerator().getChangesMapForEditor(editor);
             EditorData editorData = new EditorData(changes, true, previousCommit, latestCommit);
             editorService.setEditorWithData(editor, editorData);
         }
