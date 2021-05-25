@@ -412,7 +412,7 @@ public class RefactoringMinerUtils {
             String endOffset = String.valueOf(addParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getEndOffset());
             Data action = DataFactory.createRefactoringData("ADD_PARAMETER", addParameterRefactoring.getParameter().getType().getClassType(), addParameterRefactoring.getParameter().getName(), startOffset, endOffset);
             addActionData(action);
-            ActionsUtils.addActionToLine(actionsMap, addParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine(), action);
+            ActionsUtils.addActionToLine(actionsMap, addParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getStartLine(), action);
         }
     }
 
@@ -422,7 +422,7 @@ public class RefactoringMinerUtils {
         Data action = DataFactory.createRefactoringData("ADD_PARAMETER", addParameterRefactoring.getParameter().getType().getClassType(), addParameterRefactoring.getParameter().getName(), startOffset, endOffset);
         addActionData(action);
         String filePath = addParameterRefactoring.getOperationAfter().getLocationInfo().getFilePath();
-        int line = addParameterRefactoring.getOperationAfter().getLocationInfo().getStartLine();
+        int line = addParameterRefactoring.getParameter().getVariableDeclaration().getLocationInfo().getStartLine();
         project.getService(GlobalChangesService.class).addChange(filePath, line, action);
     }
 
