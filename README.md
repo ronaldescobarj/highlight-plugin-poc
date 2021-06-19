@@ -1,11 +1,15 @@
 # Code changes plugin
 
 ## Description
-This plugin for IntelliJ IDEA highlights the code of a Java project based on the changes made on the current commit. It also adds visual elements that, when you hover them, show popup with additional information, and some of those visual elements have click actions. Also overrides the icons of the IntelliJ IDEA file explorer to show with colors the amount of changes of each file.
+This plugin for IntelliJ IDEA highlights the code of a Java project based on the changes made on the current commit. It also adds visual elements that, when you hover on them, they show a popup with additional information. Some of those visual elements have click actions. This plugin also overrides the icons of the IntelliJ IDEA file explorer to show with colors on the icons the amount of changes of each file.
 
 ![Screenshot](screenshot.png)
 
 You can find a more detailed documentation [here](https://drive.google.com/file/d/10WUMjam9sBdOQWg-KSrVUyd6ac_nvbG3/view?usp=sharing), and a video demo/tutorial (a bit outdated though) [here](https://drive.google.com/file/d/165ZrBeBLZlIeIR58afpkftSMYStX3hE_/view?usp=sharing).
+
+## Themes
+
+On the main branch, this plugin by default works for dark theme. It also works on light theme, but there are some issues with specific colors. The code working for light theme is on the branch [light-theme](https://github.com/ronaldescobarj/highlight-plugin-poc/tree/light-theme).
 
 ## How to run
 
@@ -17,7 +21,7 @@ It is almost same procedure as for running, but instead of the "runIde" task, on
 
 ## How to install
 
-In case you don't want to build the plugin, you can manually download this release from [here](https://drive.google.com/file/d/12e6EWt3GMlsoML-LlDCuua_4ETQHN_i5/view?usp=sharing).
+In case you don't want to manually build the plugin, you can download the dark theme and/or the light theme installer from [this folder](https://drive.google.com/drive/folders/1BonHAqqSyg-y0ldaf2NMcShrtm6cMois?usp=sharing) on Google Drive.
 
 To install:
 
