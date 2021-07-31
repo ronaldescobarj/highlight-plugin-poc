@@ -21,6 +21,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.jetbrains.annotations.NotNull;
 import services.EditorService;
 import services.GitService;
+import services.VisualElementsToggleService;
 import visualelements.VisualElementsUtils;
 
 import java.util.ArrayList;
@@ -49,7 +50,9 @@ public class OnEditorMouse implements EditorMouseListener {
             editorService.setActiveEditor(editor);
             EditorUtils.refreshEditor(editor);
         }
-        new VisualElementsUtils().addVisualElements(editor, editorService.getActiveEditorChanges());
+        if (project.getService(VisualElementsToggleService.class).areVisualElementsShown()) {
+            new VisualElementsUtils().addVisualElements(editor, editorService.getActiveEditorChanges());
+        }
     }
 
 }

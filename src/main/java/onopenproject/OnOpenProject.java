@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import services.EditorService;
 import services.GitService;
 import services.GlobalChangesService;
+import services.VisualElementsToggleService;
 
 public class OnOpenProject implements ProjectManagerListener {
 
@@ -17,6 +18,7 @@ public class OnOpenProject implements ProjectManagerListener {
         GitService gitService = project.getService(GitService.class);
         GitLocal gitLocal = new GitLocal(projectPath);
         project.getService(EditorService.class).initialize();
+        project.getService(VisualElementsToggleService.class).initialize();
         gitLocal.openRepository();
         gitService.setRepository(gitLocal.getRepository());
         gitService.setLatestCommitHash(gitLocal.getLatestCommit().getName());

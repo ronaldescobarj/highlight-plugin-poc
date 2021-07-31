@@ -30,6 +30,7 @@
 <!--        <editorNotificationProvider implementation=""-->
 
         <projectService serviceImplementation="services.GitService"/>
+        <projectService serviceImplementation="services.VisualElementsToggleService"/>
         <projectService serviceImplementation="services.EditorService"/>
         <projectService serviceImplementation="services.GlobalChangesService"/>
     </extensions>
