@@ -1,10 +1,7 @@
 package visualelements;
 
 import com.intellij.psi.PsiElement;
-import visualelements.actions.DeletedVisualElement;
-import visualelements.actions.InsertedVisualElement;
-import visualelements.actions.MovedVisualElement;
-import visualelements.actions.UpdatedVisualElement;
+import visualelements.actions.*;
 import visualelements.refactorings.*;
 
 import javax.swing.*;
@@ -22,6 +19,10 @@ public class VisualElementFactory {
                 return new MovedVisualElement(psiElement);
             case "DEL":
                 return new DeletedVisualElement(psiElement);
+            case "BEGIN_INS":
+                return new BeginInsertVisualElement(psiElement);
+            case "END_INS":
+                return new EndInsertVisualElement(psiElement);
             case "EXTRACTED_METHOD":
             case "EXTRACTED_METHOD_CALL":
                 return new ExtractedMethodVisualElement(psiElement);

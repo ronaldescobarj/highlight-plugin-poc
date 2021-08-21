@@ -80,6 +80,7 @@ public class GlobalChangesService {
     public void addNewFileWithSourceCodeChanges(String filePath, List<SourceCodeChange> sourceCodeChanges, Document document, RevCommit commit, String previousFileContent) {
         Map<Integer, List<Data>> changes = new HashMap<>();
         new DiffMapGenerator().addSourceCodeChangesToMap(sourceCodeChanges, changes, document, commit, previousFileContent);
+        changes = ActionsUtils.groupInserts(changes);
         JavaFileData fileData = new JavaFileData(changes);
         files.put(filePath, fileData);
     }

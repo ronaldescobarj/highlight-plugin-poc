@@ -74,6 +74,7 @@ public class DiffMapGenerator {
 //            new RefactoringMinerUtils(project).addRefactoringsToMap(refactorings, changes, filePath);
 //        }
         ActionsUtils.addActionToLine(changes, 1, createChangesSummary(changes));
+        changes = ActionsUtils.groupInserts(changes);
         return changes;
     }
 

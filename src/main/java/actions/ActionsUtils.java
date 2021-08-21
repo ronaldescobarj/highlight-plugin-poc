@@ -1,11 +1,19 @@
 package actions;
 
 import models.Data;
+import models.DataFactory;
+import models.actions.BeginInserted;
+import models.actions.Inserted;
 import models.actions.ModificationData;
 import models.refactorings.PullUpAttribute;
 import models.refactorings.PullUpMethod;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.hibernate.sql.Insert;
+import visualelements.actions.BeginInsertVisualElement;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -106,5 +114,67 @@ public class ActionsUtils {
             }
         }
         actionsMap.put(line, lineActions);
+    }
+
+    public static Map<Integer, List<Data>> groupInserts(Map<Integer, List<Data>> actions) {
+        List<Integer> linesNumbers = new ArrayList<Integer>(actions.keySet());
+        Collections.sort(linesNumbers);
+        boolean isInsertBlock = false;
+        for (int i = 0; i < actions.size(); i++) {
+            Integer currentLine = linesNumbers.get(i);
+            List<Data> currentLineActions = actions.get(currentLine);
+            Integer nextLine;
+            try {
+                nextLine = linesNumbers.get(i + 1);
+            } catch (IndexOutOfBoundsException e) {
+                Data endInsert = createInsertBlockMark(currentLineActions, false);
+                //insertar esto en vez de lo actual
+                List<Data> newActions = new ArrayList<>();
+                newActions.add(endInsert);
+                actions.put(currentLine, newActions);
+                isInsertBlock = false;
+                continue;
+            }
+            List<Data> nextLineActions = actions.get(nextLine);
+            if (isOnlyInsert(currentLineActions)) {
+                if (isOnlyInsert(nextLineActions)) {
+                    if (isInsertBlock) {
+                        //remove
+                        actions.put(currentLine, new ArrayList<Data>());
+                    } else {
+                        Data beginInsert = createInsertBlockMark(currentLineActions, true);
+                        //insertar esto en vez de lo actual
+                        List<Data> newActions = new ArrayList<>();
+                        newActions.add(beginInsert);
+                        actions.put(currentLine, newActions);
+                        isInsertBlock = true;
+                    }
+                } else {
+                    if (isInsertBlock) {
+                        Data endInsert = createInsertBlockMark(currentLineActions, false);
+                        //insertar esto en vez de lo actual
+                        List<Data> newActions = new ArrayList<>();
+                        newActions.add(endInsert);
+                        actions.put(currentLine, newActions);
+                        isInsertBlock = false;
+                    }
+                }
+            }
+        }
+        return actions;
+    }
+
+    private static Data createInsertBlockMark(List<Data> actions, boolean isBegin) {
+        Inserted insertAction = (Inserted) actions.get(0);
+        PersonIdent author = insertAction.getAuthor();
+        LocalDateTime commitDate = insertAction.getDateTime();
+        long startOffset = insertAction.getStartOffset();
+        long endOffset = insertAction.getEndOffset();
+        Data beginInsert = DataFactory.createModificationData(isBegin ? "BEGIN_INS" : "END_INS", author, commitDate, startOffset, endOffset);
+        return beginInsert;
+    }
+
+    private static boolean isOnlyInsert(List<Data> actions) {
+        return actions.size() == 1 && actions.get(0).getType().equals("INS");
     }
 }

@@ -40,6 +40,10 @@ public class DataFactory {
                 return new Deleted(author, commitDate, startOffset, endOffset, additionalData);
             case "UPD_MULTIPLE_TIMES":
                 return new UpdatedMultipleTimes(author, commitDate, startOffset, endOffset);
+            case "BEGIN_INS":
+                return new BeginInserted(author, commitDate, startOffset, endOffset);
+            case "END_INS":
+                return new EndInserted(author, commitDate, startOffset, endOffset);
             default:
                 return null;
         }

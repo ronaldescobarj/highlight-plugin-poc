@@ -19,8 +19,16 @@ public abstract class Data {
         this.author = author;
     }
 
+    public PersonIdent getAuthor() {
+        return author;
+    }
+
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public long getStartOffset() {
