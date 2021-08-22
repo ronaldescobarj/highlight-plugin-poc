@@ -29,7 +29,6 @@ public class ChangesHighlighter {
 
     public IElementType getCharHighlight(int line, long currentOffset) {
         List<Data> actions = changesMap.get(line);
-        //todo que el buscar insert block se haga solo una vez si es posible
         if (existsInsertBlock) {
             if (currentOffset >= startOffsetInsertBlock && currentOffset < endOffsetInsertBlock) {
                 return JavaTypes.INSERTED;

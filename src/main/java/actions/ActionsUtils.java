@@ -127,23 +127,23 @@ public class ActionsUtils {
             try {
                 nextLine = linesNumbers.get(i + 1);
             } catch (IndexOutOfBoundsException e) {
-                Data endInsert = createInsertBlockMark(currentLineActions, false);
-                //insertar esto en vez de lo actual
-                List<Data> newActions = new ArrayList<>();
-                newActions.add(endInsert);
-                actions.put(currentLine, newActions);
-                isInsertBlock = false;
+                if (isInsertBlock) {
+                    Data endInsert = createInsertBlockMark(currentLineActions, false);
+                    //insertar esto en vez de lo actual
+                    List<Data> newActions = new ArrayList<>();
+                    newActions.add(endInsert);
+                    actions.put(currentLine, newActions);
+                    isInsertBlock = false;
+                }
                 continue;
             }
             List<Data> nextLineActions = actions.get(nextLine);
             if (isOnlyInsert(currentLineActions)) {
                 if (isOnlyInsert(nextLineActions)) {
                     if (isInsertBlock) {
-                        //remove
                         actions.put(currentLine, new ArrayList<Data>());
                     } else {
                         Data beginInsert = createInsertBlockMark(currentLineActions, true);
-                        //insertar esto en vez de lo actual
                         List<Data> newActions = new ArrayList<>();
                         newActions.add(beginInsert);
                         actions.put(currentLine, newActions);
@@ -152,7 +152,6 @@ public class ActionsUtils {
                 } else {
                     if (isInsertBlock) {
                         Data endInsert = createInsertBlockMark(currentLineActions, false);
-                        //insertar esto en vez de lo actual
                         List<Data> newActions = new ArrayList<>();
                         newActions.add(endInsert);
                         actions.put(currentLine, newActions);
