@@ -23,6 +23,14 @@ public class ChangesHighlighter {
 
     public IElementType getCharHighlight(int line, long currentOffset) {
         List<Data> actions = changesMap.get(line);
+        //todo que el buscar insert block se haga solo una vez si es posible
+        if (existsInsertBlock()) {
+            long startOffsetInsertBlock = getStartOffsetInsertBlock();
+            long endOffsetInsertBlock = getEndOffsetInsertBlock();
+            if (currentOffset >= startOffsetInsertBlock && currentOffset < endOffsetInsertBlock) {
+                return JavaTypes.INSERTED;
+            }
+        }
         if (actions != null) {
             for (Data action: actions) {
                 if (currentOffset >= action.getStartOffset() && currentOffset < action.getEndOffset()) {
@@ -40,6 +48,40 @@ public class ChangesHighlighter {
         }
         return JavaTypes.NOTMODIFIED;
     }
+
+    boolean existsInsertBlock() {
+        return changesMap.entrySet().stream().anyMatch(pair -> pair.getValue().stream().anyMatch(action -> action.getType().equals("BEGIN_INS")));
+    }
+
+    long getStartOffsetInsertBlock() {
+        for (Map.Entry<Integer, List<Data>> entry : changesMap.entrySet()) {
+            List<Data> lineActions = entry.getValue();
+            for (Data action : lineActions) {
+                if (action.getType().equals(("BEGIN_INS"))) {
+                    return action.getStartOffset();
+                }
+            }
+        }
+        return 1;
+        //todo hacer funcional
+        // return changesMap.entrySet().stream().filter(pair -> pair.getValue().stream().filter(action -> action.getType().equals("BEGIN_INS")).findFirst().get());
+    }
+
+    long getEndOffsetInsertBlock() {
+        for (Map.Entry<Integer, List<Data>> entry : changesMap.entrySet()) {
+            List<Data> lineActions = entry.getValue();
+            for (Data action : lineActions) {
+                if (action.getType().equals(("END_INS"))) {
+                    return action.getEndOffset();
+                }
+            }
+        }
+        return 2;
+        //todo hacer funcional
+        // return changesMap.entrySet().stream().filter(pair -> pair.getValue().stream().filter(action -> action.getType().equals("BEGIN_INS")).findFirst().get());
+    }
+
+
 
     private boolean isInsertion(Data action) {
         return action.getType().equals("INS") || action.getType().equals("ADD_PARAMETER") ||
