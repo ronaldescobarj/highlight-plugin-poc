@@ -14,19 +14,23 @@ import java.util.Map;
 
 public class ChangesHighlighter {
     Map<Integer, List<Data>> changesMap;
+    boolean existsInsertBlock;
+    long startOffsetInsertBlock;
+    long endOffsetInsertBlock;
 
     public ChangesHighlighter() {
         Project project = ProjectManager.getInstance().getOpenProjects()[0];
         EditorService editorService = project.getService(EditorService.class);
         changesMap = editorService.getActiveEditorChanges();
+        existsInsertBlock = existsInsertBlock();
+        startOffsetInsertBlock = getStartOffsetInsertBlock();
+        endOffsetInsertBlock = getEndOffsetInsertBlock();
     }
 
     public IElementType getCharHighlight(int line, long currentOffset) {
         List<Data> actions = changesMap.get(line);
         //todo que el buscar insert block se haga solo una vez si es posible
-        if (existsInsertBlock()) {
-            long startOffsetInsertBlock = getStartOffsetInsertBlock();
-            long endOffsetInsertBlock = getEndOffsetInsertBlock();
+        if (existsInsertBlock) {
             if (currentOffset >= startOffsetInsertBlock && currentOffset < endOffsetInsertBlock) {
                 return JavaTypes.INSERTED;
             }
