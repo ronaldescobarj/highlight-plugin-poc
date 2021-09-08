@@ -51,6 +51,7 @@ public class OnEditorMouse implements EditorMouseListener {
             EditorUtils.refreshEditor(editor);
         }
         if (project.getService(VisualElementsToggleService.class).areVisualElementsShown()) {
+            System.out.println("aaaaaaaa");
             new VisualElementsUtils().addVisualElements(editor, editorService.getActiveEditorChanges());
         }
     }

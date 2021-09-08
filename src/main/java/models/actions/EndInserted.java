@@ -24,7 +24,8 @@ public class EndInserted extends ModificationData {
     public String renderData() {
         return isOnParent ? "<b>END INSERTED<br>Commit info<br>Author username:</b> " + author.getName() + "<br>" +
                 "<b>Author email:</b> " + author.getEmailAddress() + "<br>" +
-                "<b>Commit datetime:</b> " + getDateTimeString() + "<br>" :
+                "<b>Commit datetime:</b> " + getDateTimeString() + "<br>" +
+                "<b>This insert block starts in:</b> " + lineStartOfBlock + "<br>":
                 "This was modified before<br>" + getDateTimeString();
     }
 

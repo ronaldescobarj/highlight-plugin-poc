@@ -1,5 +1,7 @@
 package actions;
 
+//todo atajo de teclado de accion y crear otra xd
+//todo mostrar linea de fin end begin y viceversa
 import models.Data;
 import models.DataFactory;
 import models.actions.BeginInserted;
@@ -119,6 +121,7 @@ public class ActionsUtils {
     public static Map<Integer, List<Data>> groupInserts(Map<Integer, List<Data>> actions) {
         List<Integer> linesNumbers = new ArrayList<Integer>(actions.keySet());
         Collections.sort(linesNumbers);
+        int beginInsertBlockLine = 1;
         boolean isInsertBlock = false;
         for (int i = 0; i < actions.size(); i++) {
             Integer currentLine = linesNumbers.get(i);
@@ -128,7 +131,7 @@ public class ActionsUtils {
                 nextLine = linesNumbers.get(i + 1);
             } catch (IndexOutOfBoundsException e) {
                 if (isInsertBlock) {
-                    Data endInsert = createInsertBlockMark(currentLineActions, false);
+                    Data endInsert = createInsertBlockMark(currentLineActions, false, beginInsertBlockLine);
                     //insertar esto en vez de lo actual
                     List<Data> newActions = new ArrayList<>();
                     newActions.add(endInsert);
@@ -143,15 +146,16 @@ public class ActionsUtils {
                     if (isInsertBlock) {
                         actions.put(currentLine, new ArrayList<Data>());
                     } else {
-                        Data beginInsert = createInsertBlockMark(currentLineActions, true);
+                        Data beginInsert = createInsertBlockMark(currentLineActions, true, 0);
                         List<Data> newActions = new ArrayList<>();
                         newActions.add(beginInsert);
                         actions.put(currentLine, newActions);
+                        beginInsertBlockLine = currentLine;
                         isInsertBlock = true;
                     }
                 } else {
                     if (isInsertBlock) {
-                        Data endInsert = createInsertBlockMark(currentLineActions, false);
+                        Data endInsert = createInsertBlockMark(currentLineActions, false, beginInsertBlockLine);
                         List<Data> newActions = new ArrayList<>();
                         newActions.add(endInsert);
                         actions.put(currentLine, newActions);
@@ -163,13 +167,13 @@ public class ActionsUtils {
         return actions;
     }
 
-    private static Data createInsertBlockMark(List<Data> actions, boolean isBegin) {
+    private static Data createInsertBlockMark(List<Data> actions, boolean isBegin, int markLine) {
         Inserted insertAction = (Inserted) actions.get(0);
         PersonIdent author = insertAction.getAuthor();
         LocalDateTime commitDate = insertAction.getDateTime();
         long startOffset = insertAction.getStartOffset();
         long endOffset = insertAction.getEndOffset();
-        Data beginInsert = DataFactory.createModificationData(isBegin ? "BEGIN_INS" : "END_INS", author, commitDate, startOffset, endOffset);
+        Data beginInsert = DataFactory.createModificationData(isBegin ? "BEGIN_INS" : "END_INS", author, commitDate, startOffset, endOffset, Integer.toString(markLine));
         return beginInsert;
     }
 
