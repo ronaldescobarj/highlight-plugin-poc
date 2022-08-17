@@ -13,6 +13,7 @@ On the following steps we are going to use Apache Giraph's commit, but the same 
 The experiment has been made with IntelliJ IDEA 2021.1. There have been problems trying to build for the latest IntelliJ IDEA version, but using the 2021.1 version works and it will also replicate with the exact version the participants used on the experiment.
 
 #### 1. Download IntelliJ IDEA 2021.1
+If you're using Windows, you can directly click into [this link](https://download.jetbrains.com/idea/ideaIC-2021.1.exe?_gl=1*7niu09*_ga*MTU5NjE1NzI0Ny4xNjM4MzI2NjE1*_ga_9J976DJZ68*MTY2MDcwMzg0NS4xMi4wLjE2NjA3MDM4NDUuMC4wLjA.&_ga=2.16027126.1302933131.1660703846-1596157247.1638326615) and your download of IntelliJ IDEA 2021.1 will start automatically. Or you can follow these steps:
 1. Open this link https://www.jetbrains.com/es-es/idea/download/other.html
 2. Scroll down until finding "Version 2021.1"
 ![img.png](img.png)
