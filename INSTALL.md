@@ -54,7 +54,7 @@ Before installing the plugin, is important to check if you're using the right In
 7. Once done, just click on Apply and then click on OK.
 ![Apply and OK](/tutorial/22_applyOk.png)
 ### 6. Download and install the plugin
-1. Download the plugin installer from [this Google Drive folder](https://drive.google.com/drive/folders/1BonHAqqSyg-y0ldaf2NMcShrtm6cMois). Keep in mind a couple of things:
+1. Download the plugin installer from [this folder](https://github.com/ronaldescobarj/highlight-plugin-poc/tree/main/installers). Keep in mind a couple of things:
    - On the folder, there are different installers for light theme and dark theme. Download the installer you need for your theme of preference.
    - Do not unzip the installer, since the plugin needs to be installed as a whole zip.
 2. Within your IntelliJ IDEA, click on File -> Settings
