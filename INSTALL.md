@@ -1,13 +1,6 @@
-# Tutorial
+# Installation
+In this tutorial, we will install from scratch the required version of IntelliJ IDEA, and afterwards the plugin. To test that the plugin is working, we will open a repository to see the plugin applied to it.
 
-This tutorial explains how to load the projects with the specific commits in order to replicate the examples, and load the plugin in order to have the tool working on those examples.
-
-The repositories used on the main experiment are [Apache Drill](http://github.com/apache/drill) and [Apache Giraph](http://github.com/apache/giraph), and the repository used on the pilot is [Apache Commons IO](https://github.com/apache/commons-io). The commits are:
-
-- Apache Drill commit [c1b847](https://github.com/apache/drill/commit/c1b847acdc8cb90a1498b236b3bb5c81ca75c044)
-- Apache Giraph commit [03ade](https://github.com/apache/giraph/commit/03ade425dd5a65d3a713d5e7d85aa7605956fbd2)
-- Apache Commons IO Commit [4a514](https://github.com/apache/commons-io/commit/4a514d3306b55b3667d1449ebd4cbe5f19dd7af0)
-## Steps
 On the following steps we are going to use Apache Giraph's commit, but the same steps apply for the Drill and Commons IO commits:
 
 The experiment has been made with IntelliJ IDEA 2021.1. There have been problems trying to build for the latest IntelliJ IDEA version, but using the 2021.1 version works and it will also replicate with the exact version the participants used on the experiment.
@@ -81,9 +74,37 @@ Before installing the plugin, is important to check if you're using the right In
 9. After closing settings, you might notice an error message. Don't worry, you need to restart the IDE so that the plugin actually applies and for the error message to disappear. Close IntelliJ IDEA and on the prompt, click on Exit.
 ![Exit](/tutorial/16_exit.png)
 10. Re open IntelliJ IDEA.
-11. You should now have the plugin installed in your IntelliJ IDEA instance. You should be able to browse through the files, see the updated icons on the files and if you open an updated file, you should be able to see the new highlighting, the tags and when hovering the tags you should be able to see the infobox like on the screenshot.
+Done! you have just installed the plugin. Now you should be able to see the changes with it.
+## Usage
+You should now have the plugin installed in your IntelliJ IDEA instance.
+
+If you browse through the files, you will notice that some icons are different. Those icons indicate if a file has been modified and how many changes does it have.
+
+If you open an updated file, you should be able to see the new highlighting, the tags and when hovering the tags you should be able to see the infobox like on the screenshot.
 ![Restarted and applied](/tutorial/17_restartedAndApplied.png)
 ## Where to find changes
-Since Apache Giraph, Drill and Commons IO are big repositories, with many files, it can be hard to find the files that have been modified, even on the selected commits which have multiple files modified. Here is a list with modified files for all three repositories:
-### Apache Giraph
-- src/main/java/org
+The following list containst a list of repositories, commits and files to reproduce the examples of the figures on the paper:
+
+| Figure | Repository    | Commit                                                                                             | File                                                                                        |
+|--------|---------------|----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| 1      | Apache Drill  | [c1b847a](https://github.com/apache/drill/commit/c1b847acdc8cb90a1498b236b3bb5c81ca75c044)         | exec/java-exec/src/test/java/org/apache/drill/exec/impersonation/BaseTestImpersonation.java |
+| 2      | MSSQL JDBC    | [90b9b24](https://github.com/Microsoft/mssql-jdbc/commit/90b9b249cc866d6134e4ba94039e36e80cacfff8) | src/main/java/com/microsoft/sqlserver/jdbc/SQLServerConnection.java                         |
+| 3      | Apache Giraph | [03ade42](https://github.com/apache/giraph/commit/03ade425dd5a65d3a713d5e7d85aa7605956fbd2)        | giraph-core/src/test/java/org/apache/giraph/partition/TestPartitionStores.java              |
+| 4      | Apache Drill  | [00aa01f](https://github.com/apache/drill/commit/00aa01fb90f3210d1e3027d7f759fb1085b814bd)         | exec/java-exec/src/test/java/org/apache/drill/exec/server/TestDrillbitResilience.java       |
+
+Besides the changes on the figures of the paper, we present this list of files with multiple modifications on the three repositories mentioned: Apache Giraph, Drill and Commons IO:
+### Apache Giraph: Commit [03ade42](https://github.com/apache/giraph/commit/03ade425dd5a65d3a713d5e7d85aa7605956fbd2)
+- giraph-core/src/main/java/org/apache/giraph/edge/AbstractEdgeStore.java
+- giraph-core/src/main/java/org/apache/giraph/edge/EdgeStore.java
+- giraph-core/src/main/java/org/apache/giraph/partition/SimplePartitionStore.java
+- giraph-core/src/main/java/org/apache/giraph/conf/GiraphConstants.java
+### Apache Drill: Commit [c1b847a](https://github.com/apache/drill/commit/c1b847acdc8cb90a1498b236b3bb5c81ca75c044)
+- contrib/storage-hive/core/src/main/java/org/apache/drill/exec/store/hive/HiveScan.java
+- contrib/storage-hive/core/src/main/java/org/apache/drill/exec/store/hive/schema/HiveSchemaFactory.java
+- contrib/storage-hive/core/src/test/java/org/apache/drill/exec/store/hive/HiveTestDataGenerator.java
+- exec/java-exec/src/main/java/org/apache/drill/exec/ops/QueryContext.java
+### Apache Commons IO: Commit [4a514d3](https://github.com/apache/commons-io/commit/4a514d3306b55b3667d1449ebd4cbe5f19dd7af0)
+- src/main/java/org/apache/commons/io/FileUtils.java
+- src/main/java/org/apache/commons/io/file/AccumulatorPathVisitor.java
+- src/test/java/org/apache/commons/io/FileUtilsTestCase.java
+- src/test/java/org/apache/commons/io/filefilter/FileFilterTestCase.java

@@ -19,15 +19,12 @@ From IntelliJ IDEA, click on the Gradle side menu at the right, and on tasks, lo
 
 It is almost same procedure as for running, but instead of the "runIde" task, on the same gradle tasks intellij folder, double click on "buildPlugin". If the build succeeded, it will be located in build/distributions folder starting from the root of the project.
 
-## How to install
+## Download installer
 
 In case you don't want to manually build the plugin, you can download the dark theme and/or the light theme installer from [this folder](https://drive.google.com/drive/folders/1BonHAqqSyg-y0ldaf2NMcShrtm6cMois?usp=sharing) on Google Drive.
 
-To install:
+To install, you can refer to this guide, which covers everything since installing the right IntelliJ idea version to installing the plugin.
 
-1. On IntelliJ IDEA go to File -> Settings
-2. Click on "Plugins" on the side menu on the left.
-3. Click on the little gear icon at the top right and select "Install Plugin From Disk...".
-4. Select the location of the zip of the plugin (whether you builded it manually or downloaded it).
-5. Press OK.
-6. Restart the IDE.
+## How to reproduce results in the paper
+
+Following the installation guide you should be able to reproduce results on the paper. The installation guide uses Apache Giraph as an example, but the same applies to Apache Drill and Apache Commons IO.
