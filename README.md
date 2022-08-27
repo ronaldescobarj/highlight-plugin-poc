@@ -23,8 +23,8 @@ It is almost same procedure as for running, but instead of the "runIde" task, on
 
 In case you don't want to manually build the plugin, you can download the dark theme and/or the light theme installer from [this folder](https://drive.google.com/drive/folders/1BonHAqqSyg-y0ldaf2NMcShrtm6cMois?usp=sharing) on Google Drive.
 
-To install, you can refer to this guide, which covers everything since installing the right IntelliJ idea version to installing the plugin.
+To install, you can refer to [this guide](https://github.com/ronaldescobarj/highlight-plugin-poc/blob/main/INSTALL.md), which covers everything since installing the right IntelliJ idea version to installing the plugin.
 
 ## How to reproduce results in the paper
 
-Following the installation guide you should be able to reproduce results on the paper. The installation guide uses Apache Giraph as an example, but the same applies to Apache Drill and Apache Commons IO.
+Following the [installation guide](https://github.com/ronaldescobarj/highlight-plugin-poc/blob/main/INSTALL.md) you should be able to reproduce results on the paper. The installation guide uses Apache Giraph as an example, but the same applies to Apache Drill and Apache Commons IO.
